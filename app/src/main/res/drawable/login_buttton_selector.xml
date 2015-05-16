@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--&lt;!&ndash; 默认时的背景图片 &ndash;&gt;-->
+    <!--<item android:drawable="@color/login_button_nofocus" />-->
+    <!--&lt;!&ndash; 没有焦点时的背景图片 &ndash;&gt;-->
+    <!--<item android:state_window_focused="false"-->
+        <!--android:drawable="@color/login_button_nofocus" />-->
+    <!--&lt;!&ndash; 非触摸模式下获得焦点并单击时的背景图片 &ndash;&gt;-->
+    <!--<item android:state_focused="true" android:state_pressed="true"-->
+        <!--android:drawable= "@color/login_button_focus" />-->
+    <!--&lt;!&ndash; 触摸模式下单击时的背景图片 &ndash;&gt;-->
+    <!--<item android:state_focused="false" android:state_pressed="true"-->
+        <!--android:drawable="@color/login_button_focus" />-->
+    <!--&lt;!&ndash;选中时的图片背景  &ndash;&gt;-->
+    <!--<item android:state_selected="true"-->
+        <!--android:drawable="@color/login_button_focus" />-->
+    <!--&lt;!&ndash;获得焦点时的图片背景  &ndash;&gt;-->
+    <!--<item android:state_focused="true"-->
+        <!--android:drawable="@color/login_button_focus" />-->
+    <!--<item android:state_checkable="true"-->
+        <!--android:drawable="@color/login_button_focus"/>-->
+    <item android:drawable="@color/login_button_nofocus" android:state_enabled="true" android:state_window_focused="false"/>
+    <item android:drawable="@color/login_button_nofocus" android:state_enabled="false" android:state_window_focused="false"/>
+    <item android:drawable="@color/login_button_focus" android:state_pressed="true"/>
+    <item android:drawable="@color/login_button_focus" android:state_enabled="true" android:state_focused="true"/>
+    <item android:drawable="@color/login_button_nofocus" android:state_enabled="true"/>
+    <item android:drawable="@color/login_button_nofocus" android:state_focused="true"/>
+    <item android:drawable="@color/login_button_nofocus"/>
+
+</selector>

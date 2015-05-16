@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="toolbar_color">#669BF4</color>
+    <color name="login_button_focus">#50000000</color>
+    <color name="login_button_nofocus">#10000000</color>
+</resources>
