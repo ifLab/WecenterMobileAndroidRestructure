@@ -5,4 +5,8 @@
         android:width="0.5dp"
         android:color="#50000000"
         />
+    <gradient
+        android:startColor="#fff"
+        android:endColor="#fff"
+        />
 </shape>

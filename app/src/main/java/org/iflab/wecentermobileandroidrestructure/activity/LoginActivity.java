@@ -29,14 +29,26 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        findViews();
+        setViews();
+        setListeners();
+    }
+
+    protected void findViews() {
         imageView = (RelativeLayout) findViewById(R.id.image_blur_jni_bitmap);
         container = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         btnLogin = (Button) findViewById(R.id.btn_login);
+    }
+
+    protected void setViews() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.login_background);
         bitmap = BlurKit.blurNatively(bitmap, 100, false);
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         imageView.setBackground(drawable);
         container.startShimmerAnimation();
+    }
+
+    protected void setListeners() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

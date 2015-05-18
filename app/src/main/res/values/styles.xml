@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="AppBaseThemeLight">
         <!-- Customize your theme here. -->
 
     </style>
@@ -12,6 +12,7 @@
         <item name="colorAccent">@color/toolbar_color</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="AppBaseThemeLight" parent="Base.Theme.AppCompat.Light">
@@ -20,6 +21,7 @@
         <item name="colorAccent">@color/toolbar_color</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
 
