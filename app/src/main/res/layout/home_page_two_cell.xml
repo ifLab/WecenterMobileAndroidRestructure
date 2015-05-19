@@ -9,38 +9,34 @@
         android:layout_margin="10dp"
         android:background="@drawable/rectangle"
         android:minHeight="@dimen/home_page_maxheight_two_cell">
-        <RelativeLayout
-            android:id="@+id/lin_user_image"
-            android:layout_width="wrap_content"
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/home_page_margin_medium"
+            android:layout_marginRight="@dimen/home_page_margin_medium"
+            android:src="@mipmap/user_place"
+            app:border_color="#50000000"
+            app:border_width="0.5dp" />
+
+        <TextView
+            android:layout_width="28dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/rel"
-            android:layout_alignTop="@id/rel">
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/home_page_margin_medium"
-                android:layout_marginRight="@dimen/home_page_margin_medium"
-                android:src="@mipmap/user_place"
-                app:border_color="#50000000"
-                app:border_width="0.5dp" />
-            <TextView
-                android:layout_width="28dp"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/profile_image"
-                android:background="@drawable/rectangle"/>
-        </RelativeLayout>
+            android:background="@drawable/rectangle"
+            android:text="0"
+            android:gravity="center"
+            android:layout_below="@+id/profile_image"
+            android:layout_alignLeft="@+id/profile_image"
+            android:layout_alignStart="@+id/profile_image"
+            android:layout_marginTop="55dp" />
 
         <RelativeLayout
             android:id="@+id/rel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/lin_user_image"
+            android:layout_toRightOf="@id/profile_image"
             android:minHeight="@dimen/home_page_maxheight_one_cell">
 
             <RelativeLayout
@@ -60,15 +56,15 @@
                     android:text="黄陈黄陈黄陈黄陈" />
 
                 <TextView
+                    android:id="@+id/txt_user_action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@id/txt_user_name"
-                    android:layout_marginRight="@dimen/home_page_margin_medium"
                     android:layout_marginLeft="@dimen/home_page_margin_small"
+                    android:layout_marginRight="@dimen/home_page_margin_medium"
+                    android:layout_toRightOf="@id/txt_user_name"
                     android:maxLines="1"
-                    android:text="提出了一个问题"
-                    android:id="@+id/txt_user_action" />
+                    android:text="提出了一个问题" />
             </RelativeLayout>
 
             <TextView
@@ -76,42 +72,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rel_user_action"
-                android:layout_marginLeft="@dimen/home_page_margin_medium"
-                android:layout_marginTop="@dimen/home_page_margin_small"
                 android:layout_marginBottom="@dimen/home_page_margin_medium"
+                android:layout_marginLeft="@dimen/home_page_margin_medium"
                 android:layout_marginRight="@dimen/home_page_margin_medium"
+                android:layout_marginTop="@dimen/home_page_margin_small"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="ttesttesttest" />
+
             <TextView
                 android:id="@+id/txt_line"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#50000000"
-                android:layout_below="@id/txt_user_action_content"/>
+                android:layout_below="@id/txt_user_action_content"
+                android:background="#50000000" />
+
             <TextView
+                android:id="@+id/txt_answer_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:layout_below="@id/txt_line"
-                android:layout_marginTop="@dimen/home_page_margin_medium"
+                android:layout_marginBottom="@dimen/home_page_margin_medium"
                 android:layout_marginLeft="@dimen/home_page_margin_medium"
                 android:layout_marginRight="@dimen/home_page_margin_medium"
-                android:layout_marginBottom="@dimen/home_page_margin_medium"
+                android:layout_marginTop="@dimen/home_page_margin_medium"
                 android:ellipsize="end"
-                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttestttesttesttesttesttesttesttttesttesttesttesttesttestt"
-                android:id="@+id/txt_answer_content" />
+                android:maxLines="3"
+                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttestttesttesttesttesttesttesttttesttesttesttesttesttestt" />
 
         </RelativeLayout>
 
 
         <TextView
-            android:layout_toRightOf="@id/lin_user_image"
             android:layout_width="0.5dp"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/home_page_maxheight_two_cell"
-            android:background="#50000000"
             android:layout_alignBottom="@id/rel"
-            android:layout_alignTop="@id/rel"/>
+            android:layout_alignTop="@id/rel"
+            android:layout_toRightOf="@id/profile_image"
+            android:background="#50000000"
+            android:minHeight="@dimen/home_page_maxheight_two_cell" />
     </RelativeLayout>
 </RelativeLayout>
