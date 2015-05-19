@@ -4,39 +4,43 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/rectangle"
         android:minHeight="@dimen/home_page_maxheight_two_cell">
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+        <RelativeLayout
+            android:id="@+id/rel_left"
+            android:layout_width="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/home_page_margin_medium"
-            android:layout_marginRight="@dimen/home_page_margin_medium"
-            android:src="@mipmap/user_place"
-            app:border_color="#50000000"
-            app:border_width="0.5dp" />
-
-        <TextView
-            android:layout_width="28dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle"
-            android:text="0"
-            android:gravity="center"
-            android:layout_below="@+id/profile_image"
-            android:layout_alignLeft="@+id/profile_image"
-            android:layout_alignStart="@+id/profile_image"
-            android:layout_marginTop="55dp" />
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="@dimen/home_page_margin_medium"
+                android:layout_marginRight="@dimen/home_page_margin_medium"
+                android:src="@mipmap/user_place"
+                app:border_color="#50000000"
+                app:border_width="0.5dp" />
+            <TextView
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle"
+                android:text="0"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/profile_image"
+                android:layout_alignLeft="@+id/profile_image"
+                android:layout_alignStart="@+id/profile_image" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/profile_image"
+            android:layout_toRightOf="@id/rel_left"
             android:minHeight="@dimen/home_page_maxheight_one_cell">
 
             <RelativeLayout
@@ -98,8 +102,7 @@
                 android:layout_marginTop="@dimen/home_page_margin_medium"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttestttesttesttesttesttesttesttttesttesttesttesttesttestt" />
-
+                android:text="testtttesesttesttttesttesttesttesttesttesttttesttesttttesttesttesttesttesttesttesttesttttesttesttesttesttesttestt" />
         </RelativeLayout>
 
 
@@ -108,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/rel"
             android:layout_alignTop="@id/rel"
-            android:layout_toRightOf="@id/profile_image"
+            android:layout_toRightOf="@id/rel_left"
             android:background="#50000000"
             android:minHeight="@dimen/home_page_maxheight_two_cell" />
     </RelativeLayout>

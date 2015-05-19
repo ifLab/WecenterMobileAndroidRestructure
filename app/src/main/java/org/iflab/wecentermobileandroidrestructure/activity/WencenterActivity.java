@@ -5,6 +5,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 
@@ -12,6 +14,8 @@ import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 public class WencenterActivity extends BaseActivity {
 
     private ListView listHomepage;
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,11 +26,13 @@ public class WencenterActivity extends BaseActivity {
     }
 
     private void findViews() {
-        listHomepage = (ListView)findViewById(R.id.list_homepage);
+        listHomepage = (ListView) findViewById(R.id.list_homepage);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
     private void setViews() {
         listHomepage.setAdapter(new HomePageAdapter(getApplicationContext()));
+        fab.attachToListView(listHomepage);
     }
 
     private void setListeners() {

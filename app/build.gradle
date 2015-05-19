@@ -30,4 +30,5 @@ dependencies {
     compile 'com.orhanobut:logger:1.8'
     compile 'org.litepal.android:core:1.2.0'
     compile 'com.github.orangegangsters:swipy:1.2.0@aar'
+    compile 'com.melnykov:floatingactionbutton:1.3.0'
 }
