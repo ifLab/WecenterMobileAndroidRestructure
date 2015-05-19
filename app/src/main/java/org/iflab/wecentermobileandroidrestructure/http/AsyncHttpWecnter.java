@@ -6,10 +6,8 @@ package org.iflab.wecentermobileandroidrestructure.http;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by hcjcch on 2015/2/13.
@@ -17,9 +15,8 @@ import org.json.JSONObject;
  */
 
 public class AsyncHttpWecnter {
-
     public static final String BASE_URL = "http://we.bistu.edu.cn/";
-    private static AsyncHttpClient client = new AsyncHttpClient();
+    public static AsyncHttpClient client = new AsyncHttpClient();
 
     /**
      * get方式
@@ -55,5 +52,7 @@ public class AsyncHttpWecnter {
         return BASE_URL + relativeUrl;
     }
 
-
+    public static void setCookieStore(PersistentCookieStore cookieStore) {
+        client.setCookieStore(cookieStore);
+    }
 }

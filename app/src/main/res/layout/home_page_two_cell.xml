@@ -82,7 +82,7 @@
             android:layout_marginRight="@dimen/home_page_margin_medium"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="ttestttsttesttttesttesttttesttttesttesttesttest" />
+            android:text="ttesttesttest" />
         <TextView
             android:id="@+id/txt_line"
             android:layout_width="match_parent"

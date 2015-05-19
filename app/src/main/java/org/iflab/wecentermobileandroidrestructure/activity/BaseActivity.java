@@ -16,18 +16,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    protected void findViews() {
-
-    }
-
-    protected void setViews() {
-
-    }
-
-    protected void setListeners() {
-
-    }
-
     /**
      * json预处理方法
      *
@@ -60,5 +48,9 @@ public class BaseActivity extends AppCompatActivity {
 
     public void toast(String toastString) {
         Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_SHORT).show();
+    }
+
+    public void toastNo200(){
+        Toast.makeText(getApplicationContext(), "与服务器连接错误", Toast.LENGTH_SHORT).show();
     }
 }
