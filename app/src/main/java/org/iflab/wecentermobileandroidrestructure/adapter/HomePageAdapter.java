@@ -35,7 +35,11 @@ public class HomePageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.home_page_two_cell,parent,false);
+        if (position % 2 == 0){
+            convertView = LayoutInflater.from(context).inflate(R.layout.home_page_one_cell,parent,false);
+        }else {
+            convertView = LayoutInflater.from(context).inflate(R.layout.home_page_two_cell,parent,false);
+        }
         return convertView;
     }
 }

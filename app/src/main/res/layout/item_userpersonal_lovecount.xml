@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+    <ImageView
+        android:id="@+id/img_answer_love"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/star_icon"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_answer_love"
+        android:layout_centerHorizontal="true"
+        android:text="5"
+        android:textColor="#fff"
+        android:layout_marginTop="5dp"
+        android:id="@+id/txt_answer_love_count" />
+</RelativeLayout>

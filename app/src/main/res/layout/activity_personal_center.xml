@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/custom_toolbar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swi_personal_center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/rel_user_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:background="@mipmap/user_home_bg">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_user"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="33dp"
+                        android:layout_marginStart="33dp"
+                        android:layout_marginTop="?actionBarSize"
+                        android:src="@mipmap/user_place" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="#50000000"
+                        android:orientation="horizontal">
+
+                        <include
+                            android:id="@+id/in_answer_favorite"
+                            layout="@layout/item_userpersonal_lovecount"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_weight="1" />
+
+                        <include
+                            android:id="@+id/in_agree"
+                            layout="@layout/item_userpersonal_lovecount"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_weight="1" />
+
+                        <include
+                            android:id="@+id/in_thanks"
+                            layout="@layout/item_userpersonal_lovecount"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_weight="1" />
+
+                        <include
+                            android:id="@+id/in_focus"
+                            layout="@layout/item_userpersonal_lovecount"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txt_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/img_user"
+                        android:layout_marginLeft="@dimen/home_page_margin_medium"
+                        android:layout_marginTop="@dimen/home_page_margin_medium"
+                        android:layout_toEndOf="@+id/img_user"
+                        android:layout_toRightOf="@+id/img_user"
+                        android:text="hcjcch"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:id="@+id/txt_motto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/img_user"
+                        android:layout_marginBottom="@dimen/home_page_margin_medium"
+                        android:layout_marginLeft="@dimen/home_page_margin_medium"
+                        android:layout_marginTop="@dimen/home_page_margin_medium"
+                        android:layout_toEndOf="@+id/img_user"
+                        android:layout_toRightOf="@+id/img_user"
+                        android:maxLines="2"
+                        android:text="青山依旧在，几度夕阳红！"
+                        android:textColor="#fff" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_askcount"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/rel_user_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <include
+                            layout="@layout/item_userpersonal_askcount"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:id="@+id/in_ask_count"/>
+
+                        <include
+                            layout="@layout/item_userpersonal_askcount"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:id="@+id/in_answer_count" />
+
+                        <include
+                            layout="@layout/item_userpersonal_askcount"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:id="@+id/in_article_count" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <include
+                            layout="@layout/item_userpersonal_askcount"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:id="@+id/in_topic_count"/>
+
+                        <include
+                            layout="@layout/item_userpersonal_askcount"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:id="@+id/in_attention_count"/>
+
+                        <include
+                            layout="@layout/item_userpersonal_askcount"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:id="@+id/in_follower_count"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/lin_askcount"
+                    android:layout_marginTop="20dp"
+                    android:background="#50000000"
+                    android:gravity="center"
+                    android:text="修改信息"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

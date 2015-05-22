@@ -1,12 +1,35 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="AppBaseThemeNoActionBar">
         <!-- Customize your theme here. -->
 
     </style>
 
-    <style name="AppBaseTheme" parent="Theme.AppCompat">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/toolbar_color</item>
+        <item name="colorPrimaryDark">@color/toolbar_color</item>
+        <item name="colorAccent">@color/toolbar_color</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="AppBaseThemeNoActionBar" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/toolbar_color</item>
+        <item name="colorPrimaryDark">@color/toolbar_color</item>
+        <item name="colorAccent">@color/toolbar_color</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="TranslateActionbar" parent="AppBaseThemeNoActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="color">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+    <style name="AppBaseThemev21" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/toolbar_color</item>
         <item name="colorPrimaryDark">@color/toolbar_color</item>
         <item name="colorAccent">@color/toolbar_color</item>
@@ -14,15 +37,5 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
-
-    <style name="AppBaseThemeLight" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/toolbar_color</item>
-        <item name="colorPrimaryDark">@color/toolbar_color</item>
-        <item name="colorAccent">@color/toolbar_color</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-
-    </style>
-
 
 </resources>

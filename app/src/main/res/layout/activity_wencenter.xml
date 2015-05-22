@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,12 +12,11 @@
         android:layout_height="wrap_content" />
 
 
-    <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipyrefreshlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        app:direction="both">
+        android:layout_below="@+id/toolbar">
 
         <ListView
             android:id="@+id/list_homepage"
@@ -26,21 +24,21 @@
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp" />
-    </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:src="@mipmap/ic_action_content_new"
         fab:fab_colorNormal="@color/primary"
         fab:fab_colorPressed="@color/primary_pressed"
         fab:fab_colorRipple="@color/ripple" />
-
 
 </RelativeLayout>

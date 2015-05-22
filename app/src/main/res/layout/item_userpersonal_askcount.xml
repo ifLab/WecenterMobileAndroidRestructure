@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:text="4"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/txt_ask_count"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提问"
+        android:id="@+id/txt_ask"
+        android:layout_below="@+id/txt_ask_count"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

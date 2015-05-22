@@ -1,6 +1,8 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -15,6 +17,7 @@ public class WencenterActivity extends BaseActivity {
 
     private ListView listHomepage;
     private FloatingActionButton fab;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +31,19 @@ public class WencenterActivity extends BaseActivity {
     private void findViews() {
         listHomepage = (ListView) findViewById(R.id.list_homepage);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
     }
 
     private void setViews() {
         listHomepage.setAdapter(new HomePageAdapter(getApplicationContext()));
         fab.attachToListView(listHomepage);
+        refreshLayout.setColorSchemeColors(Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
     }
 
     private void setListeners() {
