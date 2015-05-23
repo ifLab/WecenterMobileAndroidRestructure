@@ -36,7 +36,7 @@
         android:layout_margin="16dp"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:src="@mipmap/ic_action_content_new"
+        android:src="@mipmap/ic_menu_edit"
         fab:fab_colorNormal="@color/primary"
         fab:fab_colorPressed="@color/primary_pressed"
         fab:fab_colorRipple="@color/ripple" />

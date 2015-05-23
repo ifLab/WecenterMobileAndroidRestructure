@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".application.WecenterApplication"
         android:allowBackup="true"
@@ -11,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.PhotoPickActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -22,6 +23,9 @@
         </activity>
         <activity
             android:name=".activity.WencenterActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishAnswerArticle"
             android:theme="@style/AppTheme" />
     </application>
 

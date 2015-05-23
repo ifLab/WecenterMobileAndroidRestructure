@@ -1,10 +1,12 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -37,11 +39,17 @@ public class WencenterActivity extends BaseActivity {
     private void setViews() {
         listHomepage.setAdapter(new HomePageAdapter(getApplicationContext()));
         fab.attachToListView(listHomepage);
-        refreshLayout.setColorSchemeColors(Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW);
+        refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WencenterActivity.this, PublishAnswerArticle.class));
             }
         });
     }

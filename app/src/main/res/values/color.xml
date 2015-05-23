@@ -11,4 +11,6 @@
     <color name="transparent">#00ffffff</color>
     <color name="white">#ffffff</color>
 
+    <color name="text_color_grey">#666666</color>
+
 </resources>

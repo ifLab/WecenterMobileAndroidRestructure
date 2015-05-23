@@ -21,10 +21,24 @@ import java.util.ArrayList;
  */
 public class FolderAdapter extends BaseAdapter {
 
+    private String mSelect = "";
     ArrayList<ImageInfoExtra> mFolderData = new ArrayList<>();
 
     public FolderAdapter(ArrayList<ImageInfoExtra> mFolderData) {
         this.mFolderData = mFolderData;
+    }
+
+    public void setSelect(int pos) {
+        if (pos >= getCount()) {
+            return;
+        }
+
+        mSelect = mFolderData.get(pos).getmName();
+        notifyDataSetChanged();
+    }
+
+    public String getSelect() {
+        return mSelect;
     }
 
     @Override
@@ -67,11 +81,11 @@ public class FolderAdapter extends BaseAdapter {
         ImageLoader.getInstance().displayImage(ImageInfo.pathAddPreFix(uri), holder.foldIcon,
                 PhotoPickActivity.optionsImage);
 
-//        if (data.getmName().equals(mSelect)) {
-//            holder.check.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.check.setVisibility(View.INVISIBLE);
-//        }
+        if (data.getmName().equals(mSelect)) {
+            holder.check.setVisibility(View.VISIBLE);
+        } else {
+            holder.check.setVisibility(View.INVISIBLE);
+        }
 
         return convertView;
     }
