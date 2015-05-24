@@ -1,6 +1,10 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.AttachmentGridAdapter;
@@ -15,7 +19,11 @@ import java.util.ArrayList;
 public class PublishAnswerArticle extends BaseActivity {
     private AutoHeightGridView gridView;
     public static final int PHOTO_MAX_COUNT = 6;
+    public static final int RESULT_REQUEST_PICK_PHOTO = 1;
+    public static final String EXTRA_MAX = "EXTRA_MAX";
     public ArrayList<ImageInfo> photos = new ArrayList<>();
+    private AttachmentGridAdapter attachmentGridAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +37,38 @@ public class PublishAnswerArticle extends BaseActivity {
     }
 
     private void setViews() {
-        gridView.setAdapter(new AttachmentGridAdapter(photos));
+        attachmentGridAdapter = new AttachmentGridAdapter(photos);
+        gridView.setAdapter(attachmentGridAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == photos.size()) {
+                    startPhotoPickActivity();
+                }
+            }
+        });
+    }
+
+
+    private void startPhotoPickActivity() {
+        int count = PHOTO_MAX_COUNT - photos.size();
+        if (count <= 0) {
+            return;
+        }
+        Intent intent = new Intent(PublishAnswerArticle.this, PhotoPickActivity.class);
+        intent.putExtra(EXTRA_MAX, count);
+        startActivityForResult(intent, RESULT_REQUEST_PICK_PHOTO);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_REQUEST_PICK_PHOTO) {
+            if (resultCode == Activity.RESULT_OK) {
+                ArrayList<ImageInfo> datas = (ArrayList<ImageInfo>) data.getSerializableExtra("data");
+                photos.addAll(datas);
+            }
+            attachmentGridAdapter.notifyDataSetChanged();
+        } else super.onActivityResult(requestCode, resultCode, data);
     }
 }

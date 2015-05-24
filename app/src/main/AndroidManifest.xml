@@ -27,6 +27,9 @@
         <activity
             android:name=".activity.PublishAnswerArticle"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PhotoPickActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

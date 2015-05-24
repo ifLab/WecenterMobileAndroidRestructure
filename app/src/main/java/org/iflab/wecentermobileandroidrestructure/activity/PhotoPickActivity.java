@@ -77,11 +77,17 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_pick);
+        getMaxPhoto();
         findViews();
         initListView();
         initGridView();
         setViews();
         setToolBar();
+    }
+
+    private void getMaxPhoto() {
+        Intent intent = getIntent();
+        mMaxPick = intent.getIntExtra(PublishAnswerArticle.EXTRA_MAX, 6);
     }
 
     private void setViews() {
@@ -221,7 +227,6 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
-//        photoPickGridAdapter = new PhotoPickGridAdapter(this, (Cursor) data, false,this);
         if (isAllPhotoMode()) {
             photoPickGridAdapter = new PhotolGridAllAdapter(this, (Cursor) data, false, this);
         } else {
@@ -332,7 +337,6 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
             intent.putExtra("data", mPickData);
             setResult(Activity.RESULT_OK, intent);
         }
-
         finish();
     }
 }

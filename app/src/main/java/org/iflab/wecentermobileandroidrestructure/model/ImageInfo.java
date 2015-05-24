@@ -49,4 +49,15 @@ public class ImageInfo implements Serializable {
         result = 31 * result + height;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ImageInfo{" +
+                "path='" + path + '\'' +
+                ", photoId=" + photoId +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
+    }
+
 }
