@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:flowlayout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,124 +10,164 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <RelativeLayout
-        android:id="@+id/rel_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
 
-        <EditText
-            android:id="@+id/edt_title"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="10dp" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txt_title"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/edt_title"
-            android:layout_alignTop="@+id/edt_title"
-            android:gravity="center"
-            android:text="标题:"
-            android:textColor="@color/text_color_grey"
-            android:textSize="16sp" />
+            <RelativeLayout
+                android:id="@+id/rel_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
+                android:layout_marginTop="20dp">
 
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/edt_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/rectangle"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="10dp" />
 
-    <RelativeLayout
-        android:id="@+id/rel_topic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rel_title"
-        android:layout_marginTop="20dp">
-
-        <EditText
-            android:id="@+id/edt_topic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="10dp" />
-
-        <TextView
-            android:id="@+id/txt_topic"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/edt_topic"
-            android:layout_alignTop="@+id/edt_topic"
-            android:gravity="center"
-            android:text="话题:"
-            android:textColor="@color/text_color_grey"
-            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="标题:"
+                    android:textColor="@color/text_color_grey"
+                    android:textSize="16sp" />
 
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rel_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rel_topic"
-        android:layout_marginTop="20dp">
+            <RelativeLayout
+                android:id="@+id/rel_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rel_title"
+                android:layout_marginTop="20dp">
 
-        <EditText
-            android:id="@+id/edt_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="10dp" />
+                <Button
+                    android:id="@+id/btn_add_topic"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/topic_save_buttton"
+                    android:text="添加"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="10dp"
+                    />
+                <EditText
+                    android:id="@+id/edt_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rectangle"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:layout_toLeftOf="@id/btn_add_topic"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="5dp"
+                    />
 
 
-        <TextView
-            android:id="@+id/txt_description"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/edt_description"
-            android:layout_alignTop="@+id/edt_description"
-            android:gravity="center"
-            android:text="描述:"
-            android:textColor="@color/text_color_grey"
-            android:textSize="16sp" />
+                <org.iflab.wecentermobileandroidrestructure.ui.FlowLayout
+                    android:id="@+id/flow_layout_topic"
+                    flowlayout:vertical_spacing="10dp"
+                    flowlayout:horizontal_spacing="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/rectangle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/edt_topic"/>
+
+                <TextView
+                    android:id="@+id/txt_topic"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="话题:"
+                    android:textColor="@color/text_color_grey"
+                    android:textSize="16sp"
+                     />
 
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rel_attachment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rel_description"
-        android:layout_marginTop="25dp">
+            <RelativeLayout
+                android:id="@+id/rel_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rel_topic"
+                android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/txt_attachment"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="附件:"
-            android:textColor="@color/text_color_grey"
-            android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/edt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rectangle"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="10dp" />
 
-        <org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView
-            android:id="@+id/grid_attachment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@id/txt_attachment"
-            android:columnWidth="50dp"
-            android:gravity="center"
-            android:horizontalSpacing="8dp"
-            android:numColumns="3"
-            android:stretchMode="none"
-            android:verticalSpacing="8dp">
 
-        </org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView>
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/txt_description"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="描述:"
+                    android:textColor="@color/text_color_grey"
+                    android:textSize="16sp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_attachment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rel_description"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:id="@+id/txt_attachment"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="附件:"
+                    android:textColor="@color/text_color_grey"
+                    android:textSize="16sp" />
+
+                <org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView
+                    android:id="@+id/grid_attachment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/txt_attachment"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="8dp"
+                    android:numColumns="3"
+                    android:stretchMode="none"
+                    android:verticalSpacing="8dp">
+
+                </org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

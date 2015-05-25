@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity {
     private EditText userName;
     private EditText passWord;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

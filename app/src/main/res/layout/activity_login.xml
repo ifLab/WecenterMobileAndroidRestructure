@@ -19,7 +19,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"/>
+            android:layout_marginRight="50dp"
+            android:padding="10dp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +34,8 @@
             android:layout_alignEnd="@+id/edt_user_name"
             android:inputType="textPassword"
             android:textColor="#50ffffff"
-            android:id="@+id/edt_passwd" />
+            android:id="@+id/edt_passwd"
+            android:padding="10dp"/>
 
         <Button
 
