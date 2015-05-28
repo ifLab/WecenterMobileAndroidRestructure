@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".activity.WencenterActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/homepage" />
         <activity
             android:name=".activity.PublishAnswerArticle"
             android:theme="@style/AppTheme" />

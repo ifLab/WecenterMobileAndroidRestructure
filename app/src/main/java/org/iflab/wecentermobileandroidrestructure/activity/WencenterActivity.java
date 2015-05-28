@@ -3,7 +3,10 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,46 +20,38 @@ import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 
 public class WencenterActivity extends BaseActivity {
 
-    private ListView listHomepage;
-    private FloatingActionButton fab;
-    private SwipeRefreshLayout refreshLayout;
+    private Toolbar toolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wencenter);
+        setContentView(R.layout.avtivity_wencenter);
         findViews();
-        setViews();
-        setListeners();
-    }
-
-    private void findViews() {
-        listHomepage = (ListView) findViewById(R.id.list_homepage);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
-    }
-
-    private void setViews() {
-        listHomepage.setAdapter(new HomePageAdapter(getApplicationContext()));
-        fab.attachToListView(listHomepage);
-        refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        toolbar.setTitle("Toolbar");//设置Toolbar标题
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //创建返回键，并实现打开关/闭监听
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.action_settings, R.string.action_settings) {
             @Override
-            public void onRefresh() {
-
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+//                mAnimationDrawable.stop();
             }
-        });
-        fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(WencenterActivity.this, PublishAnswerArticle.class));
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+//                mAnimationDrawable.start();
             }
-        });
+        };
+        drawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(drawerToggle);
     }
 
-    private void setListeners() {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,4 +74,10 @@ public class WencenterActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void findViews() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+    }
+
 }
