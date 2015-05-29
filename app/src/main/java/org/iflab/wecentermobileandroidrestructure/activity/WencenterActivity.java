@@ -1,21 +1,17 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-
-import com.melnykov.fab.FloatingActionButton;
+import android.widget.Toast;
 
 import org.iflab.wecentermobileandroidrestructure.R;
-import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 
 
 public class WencenterActivity extends BaseActivity {
@@ -23,6 +19,7 @@ public class WencenterActivity extends BaseActivity {
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +47,7 @@ public class WencenterActivity extends BaseActivity {
         };
         drawerToggle.syncState();
         mDrawerLayout.setDrawerListener(drawerToggle);
+        setupDrawerContent(navigationView);
     }
 
 
@@ -78,6 +76,23 @@ public class WencenterActivity extends BaseActivity {
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
     }
 
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        switch (menuItem.getItemId()) {
+                            case R.id.nav_home:
+                                Toast.makeText(WencenterActivity.this, "home", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+    }
 }

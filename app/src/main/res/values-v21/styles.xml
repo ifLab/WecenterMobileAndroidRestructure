@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppBaseThemev21">
+    <style name="AppTheme" parent="AppBaseThemeNoActionBar">
         <!-- Customize your theme here. -->
 
     </style>
