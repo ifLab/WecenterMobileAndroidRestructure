@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.iflab.wecentermobileandroidrestructure.R;
-import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticle;
+import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 
 /**
@@ -62,7 +62,7 @@ public class HomePageFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity().getApplicationContext(), PublishAnswerArticle.class));
+                startActivity(new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class));
             }
         });
     }

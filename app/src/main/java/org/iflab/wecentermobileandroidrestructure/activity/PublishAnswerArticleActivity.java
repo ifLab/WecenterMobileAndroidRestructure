@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by hcjcch on 15/5/23.
  */
-public class PublishAnswerArticle extends BaseActivity {
+public class PublishAnswerArticleActivity extends BaseActivity {
     private AutoHeightGridView gridView;
     public static final int PHOTO_MAX_COUNT = 6;
     public static final int RESULT_REQUEST_PICK_PHOTO = 1;
@@ -68,9 +68,9 @@ public class PublishAnswerArticle extends BaseActivity {
             public void onClick(View v) {
                 toipcString = topicEditText.getText().toString();
                 if (toipcString.equals("") || toipcString == null) {
-                    Toast.makeText(PublishAnswerArticle.this, "请输入话题", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PublishAnswerArticleActivity.this, "请输入话题", Toast.LENGTH_SHORT).show();
                 } else {
-                    TextView button = new TextView(PublishAnswerArticle.this);
+                    TextView button = new TextView(PublishAnswerArticleActivity.this);
                     button.setText(toipcString);
                     button.setBackgroundColor(getResources().getColor(R.color.primary));
                     button.setTextColor(Color.WHITE);
@@ -88,7 +88,7 @@ public class PublishAnswerArticle extends BaseActivity {
         if (count <= 0) {
             return;
         }
-        Intent intent = new Intent(PublishAnswerArticle.this, PhotoPickActivity.class);
+        Intent intent = new Intent(PublishAnswerArticleActivity.this, PhotoPickActivity.class);
         intent.putExtra(EXTRA_MAX, count);
         startActivityForResult(intent, RESULT_REQUEST_PICK_PHOTO);
     }

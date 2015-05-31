@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.iflab.wecentermobileandroidrestructure.R;
-import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticle;
+import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class AttachmentGridAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ImageView image = (ImageView) inflater.inflate(R.layout.item_public_answer_attachment, parent, false);
         if (position == getCount() - 1) {
-            if (getCount() == PublishAnswerArticle.PHOTO_MAX_COUNT + 1) {
+            if (getCount() == PublishAnswerArticleActivity.PHOTO_MAX_COUNT + 1) {
                 image.setVisibility(View.GONE);
             } else {
                 image.setVisibility(View.VISIBLE);

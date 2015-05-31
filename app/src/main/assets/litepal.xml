@@ -4,12 +4,27 @@
 
     </dbname>
 
-    <version value="1">
+    <version value="3">
 
     </version>
 
     <list>
         <mapping class="org.iflab.wecentermobileandroidrestructure.model.User">
+
+        </mapping>
+        <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage">
+
+        </mapping>
+        <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.UserInfo">
+
+        </mapping>
+        <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.QuestionInfo">
+
+        </mapping>
+        <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.ArticleInfo">
+
+        </mapping>
+        <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.AnswerInfo">
 
         </mapping>
     </list>

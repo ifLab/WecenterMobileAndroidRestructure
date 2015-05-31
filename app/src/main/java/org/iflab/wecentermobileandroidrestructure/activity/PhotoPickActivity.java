@@ -19,7 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -87,7 +86,7 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
 
     private void getMaxPhoto() {
         Intent intent = getIntent();
-        mMaxPick = intent.getIntExtra(PublishAnswerArticle.EXTRA_MAX, 6);
+        mMaxPick = intent.getIntExtra(PublishAnswerArticleActivity.EXTRA_MAX, 6);
     }
 
     private void setViews() {
