@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/custom_toolbar" />
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swi_personal_center"
         android:layout_width="match_parent"
@@ -112,25 +110,25 @@
                         android:orientation="horizontal">
 
                         <include
+                            android:id="@+id/in_ask_count"
                             layout="@layout/item_userpersonal_askcount"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
-                            android:layout_weight="1"
-                            android:id="@+id/in_ask_count"/>
+                            android:layout_weight="1" />
 
                         <include
+                            android:id="@+id/in_answer_count"
                             layout="@layout/item_userpersonal_askcount"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
-                            android:layout_weight="1"
-                            android:id="@+id/in_answer_count" />
+                            android:layout_weight="1" />
 
                         <include
+                            android:id="@+id/in_article_count"
                             layout="@layout/item_userpersonal_askcount"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
-                            android:layout_weight="1"
-                            android:id="@+id/in_article_count" />
+                            android:layout_weight="1" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,25 +138,25 @@
                         android:orientation="horizontal">
 
                         <include
+                            android:id="@+id/in_topic_count"
                             layout="@layout/item_userpersonal_askcount"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
-                            android:layout_weight="1"
-                            android:id="@+id/in_topic_count"/>
+                            android:layout_weight="1" />
 
                         <include
+                            android:id="@+id/in_attention_count"
                             layout="@layout/item_userpersonal_askcount"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
-                            android:layout_weight="1"
-                            android:id="@+id/in_attention_count"/>
+                            android:layout_weight="1" />
 
                         <include
+                            android:id="@+id/in_follower_count"
                             layout="@layout/item_userpersonal_askcount"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
-                            android:layout_weight="1"
-                            android:id="@+id/in_follower_count"/>
+                            android:layout_weight="1" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -175,4 +173,10 @@
             </RelativeLayout>
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

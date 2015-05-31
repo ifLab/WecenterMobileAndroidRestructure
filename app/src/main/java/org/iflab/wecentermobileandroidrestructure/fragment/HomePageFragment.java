@@ -26,6 +26,13 @@ public class HomePageFragment extends Fragment {
     private FloatingActionButton fab;
     private SwipeRefreshLayout refreshLayout;
 
+    public static HomePageFragment newInstances() {
+        HomePageFragment fragment = new HomePageFragment();
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,7 +40,7 @@ public class HomePageFragment extends Fragment {
         findViews(relativeLayout);
         setViews();
         setListeners();
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return relativeLayout;
     }
 
     private void findViews(View view) {

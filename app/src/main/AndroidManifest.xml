@@ -30,6 +30,9 @@
         <activity
             android:name=".activity.PhotoPickActivity"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PersonalCenterActivity"
+            android:theme="@style/homepage" />
     </application>
 
 </manifest>

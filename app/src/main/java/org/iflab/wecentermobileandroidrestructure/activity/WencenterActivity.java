@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,9 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
 
 
 public class WencenterActivity extends BaseActivity {
@@ -20,17 +23,15 @@ public class WencenterActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
+    private RelativeLayout nav_header;
+    private HomePageFragment homePageFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avtivity_wencenter);
         findViews();
-        toolbar.setTitle("Toolbar");//设置Toolbar标题
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setToolbar();
         //创建返回键，并实现打开关/闭监听
         drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.action_settings, R.string.action_settings) {
             @Override
@@ -48,6 +49,19 @@ public class WencenterActivity extends BaseActivity {
         drawerToggle.syncState();
         mDrawerLayout.setDrawerListener(drawerToggle);
         setupDrawerContent(navigationView);
+        navigationDrawerItemSelected(0);
+    }
+
+    private void setToolbar() {
+        setToolbarTitle("主页");//设置Toolbar标题
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setToolbarTitle(String toolbarString) {
+        toolbar.setTitle(toolbarString);
     }
 
 
@@ -64,7 +78,6 @@ public class WencenterActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -77,6 +90,14 @@ public class WencenterActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        nav_header = (RelativeLayout) navigationView.findViewById(R.id.rel_nav_header);
+        nav_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WencenterActivity.this, PersonalCenterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -88,11 +109,22 @@ public class WencenterActivity extends BaseActivity {
                         mDrawerLayout.closeDrawers();
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
-                                Toast.makeText(WencenterActivity.this, "home", Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(WencenterActivity.this, PersonalCenterActivity.class);
+//                                startActivity(intent);
+                                setToolbarTitle("主页");
+                                break;
+                            case R.id.nav_messages:
+                                setToolbarTitle("发现");
                                 break;
                         }
                         return true;
                     }
                 });
+
+    }
+
+    private void navigationDrawerItemSelected(int id) {
+        homePageFragment = HomePageFragment.newInstances();
+        getSupportFragmentManager().beginTransaction().replace(R.id.coo_homepage_content, homePageFragment).commit();
     }
 }
