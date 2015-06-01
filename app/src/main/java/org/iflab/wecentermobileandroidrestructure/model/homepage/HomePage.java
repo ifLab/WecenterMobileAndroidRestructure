@@ -87,4 +87,19 @@ public class HomePage extends DataSupport{
     public void setAddTime(long addTime) {
         this.addTime = addTime;
     }
+
+    @Override
+    public String toString() {
+        return "HomePage{" +
+                "userInfo=" + userInfo +
+                ", questionInfo=" + questionInfo +
+                ", answerInfo=" + answerInfo +
+                ", articleInfo=" + articleInfo +
+                ", historyId=" + historyId +
+                ", uid=" + uid +
+                ", associateAction=" + associateAction +
+                ", associateId=" + associateId +
+                ", addTime=" + addTime +
+                '}';
+    }
 }

@@ -1,21 +1,15 @@
-package org.iflab.wecentermobileandroidrestructure.activity;
+package org.iflab.wecentermobileandroidrestructure.fragment;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by hcjcch on 15/5/15.
+ * Created by hcjcch on 15/6/1.
  */
-public class BaseActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+public class BaseFragment extends Fragment {
     /**
      * json预处理方法
      *
@@ -47,10 +41,6 @@ public class BaseActivity extends AppCompatActivity {
      */
 
     public void toast(String toastString) {
-        Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_SHORT).show();
-    }
-
-    public void toastNo200() {
-        Toast.makeText(getApplicationContext(), "与服务器连接错误", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), toastString, Toast.LENGTH_SHORT).show();
     }
 }

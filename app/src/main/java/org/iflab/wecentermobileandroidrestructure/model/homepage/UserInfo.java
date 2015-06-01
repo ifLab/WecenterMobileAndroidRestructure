@@ -5,11 +5,10 @@ import org.litepal.crud.DataSupport;
 /**
  * Created by hcjcch on 15/5/31.
  */
-public class UserInfo extends DataSupport{
+public class UserInfo extends DataSupport {
     private int uid;
     private String userName;
     private String userAvatar;
-    private HomePage homePage;
 
     public int getUid() {
         return uid;
@@ -35,11 +34,13 @@ public class UserInfo extends DataSupport{
         this.userAvatar = userAvatar;
     }
 
-    public HomePage getHomePage() {
-        return homePage;
-    }
 
-    public void setHomePage(HomePage homePage) {
-        this.homePage = homePage;
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "uid=" + uid +
+                ", userName='" + userName + '\'' +
+                ", userAvatar='" + userAvatar + '\'' +
+                '}';
     }
 }

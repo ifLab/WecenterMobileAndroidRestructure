@@ -5,12 +5,12 @@ import org.litepal.crud.DataSupport;
 /**
  * Created by hcjcch on 15/5/31.
  */
-public class AnswerInfo extends DataSupport{
+public class AnswerInfo extends DataSupport {
     private int answerId;
     private int questionId;
     private String answerContent;
     private int agreeCount;
-    private String agreestatus;
+    private int agreestatus;
 
     public int getAnswerId() {
         return answerId;
@@ -44,11 +44,22 @@ public class AnswerInfo extends DataSupport{
         this.agreeCount = agreeCount;
     }
 
-    public String getAgreestatus() {
+    public int getAgreestatus() {
         return agreestatus;
     }
 
-    public void setAgreestatus(String agreestatus) {
+    public void setAgreestatus(int agreestatus) {
         this.agreestatus = agreestatus;
+    }
+
+    @Override
+    public String toString() {
+        return "AnswerInfo{" +
+                "answerId=" + answerId +
+                ", questionId=" + questionId +
+                ", answerContent='" + answerContent + '\'' +
+                ", agreeCount=" + agreeCount +
+                ", agreestatus=" + agreestatus +
+                '}';
     }
 }

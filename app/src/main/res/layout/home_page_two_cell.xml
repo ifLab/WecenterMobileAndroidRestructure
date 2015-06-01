@@ -36,7 +36,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_below="@+id/profile_image"
                 android:layout_alignLeft="@+id/profile_image"
-                android:layout_alignStart="@+id/profile_image" />
+                android:layout_alignStart="@+id/profile_image"
+                android:id="@+id/txt_agree_count" />
         </RelativeLayout>
 
         <RelativeLayout

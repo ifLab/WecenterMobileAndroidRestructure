@@ -33,4 +33,13 @@ public class QuestionInfo extends DataSupport{
     public void setHasFocus(boolean hasFocus) {
         this.hasFocus = hasFocus;
     }
+
+    @Override
+    public String toString() {
+        return "QuestionInfo{" +
+                "questionId=" + questionId +
+                ", questionContent='" + questionContent + '\'' +
+                ", hasFocus=" + hasFocus +
+                '}';
+    }
 }

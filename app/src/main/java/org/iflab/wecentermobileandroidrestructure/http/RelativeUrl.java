@@ -5,4 +5,5 @@ package org.iflab.wecentermobileandroidrestructure.http;
  */
 public class RelativeUrl {
     public static String USER_LOGIN = "?/api/account/login_process/"; //登录
+    public static String HOME_PAGE = "?/api/home/"; //首页
 }

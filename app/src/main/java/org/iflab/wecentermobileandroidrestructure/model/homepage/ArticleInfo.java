@@ -24,4 +24,12 @@ public class ArticleInfo extends DataSupport{
     public void setArticleTitle(String articleTitle) {
         this.articleTitle = articleTitle;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleInfo{" +
+                "articleId=" + articleId +
+                ", articleTitle='" + articleTitle + '\'' +
+                '}';
+    }
 }
