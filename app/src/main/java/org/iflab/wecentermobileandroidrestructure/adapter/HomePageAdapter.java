@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by hcjcch on 15/5/19.
  */
+
 public class HomePageAdapter extends BaseAdapter {
     private Context context;
     private List<HomePage> homePages;
@@ -80,9 +81,15 @@ public class HomePageAdapter extends BaseAdapter {
                 switch (userAction) {
                     case 201:
                         viewHolderTwoCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
+                        viewHolderTwoCell.userAction.setText("回答了问题");
+                        viewHolderTwoCell.userActionContent.setText(homePages.get(position).getQuestionInfo().getQuestionContent());
+                        // viewHolderTwoCell.userAnswerContent.setText(homePages.get(position).getAnswerInfo().getAnswerContent());
                         break;
                     case 204:
-
+                        viewHolderTwoCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
+                        viewHolderTwoCell.userAction.setText("赞同了回答");
+                        viewHolderTwoCell.userActionContent.setText(homePages.get(position).getQuestionInfo().getQuestionContent());
+                        viewHolderTwoCell.userAnswerContent.setText(homePages.get(position).getAnswerInfo().getAnswerContent());
                         break;
                 }
                 break;
@@ -103,15 +110,23 @@ public class HomePageAdapter extends BaseAdapter {
                 switch (userAction) {
                     case 101:
                         viewHolderOneCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
+                        viewHolderOneCell.userAction.setText("发布了问题");
+                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getQuestionInfo().getQuestionContent());
                         break;
                     case 105:
-
+                        viewHolderOneCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
+                        viewHolderOneCell.userAction.setText("关注了问题");
+                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getQuestionInfo().getQuestionContent());
                         break;
                     case 501:
-
+                        viewHolderOneCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
+                        viewHolderOneCell.userAction.setText("发布了文章");
+                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getArticleInfo().getArticleTitle());
                         break;
                     case 502:
-
+                        viewHolderOneCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
+                        viewHolderOneCell.userAction.setText("赞同了了文章");
+                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getArticleInfo().getArticleTitle());
                         break;
                 }
                 break;

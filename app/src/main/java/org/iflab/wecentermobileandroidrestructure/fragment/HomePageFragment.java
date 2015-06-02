@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
+import org.iflab.wecentermobileandroidrestructure.adapter.HomePageRecycleAdapter;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.AnswerInfo;
@@ -38,7 +41,7 @@ import java.util.List;
  * Created by hcjcch on 15/5/28.
  */
 public class HomePageFragment extends BaseFragment {
-    private ListView listHomepage;
+    private RecyclerView listHomepage;
     private FloatingActionButton fab;
     private SwipeRefreshLayout refreshLayout;
     private List<HomePage> homePages = new ArrayList<>();
@@ -58,7 +61,7 @@ public class HomePageFragment extends BaseFragment {
         findViews(relativeLayout);
         setViews();
         setListeners();
-        getData();
+        //getData();
 //        HomePage homePage = new HomePage();
 //        homePage = HomePage.findFirst(HomePage.class);
 //        System.out.println(homePage);
@@ -67,15 +70,18 @@ public class HomePageFragment extends BaseFragment {
     }
 
     private void findViews(View view) {
-        listHomepage = (ListView) view.findViewById(R.id.list_homepage);
+        listHomepage = (RecyclerView) view.findViewById(R.id.list_homepage);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipyrefreshlayout);
     }
 
     private void setViews() {
-        homePageAdapter = new HomePageAdapter(getActivity().getApplicationContext(), homePages);
-        listHomepage.setAdapter(homePageAdapter);
-        fab.attachToListView(listHomepage);
+//        homePageAdapter = new HomePageAdapter(getActivity().getApplicationContext(), homePages);
+//        listHomepage.setAdapter(homePageAdapter);
+//        fab.attachToListView(listHomepage);
+        listHomepage.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        listHomepage.setAdapter(new HomePageRecycleAdapter(getActivity().getApplicationContext()));
+        fab.attachToRecyclerView(listHomepage);
         refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -178,6 +184,11 @@ public class HomePageFragment extends BaseFragment {
                             }
 //                            homePage.save();
                             homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);
+
                         }
                         homePageAdapter.notifyDataSetChanged();
                     }
