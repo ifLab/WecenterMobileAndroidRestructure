@@ -7,17 +7,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/rectangle"
         android:minHeight="@dimen/home_page_maxheight_two_cell">
 
         <RelativeLayout
             android:id="@+id/rel_left"
             android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="28dp"
@@ -27,17 +28,19 @@
                 android:src="@mipmap/user_place"
                 app:border_color="#50000000"
                 app:border_width="0.5dp" />
+
             <TextView
+                android:id="@+id/txt_agree_count"
                 android:layout_width="28dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle"
-                android:text="0"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/profile_image"
                 android:layout_alignLeft="@+id/profile_image"
                 android:layout_alignStart="@+id/profile_image"
-                android:id="@+id/txt_agree_count" />
+                android:layout_below="@+id/profile_image"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rectangle"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/text_color_grey" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -61,7 +64,8 @@
                     android:layout_height="wrap_content"
                     android:maxEms="8"
                     android:maxLines="1"
-                    android:text="黄陈黄陈黄陈黄陈" />
+                    android:text="黄陈黄陈黄陈黄陈"
+                    android:textColor="@color/text_color_grey" />
 
                 <TextView
                     android:id="@+id/txt_user_action"
@@ -72,7 +76,8 @@
                     android:layout_marginRight="@dimen/home_page_margin_medium"
                     android:layout_toRightOf="@id/txt_user_name"
                     android:maxLines="1"
-                    android:text="提出了一个问题" />
+                    android:text="提出了一个问题"
+                    android:textColor="@color/text_color_grey" />
             </RelativeLayout>
 
             <TextView
@@ -86,7 +91,8 @@
                 android:layout_marginTop="@dimen/home_page_margin_small"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="ttesttesttest" />
+                android:text="ttesttesttest"
+                android:textColor="@color/text_color_grey" />
 
             <TextView
                 android:id="@+id/txt_line"
@@ -106,7 +112,8 @@
                 android:layout_marginTop="@dimen/home_page_margin_medium"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:text="testtttesesttesttttesttesttesttesttesttesttttesttesttttesttesttesttesttesttesttesttesttttesttesttesttesttesttestt" />
+                android:text="testtttesesttesttttesttesttesttesttesttesttttesttesttttesttesttesttesttesttesttesttesttttesttesttesttesttesttestt"
+                android:textColor="@color/text_color_grey" />
         </RelativeLayout>
 
 

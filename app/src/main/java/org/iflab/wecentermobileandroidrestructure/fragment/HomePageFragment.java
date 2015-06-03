@@ -44,8 +44,8 @@ public class HomePageFragment extends BaseFragment {
     private RecyclerView listHomepage;
     private FloatingActionButton fab;
     private SwipeRefreshLayout refreshLayout;
+    private HomePageRecycleAdapter homePageAdapter;
     private List<HomePage> homePages = new ArrayList<>();
-    private HomePageAdapter homePageAdapter;
 
     public static HomePageFragment newInstances() {
         HomePageFragment fragment = new HomePageFragment();
@@ -61,7 +61,7 @@ public class HomePageFragment extends BaseFragment {
         findViews(relativeLayout);
         setViews();
         setListeners();
-        //getData();
+        getData();
 //        HomePage homePage = new HomePage();
 //        homePage = HomePage.findFirst(HomePage.class);
 //        System.out.println(homePage);
@@ -76,11 +76,11 @@ public class HomePageFragment extends BaseFragment {
     }
 
     private void setViews() {
-//        homePageAdapter = new HomePageAdapter(getActivity().getApplicationContext(), homePages);
+        homePageAdapter = new HomePageRecycleAdapter(getActivity().getApplicationContext(), homePages);
 //        listHomepage.setAdapter(homePageAdapter);
 //        fab.attachToListView(listHomepage);
         listHomepage.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        listHomepage.setAdapter(new HomePageRecycleAdapter(getActivity().getApplicationContext()));
+        listHomepage.setAdapter(homePageAdapter);
         fab.attachToRecyclerView(listHomepage);
         refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -183,10 +183,6 @@ public class HomePageFragment extends BaseFragment {
 //                                answerInfo.save();
                             }
 //                            homePage.save();
-                            homePages.add(homePage);
-                            homePages.add(homePage);
-                            homePages.add(homePage);
-                            homePages.add(homePage);
                             homePages.add(homePage);
 
                         }

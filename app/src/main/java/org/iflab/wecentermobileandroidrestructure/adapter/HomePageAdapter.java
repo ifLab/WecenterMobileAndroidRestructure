@@ -134,12 +134,12 @@ public class HomePageAdapter extends BaseAdapter {
         return convertView;
     }
 
-//    static class ViewHolderOneCell {
-//        ImageView userProfile;
-//        TextView userName;
-//        TextView userAction;
-//        TextView userActionContent;
-//    }
+    static class ViewHolderOneCell {
+        ImageView userProfile;
+        TextView userName;
+        TextView userAction;
+        TextView userActionContent;
+    }
 
     static class ViewHolderTwoCell {
         ImageView userProfile;
