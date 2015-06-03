@@ -109,8 +109,6 @@ public class WencenterActivity extends BaseActivity {
                         mDrawerLayout.closeDrawers();
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
-//                                Intent intent = new Intent(WencenterActivity.this, PersonalCenterActivity.class);
-//                                startActivity(intent);
                                 setToolbarTitle("主页");
                                 break;
                             case R.id.nav_messages:

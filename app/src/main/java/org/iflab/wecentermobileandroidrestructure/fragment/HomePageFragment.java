@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.melnykov.fab.FloatingActionButton;
 import com.orhanobut.logger.Logger;
 
@@ -46,6 +48,12 @@ public class HomePageFragment extends BaseFragment {
     private SwipeRefreshLayout refreshLayout;
     private HomePageRecycleAdapter homePageAdapter;
     private List<HomePage> homePages = new ArrayList<>();
+    private int perPage = 20;
+    private int page = 0;
+    private boolean loading = true;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private LinearLayoutManager linearLayoutManager;
+    private boolean refresh = false;
 
     public static HomePageFragment newInstances() {
         HomePageFragment fragment = new HomePageFragment();
@@ -77,16 +85,21 @@ public class HomePageFragment extends BaseFragment {
 
     private void setViews() {
         homePageAdapter = new HomePageRecycleAdapter(getActivity().getApplicationContext(), homePages);
-//        listHomepage.setAdapter(homePageAdapter);
-//        fab.attachToListView(listHomepage);
-        listHomepage.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        listHomepage.setLayoutManager(linearLayoutManager);
         listHomepage.setAdapter(homePageAdapter);
         fab.attachToRecyclerView(listHomepage);
         refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
+
+    }
+
+    private void setListeners() {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                page = 0;
+                refresh = true;
+                getData();
             }
         });
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,19 +108,37 @@ public class HomePageFragment extends BaseFragment {
                 startActivity(new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class));
             }
         });
-    }
+        listHomepage.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-    private void setListeners() {
+                visibleItemCount = linearLayoutManager.getChildCount();
+                totalItemCount = linearLayoutManager.getItemCount();
+                pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
 
+                if (loading) {
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        loading = false;
+                        Log.v("...", "Last Item Wow !");
+                        getData();
+                    }
+                }
+            }
+        });
     }
 
     private void getData() {
-        AsyncHttpWecnter.get(RelativeUrl.HOME_PAGE, null, new AsyncHttpResponseHandler() {
+        AsyncHttpWecnter.get(RelativeUrl.HOME_PAGE, setParams(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String res = new String(responseBody);
                 boolean jsonProgress = jsonPreproccess(res);
                 if (jsonProgress) return;
+
+                if (refresh) {
+                    homePages.clear();
+                    refresh = false;
+                }
                 try {
                     JSONObject jsonObject = new JSONObject(res);
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
@@ -184,6 +215,18 @@ public class HomePageFragment extends BaseFragment {
                             }
 //                            homePage.save();
                             homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);
+                            homePages.add(homePage);homePages.add(homePage);homePages.add(homePage);homePages.add(homePage);
+
+
+
+
+
 
                         }
                         homePageAdapter.notifyDataSetChanged();
@@ -197,7 +240,20 @@ public class HomePageFragment extends BaseFragment {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
             }
+
+            @Override
+            public void onFinish() {
+                refreshLayout.setRefreshing(false);
+                super.onFinish();
+            }
         });
+    }
+
+    private RequestParams setParams() {
+        RequestParams params = new RequestParams();
+        params.put("per_page", perPage);
+        params.put("page", page);
+        return params;
     }
 
 }
