@@ -94,7 +94,14 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     break;
             }
         }
+//        if (i + 1 == homePages.size()) {
+//            onLoadMore(1);
+//        }
     }
+
+//    public void onLoadMore(int current_page) {
+//
+//    }
 
     @Override
     public int getItemCount() {

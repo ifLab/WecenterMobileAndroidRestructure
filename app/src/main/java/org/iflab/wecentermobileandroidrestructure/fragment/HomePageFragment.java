@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -27,6 +28,7 @@ import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 import org.iflab.wecentermobileandroidrestructure.adapter.HomePageRecycleAdapter;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScrollListener;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.AnswerInfo;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
@@ -50,8 +52,7 @@ public class HomePageFragment extends BaseFragment {
     private List<HomePage> homePages = new ArrayList<>();
     private int perPage = 20;
     private int page = 0;
-    private boolean loading = true;
-    private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loadMore = true;
     private LinearLayoutManager linearLayoutManager;
     private boolean refresh = false;
 
@@ -69,7 +70,7 @@ public class HomePageFragment extends BaseFragment {
         findViews(relativeLayout);
         setViews();
         setListeners();
-        getData();
+        loadData();
 //        HomePage homePage = new HomePage();
 //        homePage = HomePage.findFirst(HomePage.class);
 //        System.out.println(homePage);
@@ -97,9 +98,8 @@ public class HomePageFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 0;
-                refresh = true;
-                getData();
+                refreshReset();
+                loadData();
             }
         });
         fab.setOnClickListener(new View.OnClickListener() {
@@ -108,33 +108,23 @@ public class HomePageFragment extends BaseFragment {
                 startActivity(new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class));
             }
         });
-        listHomepage.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        listHomepage.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                visibleItemCount = linearLayoutManager.getChildCount();
-                totalItemCount = linearLayoutManager.getItemCount();
-                pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                if (loading) {
-                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                        loading = false;
-                        Log.v("...", "Last Item Wow !");
-                        getData();
-                    }
+            public void onLoadMore(int current_page) {
+                if (loadMore) {
+                    loadData();
                 }
             }
         });
     }
 
-    private void getData() {
+    private void loadData() {
         AsyncHttpWecnter.get(RelativeUrl.HOME_PAGE, setParams(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String res = new String(responseBody);
                 boolean jsonProgress = jsonPreproccess(res);
                 if (jsonProgress) return;
-
                 if (refresh) {
                     homePages.clear();
                     refresh = false;
@@ -145,7 +135,10 @@ public class HomePageFragment extends BaseFragment {
                     int totalRows = rsm.getInt("total_rows");
                     if (totalRows == 0) {
                         //TODO 加载完成
+                        loadMore = false;
+                        Toast.makeText(getActivity().getApplicationContext(), "只有这么多了", Toast.LENGTH_SHORT).show();
                     } else {
+                        page++;
                         JSONArray rows = rsm.getJSONArray("rows");
                         for (int i = 0; i < rows.length(); i++) {
                             HomePage homePage = new HomePage();
@@ -216,18 +209,6 @@ public class HomePageFragment extends BaseFragment {
 //                            homePage.save();
                             homePages.add(homePage);
                             homePages.add(homePage);
-                            homePages.add(homePage);
-                            homePages.add(homePage);
-                            homePages.add(homePage);homePages.add(homePage);
-                            homePages.add(homePage);
-                            homePages.add(homePage);
-                            homePages.add(homePage);homePages.add(homePage);homePages.add(homePage);homePages.add(homePage);
-
-
-
-
-
-
                         }
                         homePageAdapter.notifyDataSetChanged();
                     }
@@ -256,4 +237,10 @@ public class HomePageFragment extends BaseFragment {
         return params;
     }
 
+    private void refreshReset() {
+        page = 0;
+        refresh = true;
+        loadMore = true;
+        EndlessRecyclerOnScrollListener.reset();
+    }
 }
