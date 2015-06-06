@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 
 
 public class WencenterActivity extends BaseActivity {
@@ -95,6 +96,7 @@ public class WencenterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WencenterActivity.this, PersonalCenterActivity.class);
+                intent.putExtra("uid", User.getLoginUser(getApplicationContext()).getUid());
                 startActivity(intent);
             }
         });

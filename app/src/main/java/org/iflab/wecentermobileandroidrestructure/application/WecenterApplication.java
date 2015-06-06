@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.orhanobut.hawk.Hawk;
 
 import org.litepal.LitePalApplication;
 
@@ -19,6 +20,7 @@ public class WecenterApplication extends LitePalApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Hawk.init(getApplicationContext());
         sWidthPix = getResources().getDisplayMetrics().widthPixels;
         initImageLoader(getApplicationContext());
     }

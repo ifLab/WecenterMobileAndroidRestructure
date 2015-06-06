@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
 import net.qiujuer.genius.app.BlurKit;
 
 import org.apache.http.Header;
@@ -68,7 +69,8 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-    private void login(){
+
+    private void login() {
         String usernameString = userName.getText().toString();
         if (usernameString.equals("")) {
             toast("用户名不能为空");
@@ -80,8 +82,8 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         RequestParams params = new RequestParams();
-        params.put("user_name",usernameString);
-        params.put("password",passWordString);
+        params.put("user_name", usernameString);
+        params.put("password", passWordString);
         AsyncHttpWecnter.post(RelativeUrl.USER_LOGIN, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -98,8 +100,8 @@ public class LoginActivity extends BaseActivity {
                     user.setUid(uid);
                     user.setUserName(userName);
                     user.setAvatarFile(avatarFile);
-                    user.save();
-                    startActivity(new Intent(LoginActivity.this,WencenterActivity.class));
+                    user.save(getApplicationContext());
+                    startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

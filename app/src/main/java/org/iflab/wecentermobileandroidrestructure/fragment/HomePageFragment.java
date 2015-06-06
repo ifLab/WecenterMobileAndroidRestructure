@@ -208,7 +208,6 @@ public class HomePageFragment extends BaseFragment {
                             }
 //                            homePage.save();
                             homePages.add(homePage);
-                            homePages.add(homePage);
                         }
                         homePageAdapter.notifyDataSetChanged();
                     }

@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,11 +11,23 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.orhanobut.hawk.Hawk;
+
+import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
+import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
+import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by hcjcch on 15/5/21.
  */
+
 public class PersonalCenterActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView ask;
@@ -37,14 +50,22 @@ public class PersonalCenterActivity extends BaseActivity {
     private TextView thanksCount;
     private ImageView hasFocus;
     private TextView hasFocusCount;
+    private int uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_center);
+        Intent intent = getIntent();
+        uid = intent.getIntExtra("uid", -1);
         findViews();
         setViews();
         setToolBar();
+        if (uid != -1) {
+            loadData(uid);
+        } else {
+            //TODO 用户错误
+        }
     }
 
     private void setToolBar() {
@@ -52,7 +73,7 @@ public class PersonalCenterActivity extends BaseActivity {
         toolbar.setBackgroundColor(Color.parseColor("#00ffffff"));
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setTitle("个人中心");
-        toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(toolbar);
     }
 
@@ -124,5 +145,62 @@ public class PersonalCenterActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_wencenter, menu);
         return true;
+    }
+
+    private void loadData(final int uid) {
+        AsyncHttpWecnter.get(RelativeUrl.USER_INFO, getParams(), new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                boolean jsonProgress = jsonPreproccess(json);
+                if (jsonProgress) return;
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    JSONObject rsm = jsonObject.getJSONObject("rsm");
+                    UserPersonal user = new UserPersonal();
+                    user.setUser_name(rsm.getString("user_name"));
+                    user.setAvatar_file(rsm.getString("avatar_file"));
+                    user.setFans_count(rsm.getInt("fans_count"));
+                    user.setFriend_count(rsm.getInt("friend_count"));
+                    user.setQuestion_count(rsm.getInt("question_count"));
+                    user.setAnswer_count(rsm.getInt("answer_count"));
+                    user.setTopic_focus_count(rsm.getInt("topic_focus_count"));
+                    user.setAgree_count(rsm.getInt("agree_count"));
+                    user.setThanks_count(rsm.getInt("thanks_count"));
+                    user.setAnswer_favorite_count(rsm.getInt("answer_favorite_count"));
+                    user.setArticle_count(rsm.getInt("article_count"));
+                    user.setHas_focus(rsm.getInt("has_focus"));
+                    user.setSignature(rsm.getString("signature"));
+                    Hawk.put(uid + "", user);
+                    setData(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                System.out.println("failure");
+            }
+        });
+    }
+
+    private RequestParams getParams() {
+        RequestParams params = new RequestParams();
+        params.put("uid", uid);
+        return params;
+    }
+
+    private void setData(UserPersonal user) {
+        answerFavoriteCount.setText(user.getAnswer_favorite_count() + "");
+        agreeCount.setText(user.getAgree_count() + "");
+        thanksCount.setText(user.getThanks_count() + "");
+        hasFocusCount.setText(user.getHas_focus() + "");
+        askCount.setText(user.getQuestion_count() + "");
+        answerCount.setText(user.getAnswer_count() + "");
+        articleCount.setText(user.getArticle_count() + "");
+        topicCount.setText(user.getTopic_focus_count() + "");
+        attentionCount.setText(user.getFriend_count() + "");
+        followerCount.setText(user.getFans_count() + "");
     }
 }
