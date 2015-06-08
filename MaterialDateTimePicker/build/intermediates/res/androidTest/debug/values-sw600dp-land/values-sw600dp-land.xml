@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/hcjcch/DEVELOP/AndroidStudioProjects/WecenterMobileAndroidRestructure/MaterialDateTimePicker/build/intermediates/bundles/debug/res/values-sw600dp-land/values-sw600dp-land.xml -->
+    <eat-comment/>
+    <dimen name="mdtp_ampm_label_size">16sp</dimen>
+    <dimen name="mdtp_ampm_left_padding">6dip</dimen>
+    <dimen name="mdtp_date_picker_header_height">45dp</dimen>
+    <dimen name="mdtp_footer_height">48dip</dimen>
+    <dimen name="mdtp_header_height">96dip</dimen>
+    <dimen name="mdtp_left_side_width">400dip</dimen>
+    <dimen name="mdtp_separator_padding">5dip</dimen>
+    <dimen name="mdtp_time_label_right_padding">16sp</dimen>
+    <dimen name="mdtp_time_label_size">64sp</dimen>
+</resources>

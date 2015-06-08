@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class PersonalCenterActivity extends BaseActivity {
     private ImageView hasFocus;
     private TextView hasFocusCount;
     private int uid;
+    private TextView useredit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,7 @@ public class PersonalCenterActivity extends BaseActivity {
         relativeLayout = (RelativeLayout) findViewById(R.id.in_focus);
         hasFocus = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
         hasFocusCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
+        useredit = (TextView) findViewById(R.id.txt_user_edit);
     }
 
     private void setViews() {
@@ -117,6 +120,13 @@ public class PersonalCenterActivity extends BaseActivity {
             @Override
             public void onRefresh() {
 
+            }
+        });
+        useredit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PersonalCenterActivity.this, PersonalCenterEditActivity.class);
+                startActivity(intent);
             }
         });
         ask.setText("提问");

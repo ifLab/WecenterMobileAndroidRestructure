@@ -3,140 +3,169 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rel_user"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@mipmap/user_home_bg">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_user"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/user_place" />
+
+                <TextView
+                    android:id="@+id/txt_user_img"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/user_edit_select_img"
+                    android:gravity="center"
+                    android:text="上传"
+                    android:textColor="#fff" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/rel_user"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txt_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="20dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="用户名"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="-5dp"
+                        android:text="hc"
+                        android:textColor="@color/text_color_grey" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_user_name"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="性别" />
+
+                <TextView
+                    android:id="@+id/txt_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/txt_sex"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/txt_sex"
+                    android:background="@drawable/user_edit_sex_select"
+                    android:drawableLeft="@mipmap/male"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="男"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txt_baomi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/txt_sex"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/txt_male"
+                    android:background="@drawable/user_edit_sex_select"
+                    android:gravity="center"
+                    android:text="保密"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txt_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/txt_sex"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/txt_baomi"
+                    android:background="@drawable/user_edit_sex_select"
+                    android:drawableLeft="@mipmap/female"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="女"
+                    android:textSize="18sp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txt_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_female"
+                    android:layout_marginTop="20dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="个人签名"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="-5dp"
+                        android:text="青山依旧在，几度夕阳红！"
+                        android:textColor="@color/text_color_grey" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_signature"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="生日" />
+
+                <TextView
+                    android:id="@+id/txt_birthday_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/txt_birthday"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/txt_birthday"
+                    android:text="2008-05-06"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/txt_birthday_select"
+                    android:layout_marginTop="20dp"
+                    android:background="#50000000"
+                    android:gravity="center"
+                    android:text="保存修改"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_user"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:src="@mipmap/user_place" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txt_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/img_user"
-                android:layout_marginTop="20dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:hint="用户名"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="-5dp"
-                    android:text="hc"
-                    android:textColor="@color/text_color_grey" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:id="@+id/txt_sex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_user_name"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:text="性别" />
-
-            <TextView
-                android:id="@+id/txt_male"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/txt_sex"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/txt_sex"
-                android:background="@drawable/user_edit_sex"
-                android:drawableLeft="@mipmap/male"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="男"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/txt_baomi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/txt_sex"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/txt_male"
-                android:background="@drawable/user_edit_sex"
-                android:gravity="center"
-                android:text="保密"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/txt_female"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/txt_sex"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/txt_baomi"
-                android:background="@drawable/user_edit_sex"
-                android:drawableLeft="@mipmap/female"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="女"
-                android:textSize="18sp" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txt_signature"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_female"
-                android:layout_marginTop="20dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:hint="个人签名"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="-5dp"
-                    android:text="青山依旧在，几度夕阳红！"
-                    android:textColor="@color/text_color_grey" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:id="@+id/txt_birthday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_signature"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:text="生日" />
-
-            <TextView
-                android:id="@+id/txt_birthday_select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/txt_birthday"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/txt_birthday"
-                android:text="2008-05-06" />
-
-        </RelativeLayout>
-
-    </ScrollView>
-
-
 </RelativeLayout>
