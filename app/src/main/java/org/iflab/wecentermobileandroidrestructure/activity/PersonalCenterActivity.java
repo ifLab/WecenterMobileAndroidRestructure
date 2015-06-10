@@ -53,13 +53,17 @@ public class PersonalCenterActivity extends BaseActivity {
     private TextView hasFocusCount;
     private int uid;
     private TextView useredit;
+    private Bundle bundle;
+    private boolean isOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_center);
         Intent intent = getIntent();
-        uid = intent.getIntExtra("uid", -1);
+        bundle = intent.getBundleExtra("bundle");
+        uid = bundle.getInt("uid", -1);
+        isOwner = bundle.getBoolean("isOwner");
         findViews();
         setViews();
         setToolBar();
@@ -126,6 +130,7 @@ public class PersonalCenterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PersonalCenterActivity.this, PersonalCenterEditActivity.class);
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });

@@ -15,15 +15,25 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
+import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.CameraPhotoUtil;
 import org.iflab.wecentermobileandroidrestructure.tools.Global;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 /**
@@ -41,12 +51,16 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private TextView birthDaySelect;
     private Calendar calendar;
     private TextView txtMale;
+    private Bundle bundle;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_center_edit);
         calendar = Calendar.getInstance();
+        intent = getIntent();
+        bundle = intent.getBundleExtra("bundle");
         setToolBar();
         findViews();
         setViews();
@@ -140,7 +154,18 @@ public class PersonalCenterEditActivity extends BaseActivity {
                 try {
                     String filePath = Global.getPath(this, fileCropUri);
                     ImageLoader.getInstance().displayImage(ImageInfo.pathAddPreFix(filePath), imgUser, PhotoPickActivity.optionsImage);
-                    System.out.println(filePath);
+                    if (filePath == null) {
+                        Toast.makeText(PersonalCenterEditActivity.this, "文件失剪裁败", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    File file = new File(filePath);
+                    RequestParams params = new RequestParams();
+                    try {
+                        params.put("user_avatar", file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    uploadAvatar(params);
                 } catch (Exception e) {
 
                 }
@@ -163,4 +188,41 @@ public class PersonalCenterEditActivity extends BaseActivity {
         intent.putExtra("noFaceDetection", true); // no face detection
         startActivityForResult(intent, requestCode);
     }
+
+    private void uploadAvatar(RequestParams params) {
+        AsyncHttpWecnter.post(RelativeUrl.USER_IMG_EDIT, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                boolean jsonProgress = jsonPreproccess(json);
+                if (jsonProgress) return;
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    JSONObject rsm = jsonObject.getJSONObject("rsm");
+                    String priview = rsm.getString("preview");
+                    if (priview != null) {
+                        //TODO 上传成功
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+        });
+    }
+
+    private void uploadOtherInformation() {
+        
+    }
+
 }

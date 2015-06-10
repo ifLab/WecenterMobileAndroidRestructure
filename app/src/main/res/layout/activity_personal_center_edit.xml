@@ -70,52 +70,12 @@
                     android:layout_marginTop="20dp"
                     android:text="性别" />
 
-                <TextView
-                    android:id="@+id/txt_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/txt_sex"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/txt_sex"
-                    android:background="@drawable/user_edit_sex_select"
-                    android:drawableLeft="@mipmap/male"
-                    android:drawablePadding="5dp"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="男"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txt_baomi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/txt_sex"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/txt_male"
-                    android:background="@drawable/user_edit_sex_select"
-                    android:gravity="center"
-                    android:text="保密"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txt_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/txt_sex"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/txt_baomi"
-                    android:background="@drawable/user_edit_sex_select"
-                    android:drawableLeft="@mipmap/female"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="女"
-                    android:textSize="18sp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txt_signature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/txt_female"
+                    android:layout_below="@id/txt_sex"
                     android:layout_marginTop="20dp">
 
                     <EditText

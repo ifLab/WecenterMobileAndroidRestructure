@@ -96,7 +96,12 @@ public class WencenterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WencenterActivity.this, PersonalCenterActivity.class);
-                intent.putExtra("uid", User.getLoginUser(getApplicationContext()).getUid());
+                Bundle bundle = new Bundle();
+                bundle.putInt("uid", User.getLoginUser(getApplicationContext()).getUid());
+                bundle.putString("userName", User.getLoginUser(getApplicationContext()).getUserName());
+                bundle.putString("avatarFile", User.getLoginUser(getApplicationContext()).getAvatarFile());
+                bundle.putBoolean("isOwner", true);
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });
