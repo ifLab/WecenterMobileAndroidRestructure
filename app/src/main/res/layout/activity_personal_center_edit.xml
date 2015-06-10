@@ -70,6 +70,35 @@
                     android:layout_marginTop="20dp"
                     android:text="性别" />
 
+                <RadioGroup
+                    android:id="@+id/radiogroup_sex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/txt_sex"
+                    android:layout_toRightOf="@id/txt_sex"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_sex_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="男" />
+
+                    <RadioButton
+                        android:id="@+id/radio_sex_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="女" />
+
+                    <RadioButton
+                        android:id="@+id/radio_sex_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="未知" />
+                </RadioGroup>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txt_signature"
@@ -110,6 +139,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/txt_cave_user_information"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_below="@id/txt_birthday_select"

@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,10 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private TextView txtMale;
     private Bundle bundle;
     private Intent intent;
+    private RadioGroup radioGroup;
+    private RadioButton radioMale;
+    private int sexCheck;
+    private TextView save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +77,10 @@ public class PersonalCenterEditActivity extends BaseActivity {
         userImageSelect = (TextView) findViewById(R.id.txt_user_img);
         imgUser = (ImageView) findViewById(R.id.img_user);
         birthDaySelect = (TextView) findViewById(R.id.txt_birthday_select);
-        txtMale = (TextView) findViewById(R.id.txt_male);
+        radioGroup = (RadioGroup) findViewById(R.id.radiogroup_sex);
+        radioMale = (RadioButton) findViewById(R.id.radio_sex_male);
+        radioMale.setChecked(true);
+        save = (TextView) findViewById(R.id.txt_cave_user_information);
     }
 
     private void setViews() {
@@ -93,10 +102,27 @@ public class PersonalCenterEditActivity extends BaseActivity {
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        txtMale.setOnClickListener(new View.OnClickListener() {
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radio_sex_male:
+                        sexCheck = 1;
+                        break;
+                    case R.id.radio_sex_female:
+                        sexCheck = 2;
+                        break;
+                    case R.id.radio_sex_no:
+                        sexCheck = 3;
+                        break;
+                }
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                uploadOtherInformation();
             }
         });
     }
@@ -202,6 +228,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
                     String priview = rsm.getString("preview");
                     if (priview != null) {
                         //TODO 上传成功
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -222,7 +249,27 @@ public class PersonalCenterEditActivity extends BaseActivity {
     }
 
     private void uploadOtherInformation() {
-        
+        RequestParams params = new RequestParams();
+        params.put("uid", bundle.getInt("uid"));
+        params.put("user_name", bundle.getString("userName"));
+        params.put("sex", sexCheck);
+        params.put("signature", "青山依旧在，几度夕阳红!");
+        AsyncHttpWecnter.post(RelativeUrl.USER_INFORMATION_EDIT, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                System.out.println(new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                System.out.println(new String(responseBody));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+        });
     }
 
 }
