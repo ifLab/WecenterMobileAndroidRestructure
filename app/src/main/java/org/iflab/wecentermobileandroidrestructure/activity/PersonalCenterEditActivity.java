@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.DatePicker;
@@ -31,6 +32,7 @@ import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.CameraPhotoUtil;
 import org.iflab.wecentermobileandroidrestructure.tools.Global;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,6 +61,8 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private RadioButton radioMale;
     private int sexCheck;
     private TextView save;
+    private TextInputLayout txtInputSignature;
+    private TextInputLayout txtinputUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
         calendar = Calendar.getInstance();
         intent = getIntent();
         bundle = intent.getBundleExtra("bundle");
+        getUserInformation();
         setToolBar();
         findViews();
         setViews();
@@ -81,6 +86,8 @@ public class PersonalCenterEditActivity extends BaseActivity {
         radioMale = (RadioButton) findViewById(R.id.radio_sex_male);
         radioMale.setChecked(true);
         save = (TextView) findViewById(R.id.txt_cave_user_information);
+        txtInputSignature = (TextInputLayout) findViewById(R.id.txt_signature);
+        txtinputUserName = (TextInputLayout) findViewById(R.id.txt_user_name);
     }
 
     private void setViews() {
@@ -228,7 +235,6 @@ public class PersonalCenterEditActivity extends BaseActivity {
                     String priview = rsm.getString("preview");
                     if (priview != null) {
                         //TODO 上传成功
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -251,13 +257,42 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private void uploadOtherInformation() {
         RequestParams params = new RequestParams();
         params.put("uid", bundle.getInt("uid"));
-        params.put("user_name", bundle.getString("userName"));
+        String userName = txtinputUserName.getEditText().getText().toString();
+        if (userName.equals("")) {
+            txtinputUserName.setError("用户名不能为空");
+            txtinputUserName.requestFocus();
+            return;
+        } else {
+            txtinputUserName.setError("");
+        }
+        params.put("user_name", userName);
         params.put("sex", sexCheck);
-        params.put("signature", "青山依旧在，几度夕阳红!");
+        String signature = txtInputSignature.getEditText().getText().toString();
+        if (signature.equals("")) {
+            txtInputSignature.setError("不能为空");
+            txtInputSignature.requestFocus();
+            return;
+        } else {
+            txtInputSignature.setError("");
+        }
+        params.put("signature", signature);
         AsyncHttpWecnter.post(RelativeUrl.USER_INFORMATION_EDIT, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                System.out.println(new String(responseBody));
+                String json = new String(responseBody);
+                boolean jsonProgress = jsonPreproccess(json);
+                if (jsonProgress) return;
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(new String(responseBody));
+                    String rsm = jsonObject.getString("rsm");
+                    if (rsm.equals("success")) {
+                        //TODO 成功
+                        Toast.makeText(PersonalCenterEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -272,4 +307,32 @@ public class PersonalCenterEditActivity extends BaseActivity {
         });
     }
 
+    private void getUserInformation() {
+        RequestParams params = new RequestParams();
+        params.put("uid", bundle.getInt("uid"));
+        AsyncHttpWecnter.get(RelativeUrl.USER_INFO_GET_EDIT, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                boolean jsonProgress = jsonPreproccess(json);
+                if (jsonProgress) return;
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    JSONArray rsm = jsonObject.getJSONArray("rsm");
+                    JSONObject user = rsm.getJSONObject(0);
+                    String sex = user.getString("sex");
+                    String birthday = user.getString("birthday");
+                    String signature = user.getString("signature");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
 }
