@@ -30,6 +30,7 @@ import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.tools.CameraPhotoUtil;
 import org.iflab.wecentermobileandroidrestructure.tools.Global;
 import org.json.JSONArray;
@@ -63,6 +64,8 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private TextView save;
     private TextInputLayout txtInputSignature;
     private TextInputLayout txtinputUserName;
+    private RadioButton radioFeMale;
+    private RadioButton radioNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +74,9 @@ public class PersonalCenterEditActivity extends BaseActivity {
         calendar = Calendar.getInstance();
         intent = getIntent();
         bundle = intent.getBundleExtra("bundle");
-        getUserInformation();
         setToolBar();
         findViews();
+        getUserInformation();
         setViews();
     }
 
@@ -84,10 +87,11 @@ public class PersonalCenterEditActivity extends BaseActivity {
         birthDaySelect = (TextView) findViewById(R.id.txt_birthday_select);
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup_sex);
         radioMale = (RadioButton) findViewById(R.id.radio_sex_male);
-        radioMale.setChecked(true);
         save = (TextView) findViewById(R.id.txt_cave_user_information);
         txtInputSignature = (TextInputLayout) findViewById(R.id.txt_signature);
         txtinputUserName = (TextInputLayout) findViewById(R.id.txt_user_name);
+        radioFeMale = (RadioButton) findViewById(R.id.radio_sex_female);
+        radioNo = (RadioButton) findViewById(R.id.radio_sex_no);
     }
 
     private void setViews() {
@@ -104,7 +108,8 @@ public class PersonalCenterEditActivity extends BaseActivity {
                 new DatePickerDialog(PersonalCenterEditActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
+                        String dateString = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        birthDaySelect.setText(dateString);
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -257,7 +262,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private void uploadOtherInformation() {
         RequestParams params = new RequestParams();
         params.put("uid", bundle.getInt("uid"));
-        String userName = txtinputUserName.getEditText().getText().toString();
+        final String userName = txtinputUserName.getEditText().getText().toString();
         if (userName.equals("")) {
             txtinputUserName.setError("用户名不能为空");
             txtinputUserName.requestFocus();
@@ -276,6 +281,13 @@ public class PersonalCenterEditActivity extends BaseActivity {
             txtInputSignature.setError("");
         }
         params.put("signature", signature);
+        String a = birthDaySelect.getText().toString();
+        long date = Global.Date2TimeStamp(birthDaySelect.getText().toString());
+        if (date == -1) {
+            //TODO 选择日期无效
+        } else {
+            params.put("birthday", date);
+        }
         AsyncHttpWecnter.post(RelativeUrl.USER_INFORMATION_EDIT, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -288,7 +300,9 @@ public class PersonalCenterEditActivity extends BaseActivity {
                     String rsm = jsonObject.getString("rsm");
                     if (rsm.equals("success")) {
                         //TODO 成功
+                        updateUser(userName);
                         Toast.makeText(PersonalCenterEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -308,6 +322,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
     }
 
     private void getUserInformation() {
+        txtinputUserName.getEditText().setText(User.getLoginUser(PersonalCenterEditActivity.this).getUserName());
         RequestParams params = new RequestParams();
         params.put("uid", bundle.getInt("uid"));
         AsyncHttpWecnter.get(RelativeUrl.USER_INFO_GET_EDIT, params, new AsyncHttpResponseHandler() {
@@ -323,7 +338,21 @@ public class PersonalCenterEditActivity extends BaseActivity {
                     String sex = user.getString("sex");
                     String birthday = user.getString("birthday");
                     String signature = user.getString("signature");
-
+                    if (birthday.contains("-")) {
+                        //TODO 不设置时间
+                        birthDaySelect.setText("");
+                    } else {
+                        String date = Global.TimeStamp2Date(birthday, "yyyy-MM-dd");
+                        birthDaySelect.setText(date);
+                    }
+                    if (sex.equals("1")) {
+                        radioMale.setChecked(true);
+                    } else if (sex.equals("2")) {
+                        radioFeMale.setChecked(true);
+                    } else {
+                        radioNo.setChecked(true);
+                    }
+                    txtInputSignature.getEditText().setText(signature);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -334,5 +363,11 @@ public class PersonalCenterEditActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void updateUser(String userName) {
+        User user = User.getLoginUser(PersonalCenterEditActivity.this);
+        user.setUserName(userName);
+        user.save(PersonalCenterEditActivity.this);
     }
 }

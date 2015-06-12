@@ -12,6 +12,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.text.ParseException;
+
 /**
  * Created by hcjcch on 15/6/8.
  */
@@ -169,5 +171,20 @@ public class Global {
         return null;
     }
 
+    public static String TimeStamp2Date(String timestampString, String formats) {
+        Long timestamp = Long.parseLong(timestampString);
+        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
+        return date;
+    }
+
+    public static long Date2TimeStamp(String date) {
+        long time = 0;
+        try {
+            time = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(date).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return time;
+    }
 
 }

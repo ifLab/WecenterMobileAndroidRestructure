@@ -135,7 +135,7 @@
                     android:layout_alignTop="@id/txt_birthday"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/txt_birthday"
-                    android:text="2008-05-06"
+                    android:text=""
                     android:textSize="18sp" />
 
                 <TextView
