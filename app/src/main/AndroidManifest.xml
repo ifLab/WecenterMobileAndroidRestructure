@@ -33,7 +33,9 @@
         <activity
             android:name=".activity.PersonalCenterActivity"
             android:theme="@style/homepage" />
-        <activity android:name=".activity.PersonalCenterEditActivity" />
+        <activity
+            android:name=".activity.PersonalCenterEditActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
     </application>
 
 </manifest>

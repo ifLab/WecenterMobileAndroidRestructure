@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
@@ -17,10 +18,12 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.dd.CircularProgressButton;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -40,6 +43,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Calendar;
+
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 /**
  * Created by hcjcch on 15/6/6.
@@ -61,11 +66,13 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private RadioGroup radioGroup;
     private RadioButton radioMale;
     private int sexCheck;
-    private TextView save;
     private TextInputLayout txtInputSignature;
     private TextInputLayout txtinputUserName;
     private RadioButton radioFeMale;
     private RadioButton radioNo;
+    private RelativeLayout RelMars;
+    private CircularProgressBar progress;
+    private CircularProgressButton save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,14 +94,20 @@ public class PersonalCenterEditActivity extends BaseActivity {
         birthDaySelect = (TextView) findViewById(R.id.txt_birthday_select);
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup_sex);
         radioMale = (RadioButton) findViewById(R.id.radio_sex_male);
-        save = (TextView) findViewById(R.id.txt_cave_user_information);
         txtInputSignature = (TextInputLayout) findViewById(R.id.txt_signature);
         txtinputUserName = (TextInputLayout) findViewById(R.id.txt_user_name);
         radioFeMale = (RadioButton) findViewById(R.id.radio_sex_female);
         radioNo = (RadioButton) findViewById(R.id.radio_sex_no);
+        RelMars = (RelativeLayout) findViewById(R.id.rel_marz);
+        progress = (CircularProgressBar) findViewById(R.id.progress);
+        save = (CircularProgressButton) findViewById(R.id.btn_cave_user_information);
+        save.setIndeterminateProgressMode(true);
     }
 
     private void setViews() {
+        //设置用户头像
+        System.out.println(RelativeUrl.AVATAR + bundle.getString("avatarFile"));
+        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + bundle.getString("avatarFile"), imgUser, PhotoPickActivity.optionsImage);
         userImageSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,6 +303,12 @@ public class PersonalCenterEditActivity extends BaseActivity {
         }
         AsyncHttpWecnter.post(RelativeUrl.USER_INFORMATION_EDIT, params, new AsyncHttpResponseHandler() {
             @Override
+            public void onStart() {
+                save.setProgress(50);
+                super.onStart();
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String json = new String(responseBody);
                 boolean jsonProgress = jsonPreproccess(json);
@@ -301,8 +320,14 @@ public class PersonalCenterEditActivity extends BaseActivity {
                     if (rsm.equals("success")) {
                         //TODO 成功
                         updateUser(userName);
-                        Toast.makeText(PersonalCenterEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                        finish();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(PersonalCenterEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                save.setProgress(100);
+                                finish();
+                            }
+                        }, 1000);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -312,6 +337,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 System.out.println(new String(responseBody));
+                save.setProgress(-1);
             }
 
             @Override
@@ -322,6 +348,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
     }
 
     private void getUserInformation() {
+        onGetUserInformation();
         txtinputUserName.getEditText().setText(User.getLoginUser(PersonalCenterEditActivity.this).getUserName());
         RequestParams params = new RequestParams();
         params.put("uid", bundle.getInt("uid"));
@@ -353,6 +380,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
                         radioNo.setChecked(true);
                     }
                     txtInputSignature.getEditText().setText(signature);
+                    afterGetUserInformation();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -362,6 +390,12 @@ public class PersonalCenterEditActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
             }
+
+            @Override
+            public void onFinish() {
+                afterGetUserInformation();
+                super.onFinish();
+            }
         });
     }
 
@@ -369,5 +403,21 @@ public class PersonalCenterEditActivity extends BaseActivity {
         User user = User.getLoginUser(PersonalCenterEditActivity.this);
         user.setUserName(userName);
         user.save(PersonalCenterEditActivity.this);
+    }
+
+    private void onGetUserInformation() {
+        txtinputUserName.getEditText().setEnabled(false);
+        txtInputSignature.getEditText().setEnabled(false);
+        radioGroup.setEnabled(false);
+        birthDaySelect.setEnabled(false);
+    }
+
+    private void afterGetUserInformation() {
+        txtinputUserName.getEditText().setEnabled(true);
+        txtInputSignature.getEditText().setEnabled(true);
+        radioGroup.setEnabled(true);
+        birthDaySelect.setEnabled(true);
+        RelMars.setVisibility(View.INVISIBLE);
+        progress.setVisibility(View.INVISIBLE);
     }
 }

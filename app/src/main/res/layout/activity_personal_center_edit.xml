@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -56,7 +58,6 @@
                         android:hint="用户名"
                         android:paddingLeft="10dp"
                         android:paddingTop="-5dp"
-                        android:text="hc"
                         android:textColor="@color/text_color_grey" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -114,7 +115,6 @@
                         android:hint="个人签名"
                         android:paddingLeft="10dp"
                         android:paddingTop="-5dp"
-                        android:text="青山依旧在，几度夕阳红！"
                         android:textColor="@color/text_color_grey" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -138,17 +138,17 @@
                     android:text=""
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/txt_cave_user_information"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                <com.dd.CircularProgressButton
+                    android:id="@+id/btn_cave_user_information"
                     android:layout_below="@id/txt_birthday_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
                     android:layout_marginTop="20dp"
-                    android:background="#50000000"
-                    android:gravity="center"
-                    android:text="保存修改"
-                    android:textColor="#fff"
-                    android:textSize="18sp" />
+                    android:textColor="@color/cpb_white"
+                    android:textSize="18sp"
+                    app:cpb_iconComplete="@drawable/ic_action_accept"
+                    app:cpb_iconError="@drawable/ic_action_cancel"
+                    app:cpb_textIdle="保存修改" />
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
@@ -158,4 +158,28 @@
         layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/rel_marz"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#50000000">
+
+    </RelativeLayout>
+
+    <fr.castorflex.android.circularprogressbar.CircularProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/progress"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        app:cpb_color="#FFee44"
+        app:cpb_colors="@array/mycolors"
+        app:cpb_max_sweep_angle="300"
+        app:cpb_min_sweep_angle="10"
+        app:cpb_rotation_speed="1.0"
+        app:cpb_stroke_width="4dp"
+        app:cpb_sweep_speed="1.0" />
+
 </RelativeLayout>
