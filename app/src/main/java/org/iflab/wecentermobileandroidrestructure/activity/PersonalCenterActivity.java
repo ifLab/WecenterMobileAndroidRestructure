@@ -23,6 +23,7 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
+import org.iflab.wecentermobileandroidrestructure.tools.UserAcount;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -187,7 +188,7 @@ public class PersonalCenterActivity extends BaseActivity {
                     user.setArticle_count(rsm.getInt("article_count"));
                     user.setHas_focus(rsm.getInt("has_focus"));
                     user.setSignature(rsm.getString("signature"));
-                    Hawk.put(uid + "", user);
+                    UserAcount.saveUserCount(user);
                     setData(user);
                 } catch (JSONException e) {
                     e.printStackTrace();

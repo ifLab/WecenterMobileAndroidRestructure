@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by hcjcch on 15/6/6.
  */
 public class UserPersonal implements Serializable {
+    private int uid;
     private String user_name;
     private String avatar_file;
     private int fans_count;
@@ -20,6 +21,13 @@ public class UserPersonal implements Serializable {
     private int has_focus;
     private String signature;
 
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public String getUser_name() {
         return user_name;

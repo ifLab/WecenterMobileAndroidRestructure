@@ -73,6 +73,8 @@ public class PersonalCenterEditActivity extends BaseActivity {
     private RelativeLayout RelMars;
     private CircularProgressBar progress;
     private CircularProgressButton save;
+    private User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
         calendar = Calendar.getInstance();
         intent = getIntent();
         bundle = intent.getBundleExtra("bundle");
+        user = User.getLoginUser(getApplicationContext());
         setToolBar();
         findViews();
         getUserInformation();
@@ -106,8 +109,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
 
     private void setViews() {
         //设置用户头像
-        System.out.println(RelativeUrl.AVATAR + bundle.getString("avatarFile"));
-        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + bundle.getString("avatarFile"), imgUser, PhotoPickActivity.optionsImage);
+        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatarFile(), imgUser);
         userImageSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,6 +255,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
                     String priview = rsm.getString("preview");
                     if (priview != null) {
                         //TODO 上传成功
+                        Toast.makeText(getApplicationContext(), "上传成功", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -274,7 +277,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
 
     private void uploadOtherInformation() {
         RequestParams params = new RequestParams();
-        params.put("uid", bundle.getInt("uid"));
+        params.put("uid", user.getUid());
         final String userName = txtinputUserName.getEditText().getText().toString();
         if (userName.equals("")) {
             txtinputUserName.setError("用户名不能为空");
@@ -336,7 +339,6 @@ public class PersonalCenterEditActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                System.out.println(new String(responseBody));
                 save.setProgress(-1);
             }
 
@@ -349,9 +351,9 @@ public class PersonalCenterEditActivity extends BaseActivity {
 
     private void getUserInformation() {
         onGetUserInformation();
-        txtinputUserName.getEditText().setText(User.getLoginUser(PersonalCenterEditActivity.this).getUserName());
+        txtinputUserName.getEditText().setText(user.getUserName());
         RequestParams params = new RequestParams();
-        params.put("uid", bundle.getInt("uid"));
+        params.put("uid", user.getUid());
         AsyncHttpWecnter.get(RelativeUrl.USER_INFO_GET_EDIT, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -400,7 +402,6 @@ public class PersonalCenterEditActivity extends BaseActivity {
     }
 
     private void updateUser(String userName) {
-        User user = User.getLoginUser(PersonalCenterEditActivity.this);
         user.setUserName(userName);
         user.save(PersonalCenterEditActivity.this);
     }
