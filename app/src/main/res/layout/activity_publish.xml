@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:flowlayout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,17 +29,18 @@
                     android:id="@+id/edt_title"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
-                    android:background="@drawable/rectangle"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="80dp"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/rectangle"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:paddingLeft="5dp" />
 
                 <TextView
                     android:id="@+id/txt_title"
                     android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:gravity="center"
                     android:text="标题:"
                     android:textColor="@color/text_color_grey"
@@ -61,46 +61,50 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/topic_save_buttton"
                     android:text="添加"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="10dp"
-                    />
+                    android:textColor="@color/white" />
+
                 <EditText
                     android:id="@+id/edt_topic"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rectangle"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
-                    android:layout_toLeftOf="@id/btn_add_topic"
                     android:layout_marginLeft="80dp"
                     android:layout_marginRight="5dp"
-                    />
-
-
-                <org.iflab.wecentermobileandroidrestructure.ui.FlowLayout
-                    android:id="@+id/flow_layout_topic"
-                    flowlayout:vertical_spacing="10dp"
-                    flowlayout:horizontal_spacing="10dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="10dp"
-                    android:padding="10dp"
+                    android:layout_toLeftOf="@id/btn_add_topic"
                     android:background="@drawable/rectangle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/edt_topic"/>
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:paddingLeft="5dp" />
+
+
+                <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:f="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/flow_layout_topic"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#fff"
+                    android:layout_below="@id/edt_topic"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:layout_alignLeft="@id/edt_topic"
+                    android:layout_alignRight="@id/edt_topic"
+                    f:paddingStart="10dp"
+                    f:paddingEnd="10dp"
+                    f:layoutDirection="ltr"
+                    f:weightDefault="1.0">
+
+                </org.apmem.tools.layouts.FlowLayout>
 
                 <TextView
                     android:id="@+id/txt_topic"
                     android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:gravity="center"
                     android:text="话题:"
                     android:textColor="@color/text_color_grey"
-                    android:textSize="16sp"
-                     />
+                    android:textSize="16sp" />
 
 
             </RelativeLayout>
@@ -115,13 +119,15 @@
                 <EditText
                     android:id="@+id/edt_description"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/rectangle"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
+                    android:layout_height="wrap_content"
+                    android:minLines="4"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="80dp"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/rectangle"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:paddingLeft="5dp" />
 
 
                 <TextView

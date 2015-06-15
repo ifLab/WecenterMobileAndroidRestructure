@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,11 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.AttachmentGridAdapter;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
-import org.iflab.wecentermobileandroidrestructure.ui.FlowLayout;
 
 import java.util.ArrayList;
 
@@ -71,8 +72,9 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                     Toast.makeText(PublishAnswerArticleActivity.this, "请输入话题", Toast.LENGTH_SHORT).show();
                 } else {
                     TextView button = new TextView(PublishAnswerArticleActivity.this);
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setText(toipcString);
-                    button.setBackgroundColor(getResources().getColor(R.color.primary));
+                    button.setBackground(getResources().getDrawable(R.drawable.public_topic));
                     button.setTextColor(Color.WHITE);
                     button.setPadding(10, 10, 10, 10);
                     topicFlowLayout.addView(button);
