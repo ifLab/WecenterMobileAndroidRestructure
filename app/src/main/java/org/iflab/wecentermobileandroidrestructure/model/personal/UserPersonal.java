@@ -1,5 +1,7 @@
 package org.iflab.wecentermobileandroidrestructure.model.personal;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -20,6 +22,26 @@ public class UserPersonal implements Serializable {
     private int article_count;
     private int has_focus;
     private String signature;
+
+    public UserPersonal(JSONObject rsm) {
+        try {
+            user_name = rsm.getString("user_name");
+            avatar_file = rsm.getString("avatar_file");
+            fans_count = rsm.getInt("fans_count");
+            friend_count = rsm.getInt("friend_count");
+            question_count = rsm.getInt("question_count");
+            answer_count = rsm.getInt("answer_count");
+            topic_focus_count = rsm.getInt("topic_focus_count");
+            agree_count = rsm.getInt("agree_count");
+            thanks_count = rsm.getInt("thanks_count");
+            answer_favorite_count = rsm.getInt("answer_favorite_count");
+            article_count = rsm.getInt("article_count");
+            has_focus = rsm.getInt("has_focus");
+            signature = rsm.getString("signature");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getUid() {
         return uid;

@@ -403,7 +403,7 @@ public class PersonalCenterEditActivity extends BaseActivity {
 
     private void updateUser(String userName) {
         user.setUserName(userName);
-        user.save(PersonalCenterEditActivity.this);
+        User.save(PersonalCenterEditActivity.this, user);
     }
 
     private void onGetUserInformation() {

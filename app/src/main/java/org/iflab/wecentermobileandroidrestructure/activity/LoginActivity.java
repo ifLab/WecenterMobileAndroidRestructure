@@ -93,14 +93,8 @@ public class LoginActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
-                    int uid = rsm.getInt("uid");
-                    String userName = rsm.getString("user_name");
-                    String avatarFile = rsm.getString("avatar_file");
-                    User user = new User();
-                    user.setUid(uid);
-                    user.setUserName(userName);
-                    user.setAvatarFile(avatarFile);
-                    user.save(getApplicationContext());
+                    User user = new User(rsm);
+                    User.save(getApplicationContext(), user);
                     startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();

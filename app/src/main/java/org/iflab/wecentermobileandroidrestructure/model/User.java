@@ -3,6 +3,8 @@ package org.iflab.wecentermobileandroidrestructure.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONObject;
+
 /**
  * Created by hcjcch on 15/5/18.
  */
@@ -40,12 +42,23 @@ public class User {
 
     }
 
-    public void save(Context context) {
+    public User(JSONObject rsm) {
+        try {
+            uid = rsm.getInt("uid");
+            userName = rsm.getString("user_name");
+            avatarFile = rsm.getString("avatar_file");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void save(Context context, User user) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("loginUser", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("uid", uid);
-        editor.putString("userName", userName);
-        editor.putString("avatarFile", avatarFile);
+        editor.putInt("uid", user.getUid());
+        editor.putString("userName", user.getUserName());
+        editor.putString("avatarFile", user.getAvatarFile());
         editor.apply();
     }
 

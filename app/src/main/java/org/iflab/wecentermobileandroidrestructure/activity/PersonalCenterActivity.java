@@ -6,24 +6,20 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.orhanobut.hawk.Hawk;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
-import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
-import org.iflab.wecentermobileandroidrestructure.tools.UserAcount;
+import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,7 +66,7 @@ public class PersonalCenterActivity extends BaseActivity {
         setViews();
         setToolBar();
         if (uid != -1) {
-            loadData(uid);
+            loadData();
         } else {
             //TODO 用户错误
         }
@@ -164,7 +160,7 @@ public class PersonalCenterActivity extends BaseActivity {
         return true;
     }
 
-    private void loadData(final int uid) {
+    private void loadData() {
         AsyncHttpWecnter.get(RelativeUrl.USER_INFO, getParams(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -174,21 +170,8 @@ public class PersonalCenterActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
-                    UserPersonal user = new UserPersonal();
-                    user.setUser_name(rsm.getString("user_name"));
-                    user.setAvatar_file(rsm.getString("avatar_file"));
-                    user.setFans_count(rsm.getInt("fans_count"));
-                    user.setFriend_count(rsm.getInt("friend_count"));
-                    user.setQuestion_count(rsm.getInt("question_count"));
-                    user.setAnswer_count(rsm.getInt("answer_count"));
-                    user.setTopic_focus_count(rsm.getInt("topic_focus_count"));
-                    user.setAgree_count(rsm.getInt("agree_count"));
-                    user.setThanks_count(rsm.getInt("thanks_count"));
-                    user.setAnswer_favorite_count(rsm.getInt("answer_favorite_count"));
-                    user.setArticle_count(rsm.getInt("article_count"));
-                    user.setHas_focus(rsm.getInt("has_focus"));
-                    user.setSignature(rsm.getString("signature"));
-                    UserAcount.saveUserCount(user);
+                    UserPersonal user = new UserPersonal(rsm);
+                    HawkControl.saveUserCount(user);
                     setData(user);
                 } catch (JSONException e) {
                     e.printStackTrace();
