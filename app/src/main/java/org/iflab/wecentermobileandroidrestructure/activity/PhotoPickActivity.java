@@ -139,10 +139,10 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
             if (!mNames.containsKey(name)) {
                 mNames.put(name, 1);
                 ImageInfo imageInfo = new ImageInfo(cursor.getString(1));
-                mData.put(name, imageInfo);
+                mData.put(name, imageInfo);//每个图片文件夹第一张图片信息
             } else {
                 int newCount = mNames.get(name) + 1;
-                mNames.put(name, newCount);
+                mNames.put(name, newCount);//每个图片文件夹的文件数
             }
         }
         ArrayList<ImageInfoExtra> mFolderData = new ArrayList<>();
@@ -150,9 +150,10 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
         if (cursor.moveToFirst()) {
             ImageInfo imageInfo = new ImageInfo(cursor.getString(1));
             int allImagesCount = cursor.getCount();
-            mFolderData.add(new ImageInfoExtra(allPhotos, imageInfo, allImagesCount));
+            mFolderData.add(new ImageInfoExtra(allPhotos, imageInfo, allImagesCount));//所有图片（文件夹）及其第一张图片
         }
 
+        //统计每个文件夹的图片数量及其第一张图片
         for (String item : mNames.keySet()) {
             ImageInfo info = mData.get(item);
             Integer count = mNames.get(item);

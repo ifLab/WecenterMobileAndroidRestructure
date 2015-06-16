@@ -32,7 +32,6 @@ public class FolderAdapter extends BaseAdapter {
         if (pos >= getCount()) {
             return;
         }
-
         mSelect = mFolderData.get(pos).getmName();
         notifyDataSetChanged();
     }

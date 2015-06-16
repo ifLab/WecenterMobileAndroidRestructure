@@ -18,6 +18,7 @@ import java.text.ParseException;
  * Created by hcjcch on 15/6/8.
  */
 public class Global {
+    //判断wifi是否连接
     public static boolean isWifiConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
@@ -28,6 +29,7 @@ public class Global {
         return false;
     }
 
+    //判断网络是否链接
     public static boolean isConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
@@ -38,6 +40,10 @@ public class Global {
             }
         }
         return false;
+    }
+
+    public static boolean isGif(String uri) {
+        return uri.toLowerCase().endsWith(".gif");
     }
 
     @SuppressLint("NewApi")
@@ -171,12 +177,14 @@ public class Global {
         return null;
     }
 
+    //日期转化
     public static String TimeStamp2Date(String timestampString, String formats) {
         Long timestamp = Long.parseLong(timestampString);
         String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
         return date;
     }
 
+    //日期转化
     public static long Date2TimeStamp(String date) {
         long time = 0;
         try {
@@ -186,5 +194,6 @@ public class Global {
         }
         return time;
     }
+
 
 }

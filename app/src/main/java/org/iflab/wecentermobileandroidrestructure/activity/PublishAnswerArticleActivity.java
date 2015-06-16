@@ -3,6 +3,7 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.loopj.android.http.RequestParams;
+
 import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.AttachmentGridAdapter;
+import org.iflab.wecentermobileandroidrestructure.common.NetWork;
+import org.iflab.wecentermobileandroidrestructure.common.PhotoOperate;
+import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
+import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
+import org.iflab.wecentermobileandroidrestructure.tools.Global;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
+import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -36,11 +48,18 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     private String toipcString;
     private Button addTopicButton;
     private ArrayList<TextView> topics = new ArrayList<>();
+    private static final String attach_access_key = MD5Transform.MD5(System.currentTimeMillis() + "");
+    private String publishId;
+    private PhotoOperate photoOperate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
+        photoOperate = new PhotoOperate(getApplicationContext());
+        Intent intent = getIntent();
+        publishId = "question";
         findViews();
         setViews();
     }
@@ -102,8 +121,48 @@ public class PublishAnswerArticleActivity extends BaseActivity {
             if (resultCode == Activity.RESULT_OK) {
                 ArrayList<ImageInfo> datas = (ArrayList<ImageInfo>) data.getSerializableExtra("data");
                 photos.addAll(datas);
+                for (ImageInfo imageInfo : datas) {
+                    Uri uri = Uri.parse(imageInfo.path);
+                    try {
+                        File out = photoOperate.scal(uri);
+                        System.out.println(out.length());
+                        RequestParams params = new RequestParams();
+                        params.put("id", publishId);
+                        params.put("attach_access_key", attach_access_key);
+                        params.put("qqfile", out);
+                        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                            @Override
+                            public void parseJson(JSONObject response) {
+
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
             attachmentGridAdapter.notifyDataSetChanged();
+//            RequestParams params = new RequestParams();
+//            params.put("id", publishId);
+//            params.put("attach_access_key", attach_access_key);
+//            for (int i = 0; i < photos.size(); i++) {
+//                System.out.println(Global.getPath(getApplicationContext(), Uri.parse(photos.get(i).path)));
+//                File file = new File(Global.getPath(getApplicationContext(), Uri.parse(photos.get(i).path)));
+//                System.out.println(file.length());
+//                try {
+//                    params.put("qqfile", file);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+//                    @Override
+//                    public void parseJson(JSONObject response) {
+//
+//                    }
+//                });
+//            }
         } else super.onActivityResult(requestCode, resultCode, data);
     }
+
 }

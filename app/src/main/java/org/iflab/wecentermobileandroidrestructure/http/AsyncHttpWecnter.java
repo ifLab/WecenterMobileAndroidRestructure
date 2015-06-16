@@ -4,10 +4,18 @@ package org.iflab.wecentermobileandroidrestructure.http;
  * Created by hcjcch on 15/5/17.
  */
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.iflab.wecentermobileandroidrestructure.common.NetWork;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by hcjcch on 2015/2/13.
@@ -17,6 +25,7 @@ import com.loopj.android.http.RequestParams;
 public class AsyncHttpWecnter {
     public static final String BASE_URL = "http://we.bistu.edu.cn/";
     public static AsyncHttpClient client = new AsyncHttpClient();
+
 
     /**
      * get方式
@@ -40,15 +49,77 @@ public class AsyncHttpWecnter {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public enum Request {
+        Get, Post
+    }
+
+    /**
+     * 再次封装
+     *
+     * @param context
+     * @param url
+     * @param params
+     * @param type
+     * @param netWork
+     */
+    public static void loadData(Context context, String url, RequestParams params, Request type, final NetWork netWork) {
+        JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                netWork.start();
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println("success  " + response);
+                try {
+                    int error = response.getInt("errno");
+                    if (error == -1) {
+                        if (response.getString("err") != null) {
+                            String err = response.getString("err");
+                        } else {
+                            //TODO error
+                        }
+                        return;
+                    }
+                    JSONObject rsm = response.getJSONObject("rsm");
+                    netWork.parseJson(rsm);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                System.out.println("失败" + responseString);
+                //TODO 访问失败
+                netWork.failure();
+            }
+
+            @Override
+            public void onFinish() {
+                netWork.finish();
+                super.onFinish();
+            }
+        };
+        switch (type) {
+            case Get:
+                client.get(getAbsoluteUrl(url), jsonHttpResponseHandler);
+                break;
+            case Post:
+                client.post(getAbsoluteUrl(url), jsonHttpResponseHandler);
+                break;
+        }
+    }
+
     /**
      * 获取网络资源的绝对路径，因为所有的资源路径，起始部分相同
      *
      * @param relativeUrl 相对路径
      * @return
      */
-
     private static String getAbsoluteUrl(String relativeUrl) {
-//        return relativeUrl;
         return BASE_URL + relativeUrl;
     }
 
