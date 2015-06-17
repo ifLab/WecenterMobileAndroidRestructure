@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import org.iflab.wecentermobileandroidrestructure.common.PhotoOperate;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
-import org.iflab.wecentermobileandroidrestructure.tools.Global;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
 import org.json.JSONObject;
@@ -91,7 +89,6 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                     Toast.makeText(PublishAnswerArticleActivity.this, "请输入话题", Toast.LENGTH_SHORT).show();
                 } else {
                     TextView button = new TextView(PublishAnswerArticleActivity.this);
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setText(toipcString);
                     button.setBackground(getResources().getDrawable(R.drawable.public_topic));
                     button.setTextColor(Color.WHITE);
@@ -125,17 +122,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                     Uri uri = Uri.parse(imageInfo.path);
                     try {
                         File out = photoOperate.scal(uri);
-                        System.out.println(out.length());
-                        RequestParams params = new RequestParams();
-                        params.put("id", publishId);
-                        params.put("attach_access_key", attach_access_key);
-                        params.put("qqfile", out);
-                        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
-                            @Override
-                            public void parseJson(JSONObject response) {
-
-                            }
-                        });
+                        uploadAttachment(out);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -143,26 +130,20 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                 }
             }
             attachmentGridAdapter.notifyDataSetChanged();
-//            RequestParams params = new RequestParams();
-//            params.put("id", publishId);
-//            params.put("attach_access_key", attach_access_key);
-//            for (int i = 0; i < photos.size(); i++) {
-//                System.out.println(Global.getPath(getApplicationContext(), Uri.parse(photos.get(i).path)));
-//                File file = new File(Global.getPath(getApplicationContext(), Uri.parse(photos.get(i).path)));
-//                System.out.println(file.length());
-//                try {
-//                    params.put("qqfile", file);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
-//                    @Override
-//                    public void parseJson(JSONObject response) {
-//
-//                    }
-//                });
-//            }
         } else super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void uploadAttachment(File attachment) throws FileNotFoundException {
+        RequestParams params = new RequestParams();
+        params.put("id", publishId);
+        params.put("attach_access_key", attach_access_key);
+        params.put("qqfile", attachment);
+        System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
+        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+            @Override
+            public void parseJson(JSONObject response) {
+
+            }
+        });
+    }
 }

@@ -105,10 +105,10 @@ public class AsyncHttpWecnter {
         };
         switch (type) {
             case Get:
-                client.get(getAbsoluteUrl(url), jsonHttpResponseHandler);
+                client.get(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
                 break;
             case Post:
-                client.post(getAbsoluteUrl(url), jsonHttpResponseHandler);
+                client.post(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
                 break;
         }
     }
