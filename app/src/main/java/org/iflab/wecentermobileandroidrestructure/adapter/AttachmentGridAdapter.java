@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
+import org.iflab.wecentermobileandroidrestructure.tools.Global;
 
 import java.util.ArrayList;
 
@@ -19,9 +20,9 @@ import java.util.ArrayList;
  */
 public class AttachmentGridAdapter extends BaseAdapter {
 
-    private ArrayList<ImageInfo> datas;
+    private ArrayList<PublishAnswerArticleActivity.PhotoData> datas;
 
-    public AttachmentGridAdapter(ArrayList<ImageInfo> datas) {
+    public AttachmentGridAdapter(ArrayList<PublishAnswerArticleActivity.PhotoData> datas) {
         this.datas = datas;
     }
 
@@ -54,7 +55,7 @@ public class AttachmentGridAdapter extends BaseAdapter {
         } else {
             image.setVisibility(View.VISIBLE);
             ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.displayImage(datas.get(position).path, image);
+            imageLoader.displayImage(datas.get(position).getUri().toString(), image);
         }
         return image;
     }

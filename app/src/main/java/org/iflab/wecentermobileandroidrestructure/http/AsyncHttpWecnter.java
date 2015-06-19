@@ -5,6 +5,7 @@ package org.iflab.wecentermobileandroidrestructure.http;
  */
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -62,7 +63,7 @@ public class AsyncHttpWecnter {
      * @param type
      * @param netWork
      */
-    public static void loadData(Context context, String url, RequestParams params, Request type, final NetWork netWork) {
+    public static void loadData(final Context context, String url, RequestParams params, Request type, final NetWork netWork) {
         JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -78,8 +79,10 @@ public class AsyncHttpWecnter {
                     if (error == -1) {
                         if (response.getString("err") != null) {
                             String err = response.getString("err");
+                            Toast.makeText(context, err, Toast.LENGTH_SHORT).show();
                         } else {
                             //TODO error
+                            Toast.makeText(context, "未知错误", Toast.LENGTH_SHORT).show();
                         }
                         return;
                     }
@@ -87,6 +90,7 @@ public class AsyncHttpWecnter {
                     netWork.parseJson(rsm);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(context, "数据错误", Toast.LENGTH_SHORT).show();
                 }
             }
 

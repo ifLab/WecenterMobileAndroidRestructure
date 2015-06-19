@@ -206,7 +206,6 @@ public class PersonalCenterEditActivity extends BaseActivity {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     String filePath = Global.getPath(this, fileCropUri);
-                    System.out.println(ImageInfo.pathAddPreFix(filePath));
                     ImageLoader.getInstance().displayImage(ImageInfo.pathAddPreFix(filePath), imgUser, PhotoPickActivity.optionsImage);
                     if (filePath == null) {
                         Toast.makeText(PersonalCenterEditActivity.this, "文件失剪裁败", Toast.LENGTH_SHORT).show();

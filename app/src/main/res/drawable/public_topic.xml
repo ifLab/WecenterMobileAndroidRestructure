@@ -10,5 +10,6 @@
         android:endColor="@color/primary_pressed"
         android:startColor="@color/primary_pressed" />
 
-    <stroke android:width="2dp" />
+    <stroke android:width="2dp"
+        android:color="#fff"/>
 </shape>
