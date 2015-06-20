@@ -35,6 +35,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
 import java.util.Vector;
 
 /**
@@ -44,6 +46,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     private AutoHeightGridView gridView;
     public static final int PHOTO_MAX_COUNT = 6;
     public static final int RESULT_REQUEST_PICK_PHOTO = 1;
+    public static final int RESULT_REQUEST_IMAGE = 2;
     public static final String EXTRA_MAX = "EXTRA_MAX";
     private AttachmentGridAdapter attachmentGridAdapter;
     private FlowLayout topicFlowLayout;
@@ -57,8 +60,9 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     private String publishId;
     private PhotoOperate photoOperate;
     private ArrayList<PhotoData> mData = new ArrayList<>();
-    private Vector<Integer> attachIds = new Vector<>();
+    private Vector<String> attachIds = new Vector<>();
     private Toolbar toolbar;
+    private Hashtable<String, String> hashtable = new Hashtable<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,15 @@ public class PublishAnswerArticleActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == mData.size()) {
                     startPhotoPickActivity();
+                } else {
+                    Intent intent = new Intent(PublishAnswerArticleActivity.this, PublishPhotoDetailActivity.class);
+                    ArrayList<String> arrayUri = new ArrayList<>();
+                    for (PhotoData item : mData) {
+                        arrayUri.add(item.uri.toString());
+                    }
+                    intent.putExtra("mArrayUri", arrayUri);
+                    intent.putExtra("mPagerPosition", position);
+                    startActivityForResult(intent, RESULT_REQUEST_IMAGE);
                 }
             }
         });
@@ -156,6 +169,21 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                 }
             }
             attachmentGridAdapter.notifyDataSetChanged();
+        } else if (requestCode == RESULT_REQUEST_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> delUris = data.getStringArrayListExtra("mDelUrls");
+                for (String item : delUris) {
+                    attachIds.remove(hashtable.get(item));
+                    hashtable.remove(item);
+                    for (int i = 0; i < mData.size(); ++i) {
+                        if (mData.get(i).uri.toString().equals(item)) {
+                            mData.remove(i);
+                        }
+                    }
+                }
+                attachmentGridAdapter.notifyDataSetChanged();
+            }
+
         } else super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -188,7 +216,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         }
     }
 
-    private void uploadAttachment(File attachment) throws FileNotFoundException {
+    private void uploadAttachment(final File attachment) throws FileNotFoundException {
         RequestParams params = new RequestParams();
         params.put("id", publishId);
         params.put("attach_access_key", attach_access_key);
@@ -199,7 +227,8 @@ public class PublishAnswerArticleActivity extends BaseActivity {
             public void parseJson(JSONObject response) {
                 try {
                     String attachid = response.getString("attach_id");
-                    attachIds.add(Integer.parseInt(attachid));
+                    attachIds.add(attachid);
+                    hashtable.put(Uri.fromFile(attachment).toString(), attachid);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -222,7 +251,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
             descriptionEditText.requestFocus();
             return;
         }
-        for (int i : attachIds) {
+        for (String i : attachIds) {
             description += "[attach]" + i + "[/attach]" + "\n";
         }
         params.put("question_detail", description);
