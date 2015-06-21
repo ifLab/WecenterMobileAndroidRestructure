@@ -36,6 +36,14 @@ public class PhotoDetailFragment extends BaseFragment {
         return fragment;
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
+        photoUri = bundle.getString("photoUri");
+        super.onCreate(savedInstanceState);
+    }
+
     public void setData(String uriString) {
         photoUri = uriString;
     }
@@ -58,8 +66,6 @@ public class PhotoDetailFragment extends BaseFragment {
         FrameLayout rootLayout = (FrameLayout) inflater.inflate(R.layout.fragment_photo_detail, container, false);
         photoView = (PhotoView) rootLayout.findViewById(R.id.photoview);
         loadFailed = (ImageView) rootLayout.findViewById(R.id.imageLoadFail);
-        Bundle bundle = getArguments();
-        photoUri = bundle.getString("photoUri");
         ImageLoader.getInstance().loadImage(photoUri, optionsImage, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {

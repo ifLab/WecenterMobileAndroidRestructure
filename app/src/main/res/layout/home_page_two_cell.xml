@@ -17,14 +17,14 @@
             android:id="@+id/rel_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginLeft="@dimen/home_page_margin_medium"
-                android:layout_marginRight="@dimen/home_page_margin_medium"
                 android:src="@mipmap/user_place"
                 app:border_color="#50000000"
                 app:border_width="0.5dp" />

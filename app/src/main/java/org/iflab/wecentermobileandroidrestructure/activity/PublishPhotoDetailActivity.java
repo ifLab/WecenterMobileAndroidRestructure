@@ -3,7 +3,6 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +30,7 @@ public class PublishPhotoDetailActivity extends BaseActivity {
     private Toolbar toolbar;
     private ArrayList<String> mDelUrls = new ArrayList<>();
     private ImagePagerAdapter adapter;
+    private final String SAVE_INSTANCE_INDEX = "SAVE_INSTANCE_INDEX";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,18 @@ public class PublishPhotoDetailActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SAVE_INSTANCE_INDEX, pager.getCurrentItem());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        position = savedInstanceState.getInt(SAVE_INSTANCE_INDEX, position);
+    }
+
     class ImagePagerAdapter extends FragmentPagerAdapter {
 
         public ImagePagerAdapter(FragmentManager fm) {
@@ -76,6 +88,7 @@ public class PublishPhotoDetailActivity extends BaseActivity {
             fragment.setData(arrUri.get(position));
             return fragment;
         }
+
         @Override
         public int getCount() {
             return arrUri.size();
