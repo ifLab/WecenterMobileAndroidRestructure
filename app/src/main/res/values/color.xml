@@ -12,5 +12,5 @@
     <color name="white">#ffffff</color>
 
     <color name="text_color_grey">#666666</color>
-
+    <color name="background_tab_pressed">#fff</color>
 </resources>

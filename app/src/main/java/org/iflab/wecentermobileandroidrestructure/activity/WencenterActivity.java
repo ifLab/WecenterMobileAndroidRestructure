@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.fragment.FoundFrgment;
 import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
 import org.iflab.wecentermobileandroidrestructure.model.User;
 
@@ -26,6 +28,7 @@ public class WencenterActivity extends BaseActivity {
     private NavigationView navigationView;
     private RelativeLayout nav_header;
     private HomePageFragment homePageFragment;
+    private FoundFrgment foundFrgment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +120,11 @@ public class WencenterActivity extends BaseActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
                                 setToolbarTitle("主页");
+                                navigationDrawerItemSelected(0);
                                 break;
                             case R.id.nav_messages:
                                 setToolbarTitle("发现");
+                                navigationDrawerItemSelected(1);
                                 break;
                         }
                         return true;
@@ -129,7 +134,19 @@ public class WencenterActivity extends BaseActivity {
     }
 
     private void navigationDrawerItemSelected(int id) {
-        homePageFragment = HomePageFragment.newInstances();
-        getSupportFragmentManager().beginTransaction().replace(R.id.coo_homepage_content, homePageFragment).commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch (id) {
+            case 0:
+                if (homePageFragment == null) homePageFragment = HomePageFragment.newInstances();
+                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, homePageFragment).commit();
+                break;
+            case 1:
+//                if (foundFrgment == null){
+//                    foundFrgment = FoundFrgment.newInstances();
+//                }
+                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, new FoundFrgment()).commit();
+                break;
+        }
     }
+
 }

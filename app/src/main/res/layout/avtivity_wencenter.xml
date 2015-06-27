@@ -17,12 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.design.widget.CoordinatorLayout
+        <RelativeLayout
             android:id="@+id/coo_homepage_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar">
-        </android.support.design.widget.CoordinatorLayout>
+        </RelativeLayout>
     </RelativeLayout>
     <!--侧滑菜单-->
     <android.support.design.widget.NavigationView
