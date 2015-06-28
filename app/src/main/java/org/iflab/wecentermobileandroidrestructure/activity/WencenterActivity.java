@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,8 +28,6 @@ public class WencenterActivity extends BaseActivity {
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
     private RelativeLayout nav_header;
-    private HomePageFragment homePageFragment;
-    private FoundFrgment foundFrgment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +114,8 @@ public class WencenterActivity extends BaseActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
+                        menuItem.setChecked(true);
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
                                 setToolbarTitle("主页");
@@ -135,16 +134,15 @@ public class WencenterActivity extends BaseActivity {
 
     private void navigationDrawerItemSelected(int id) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
         switch (id) {
             case 0:
-                if (homePageFragment == null) homePageFragment = HomePageFragment.newInstances();
-                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, homePageFragment).commit();
+                fragment = HomePageFragment.newInstances();
+                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                 break;
             case 1:
-//                if (foundFrgment == null){
-//                    foundFrgment = FoundFrgment.newInstances();
-//                }
-                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, new FoundFrgment()).commit();
+                fragment = FoundFrgment.newInstances();
+                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                 break;
         }
     }

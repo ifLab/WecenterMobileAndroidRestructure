@@ -3,11 +3,11 @@ package org.iflab.wecentermobileandroidrestructure.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -82,7 +82,7 @@ public class FoundFrgment extends BaseFragment {
         tabs.setTabBackground(0);
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    class Adapter extends FragmentStatePagerAdapter {
 
         public Adapter(FragmentManager fm) {
             super(fm);
@@ -97,6 +97,11 @@ public class FoundFrgment extends BaseFragment {
         @Override
         public int getCount() {
             return 4;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return PagerAdapter.POSITION_NONE;
         }
 
         @Override

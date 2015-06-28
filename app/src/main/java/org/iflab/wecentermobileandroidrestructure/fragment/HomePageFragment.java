@@ -4,27 +4,22 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.melnykov.fab.FloatingActionButton;
-import com.orhanobut.logger.Logger;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.PublishAnswerArticleActivity;
-import org.iflab.wecentermobileandroidrestructure.adapter.HomePageAdapter;
 import org.iflab.wecentermobileandroidrestructure.adapter.HomePageRecycleAdapter;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
@@ -55,12 +50,21 @@ public class HomePageFragment extends BaseFragment {
     private boolean loadMore = true;
     private LinearLayoutManager linearLayoutManager;
     private boolean refresh = false;
+    private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
 
     public static HomePageFragment newInstances() {
         HomePageFragment fragment = new HomePageFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (endlessRecyclerOnScrollListener != null) {
+            endlessRecyclerOnScrollListener.reset();
+        }
     }
 
     @Nullable
@@ -77,6 +81,7 @@ public class HomePageFragment extends BaseFragment {
 //        Logger.d(homePage.toString(), homePage.toString());
         return relativeLayout;
     }
+
 
     private void findViews(View view) {
         listHomepage = (RecyclerView) view.findViewById(R.id.list_homepage);
@@ -108,14 +113,15 @@ public class HomePageFragment extends BaseFragment {
                 startActivity(new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class));
             }
         });
-        listHomepage.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+        endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 if (loadMore) {
                     loadData();
                 }
             }
-        });
+        };
+        listHomepage.addOnScrollListener(endlessRecyclerOnScrollListener);
     }
 
     private void loadData() {
@@ -240,6 +246,6 @@ public class HomePageFragment extends BaseFragment {
         page = 0;
         refresh = true;
         loadMore = true;
-        EndlessRecyclerOnScrollListener.reset();
+        endlessRecyclerOnScrollListener.reset();
     }
 }
