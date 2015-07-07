@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
 import net.qiujuer.genius.app.BlurKit;
