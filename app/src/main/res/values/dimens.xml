@@ -5,6 +5,7 @@
     <dimen name="avatar_size_small">28.0dip</dimen>
     <dimen name="home_page_maxheight_one_cell">50dp</dimen>
     <dimen name="home_page_maxheight_two_cell">75dp</dimen>
+    <dimen name="found_answer">85dp</dimen>
     <dimen name="home_page_margin_small">5dp</dimen>
     <dimen name="home_page_margin_medium">10dp</dimen>
 </resources>
