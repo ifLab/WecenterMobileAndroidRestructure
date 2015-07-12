@@ -40,5 +40,6 @@ dependencies {
     compile 'org.apmem.tools:layouts:1.9@aar'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.google.code.gson:gson:2.3'
+    compile 'com.marshalchen.ultimaterecyclerview:library:0.3.9'
     compile files('libs/volley.jar')
 }

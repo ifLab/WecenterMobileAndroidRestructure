@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rel_top"
-            android:minHeight="@dimen/found_answer">
+            android:minHeight="@dimen/home_page_maxheight_two_cell">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image_answer"
@@ -153,8 +153,8 @@
                     android:layout_marginTop="@dimen/home_page_margin_medium"
                     android:layout_marginRight="20dp"
                     android:layout_below="@id/txt_cell_type_answer"
-                    android:text="诶嘿ion剖腹翟敏or多SOHOiOS呢POS诶嘿ion剖腹翟敏or多SOHOiOS呢POS诶嘿ion剖腹翟敏or多SOHOiOS呢POS您"
-                    android:maxLines="3"
+                    android:text="testtetstetstetststststttesttetstetstetststststttesttetstetstetststststttesttetstetstetststststttesttetstetstetststststt"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:layout_marginBottom="@dimen/home_page_margin_medium"/>
             </RelativeLayout>

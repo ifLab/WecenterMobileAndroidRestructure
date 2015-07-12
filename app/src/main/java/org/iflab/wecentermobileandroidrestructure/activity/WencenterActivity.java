@@ -35,24 +35,23 @@ public class WencenterActivity extends BaseActivity {
         setContentView(R.layout.avtivity_wencenter);
         findViews();
         setToolbar();
-        //创建返回键，并实现打开关/闭监听
         drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.action_settings, R.string.action_settings) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-//                mAnimationDrawable.stop();
+
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-//                mAnimationDrawable.start();
+
             }
         };
         drawerToggle.syncState();
         mDrawerLayout.setDrawerListener(drawerToggle);
         setupDrawerContent(navigationView);
-        navigationDrawerItemSelected(0);
+//        navigationDrawerItemSelected(0);
     }
 
     private void setToolbar() {
@@ -114,25 +113,22 @@ public class WencenterActivity extends BaseActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        mDrawerLayout.closeDrawers();
-                        menuItem.setChecked(true);
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
                                 setToolbarTitle("主页");
-                                navigationDrawerItemSelected(0);
+                                navigationDrawerItemSelected(menuItem, 0);
                                 break;
                             case R.id.nav_messages:
                                 setToolbarTitle("发现");
-                                navigationDrawerItemSelected(1);
+                                navigationDrawerItemSelected(menuItem, 1);
                                 break;
                         }
                         return true;
                     }
                 });
-
     }
 
-    private void navigationDrawerItemSelected(int id) {
+    private void navigationDrawerItemSelected(MenuItem menuItem, int id) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
         switch (id) {
@@ -145,6 +141,8 @@ public class WencenterActivity extends BaseActivity {
                 fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                 break;
         }
+        menuItem.setChecked(true);
+        mDrawerLayout.closeDrawers();
     }
 
 }
