@@ -19,7 +19,7 @@
             android:minHeight="@dimen/home_page_maxheight_two_cell">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
+                android:id="@+id/image_profile"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_centerVertical="true"
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/txt_cell_type_question_or_article"
-                android:layout_toRightOf="@id/profile_image"
+                android:layout_toRightOf="@id/image_profile"
                 android:minHeight="@dimen/home_page_maxheight_two_cell">
 
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/rel"
                 android:layout_alignTop="@id/rel"
-                android:layout_toRightOf="@id/profile_image"
+                android:layout_toRightOf="@id/image_profile"
                 android:background="#50000000"
                 android:minHeight="@dimen/home_page_maxheight_one_cell" />
             <TextView

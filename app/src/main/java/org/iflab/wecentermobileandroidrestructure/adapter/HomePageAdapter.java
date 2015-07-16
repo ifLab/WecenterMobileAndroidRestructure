@@ -68,7 +68,7 @@ public class HomePageAdapter extends BaseAdapter {
                 if (convertView == null) {
                     viewHolderTwoCell = new ViewHolderTwoCell();
                     convertView = LayoutInflater.from(context).inflate(R.layout.home_page_two_cell, parent, false);
-                    viewHolderTwoCell.userProfile = (ImageView) convertView.findViewById(R.id.profile_image);
+                    viewHolderTwoCell.userProfile = (ImageView) convertView.findViewById(R.id.image_profile);
                     viewHolderTwoCell.userName = (TextView) convertView.findViewById(R.id.txt_user_name);
                     viewHolderTwoCell.userAction = (TextView) convertView.findViewById(R.id.txt_user_action);
                     viewHolderTwoCell.userActionContent = (TextView) convertView.findViewById(R.id.txt_user_action_content);
@@ -98,7 +98,7 @@ public class HomePageAdapter extends BaseAdapter {
                 if (convertView == null) {
                     viewHolderOneCell = new ViewHolderTwoCell();
                     convertView = LayoutInflater.from(context).inflate(R.layout.home_page_one_cell, parent, false);
-                    viewHolderOneCell.userProfile = (ImageView) convertView.findViewById(R.id.profile_image);
+                    viewHolderOneCell.userProfile = (ImageView) convertView.findViewById(R.id.image_profile);
                     viewHolderOneCell.userName = (TextView) convertView.findViewById(R.id.txt_user_name);
                     viewHolderOneCell.userAction = (TextView) convertView.findViewById(R.id.txt_user_action);
                     viewHolderOneCell.userActionContent = (TextView) convertView.findViewById(R.id.txt_user_action_content);

@@ -50,7 +50,7 @@ public class FoundAdapter extends RecyclerView.Adapter {
 
         public FoundHolder(View itemView) {
             super(itemView);
-            profile_image = (ImageView) itemView.findViewById(R.id.profile_image);
+            profile_image = (ImageView) itemView.findViewById(R.id.image_profile);
             txt_user_name = (TextView) itemView.findViewById(R.id.txt_user_name);
             txt_user_action_content = (TextView) itemView.findViewById(R.id.txt_user_action_content);
             txt_cell_type_question_or_article = (TextView) itemView.findViewById(R.id.txt_cell_type_question_or_article);

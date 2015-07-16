@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.model.homepage;
 
+import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.litepal.crud.DataSupport;
 
 /**

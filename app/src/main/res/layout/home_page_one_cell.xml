@@ -13,7 +13,7 @@
         android:background="@drawable/rectangle"
         android:minHeight="@dimen/home_page_maxheight_one_cell">
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
+            android:id="@+id/image_profile"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_centerVertical="true"
@@ -27,7 +27,7 @@
             android:id="@+id/rel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/profile_image"
+            android:layout_toRightOf="@id/image_profile"
             android:minHeight="@dimen/home_page_maxheight_one_cell">
 
             <RelativeLayout
@@ -78,7 +78,7 @@
 
 
         <TextView
-            android:layout_toRightOf="@id/profile_image"
+            android:layout_toRightOf="@id/image_profile"
             android:layout_width="0.5dp"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/home_page_maxheight_one_cell"

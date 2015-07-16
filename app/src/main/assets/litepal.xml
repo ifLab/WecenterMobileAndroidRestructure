@@ -19,7 +19,7 @@
         <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.QuestionInfo">
 
         </mapping>
-        <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.ArticleInfo">
+        <mapping class="org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo">
 
         </mapping>
         <mapping class="org.iflab.wecentermobileandroidrestructure.model.homepage.AnswerInfo">

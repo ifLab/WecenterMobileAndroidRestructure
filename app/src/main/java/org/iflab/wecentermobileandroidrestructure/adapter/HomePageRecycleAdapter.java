@@ -119,7 +119,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
 
         public HomePageTwoCellHolder(View itemView) {
             super(itemView);
-            userProfile = (ImageView) itemView.findViewById(R.id.profile_image);
+            userProfile = (ImageView) itemView.findViewById(R.id.image_profile);
             userName = (TextView) itemView.findViewById(R.id.txt_user_name);
             userAction = (TextView) itemView.findViewById(R.id.txt_user_action);
             userActionContent = (TextView) itemView.findViewById(R.id.txt_user_action_content);
@@ -137,7 +137,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
 
         public HomePageOneCellHolder(View itemView) {
             super(itemView);
-            userProfile = (ImageView) itemView.findViewById(R.id.profile_image);
+            userProfile = (ImageView) itemView.findViewById(R.id.image_profile);
             userName = (TextView) itemView.findViewById(R.id.txt_user_name);
             userAction = (TextView) itemView.findViewById(R.id.txt_user_action);
             userActionContent = (TextView) itemView.findViewById(R.id.txt_user_action_content);

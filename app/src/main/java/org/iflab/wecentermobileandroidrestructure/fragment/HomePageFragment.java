@@ -25,7 +25,7 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScrollListener;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.AnswerInfo;
-import org.iflab.wecentermobileandroidrestructure.model.homepage.ArticleInfo;
+import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.QuestionInfo;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.UserInfo;
