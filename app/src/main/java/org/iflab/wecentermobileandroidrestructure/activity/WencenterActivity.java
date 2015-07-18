@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -122,20 +123,25 @@ public class WencenterActivity extends BaseActivity {
         });
     }
 
-    private void navigationDrawerItemSelected(int id) {
+    private void navigationDrawerItemSelected(final int id) {
         mDrawerLayout.closeDrawer(rel_nav);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment;
-        switch (id) {
-            case 0:
-                fragment = HomePageFragment.newInstances();
-                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
-                break;
-            case 1:
-                fragment = FoundFrgment.newInstances();
-                fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
-                break;
-        }
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                Fragment fragment;
+                switch (id) {
+                    case 0:
+                        fragment = HomePageFragment.newInstances();
+                        fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
+                        break;
+                    case 1:
+                        fragment = FoundFrgment.newInstances();
+                        fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
+                        break;
+                }
+            }
+        },300);
     }
 
     class NavAdapter extends BaseAdapter {
