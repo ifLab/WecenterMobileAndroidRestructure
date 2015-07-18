@@ -1,6 +1,7 @@
 package org.iflab.wecentermobileandroidrestructure.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
 
 import java.util.List;
@@ -86,6 +88,13 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("发布了文章");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getArticleTitle());
+                    ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, ArticleActivity.class);
+                            mContext.startActivity(intent);
+                        }
+                    });
                     break;
                 case 502:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
@@ -108,7 +117,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
         return homePages.size();
     }
 
-    public static class HomePageTwoCellHolder extends RecyclerView.ViewHolder {
+    public class HomePageTwoCellHolder extends RecyclerView.ViewHolder {
 
         ImageView userProfile;
         TextView userName;
@@ -128,7 +137,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public static class HomePageOneCellHolder extends RecyclerView.ViewHolder {
+    public class HomePageOneCellHolder extends RecyclerView.ViewHolder {
 
         ImageView userProfile;
         TextView userName;

@@ -90,7 +90,7 @@ public class HomePageFragment extends BaseFragment {
     }
 
     private void setViews() {
-        homePageAdapter = new HomePageRecycleAdapter(getActivity().getApplicationContext(), homePages);
+        homePageAdapter = new HomePageRecycleAdapter(getActivity(), homePages);
         linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         listHomepage.setLayoutManager(linearLayoutManager);
         listHomepage.setAdapter(homePageAdapter);

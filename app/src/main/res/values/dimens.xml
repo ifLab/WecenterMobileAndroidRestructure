@@ -8,4 +8,5 @@
     <dimen name="found_answer">85dp</dimen>
     <dimen name="home_page_margin_small">5dp</dimen>
     <dimen name="home_page_margin_medium">10dp</dimen>
+    <dimen name="item_homepage_nav_image_left">16dp</dimen>
 </resources>

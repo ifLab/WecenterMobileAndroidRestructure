@@ -136,7 +136,7 @@ public class ArticleActivity extends BaseActivity {
                 conetntTextView.setText(artleInfo.getMessage());
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
-                votesTextView.setText(artleInfo.getVotes());
+                votesTextView.setText(artleInfo.getVotes()+"");
             }
 
             @Override
