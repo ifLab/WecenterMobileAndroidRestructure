@@ -1,36 +1,28 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
 import android.graphics.Color;
-import android.media.Image;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
-import org.iflab.wecentermobileandroidrestructure.model.article.ArticleRSM;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,7 +32,7 @@ public class ArticleActivity extends BaseActivity {
     SwipeRefreshLayout refreshLayout;
     CircleImageView circleImageView;
     TextView usernameTextView;
-    TextView conetntTextView;
+    WebView contentWebView;
     TextView votesTextView;
     ImageButton shareBtn;
     ImageButton commentBtn;
@@ -67,7 +59,7 @@ public class ArticleActivity extends BaseActivity {
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipyrefreshlayout);
         circleImageView = (CircleImageView)findViewById(R.id.image_profile);
         usernameTextView = (TextView)findViewById(R.id.txt_user_name);
-        conetntTextView = (TextView)findViewById(R.id.txt_article_content);
+        contentWebView = (WebView)findViewById(R.id.webv_content);
         votesTextView = (TextView)findViewById(R.id.txt_votes);
         shareBtn = (ImageButton) findViewById(R.id.btn_share);
         commentBtn = (ImageButton)findViewById(R.id.btn_comment);
@@ -83,6 +75,7 @@ public class ArticleActivity extends BaseActivity {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
 
             }
         });
@@ -117,34 +110,26 @@ public class ArticleActivity extends BaseActivity {
     }
 
     private void loadData() {
-        AsyncHttpWecnter.get(RelativeUrl.ARTICLE_INFO, setParams(), new AsyncHttpResponseHandler() {
+        AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_INFO, setParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             ArticleInfo artleInfo;
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Gson gson = new Gson();
 
+            @Override
+            public void parseJson(JSONObject response) {
+                Gson gson = new Gson();
                 try {
-                    JSONObject obj = new JSONObject(new String(responseBody));
-//                    Log.v("111",obj.getString("rsm"));
-                    artleInfo =  gson.fromJson(new JSONObject(obj.getString("rsm")).getString("article_info"), ArticleInfo.class);
+                    artleInfo = gson.fromJson(response.getString("article_info"), ArticleInfo.class);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                Log.v("aaa",artleInfo.toString());
 
                 usernameTextView.setText(artleInfo.getUser_name());
-                conetntTextView.setText(artleInfo.getMessage());
+                contentWebView.loadDataWithBaseURL("about:blank", artleInfo.getMessage(), "text/html", "utf-8", null);
+                contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
-                votesTextView.setText(artleInfo.getVotes());
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                votesTextView.setText(artleInfo.getVotes() + "");
             }
         });
-
 
     }
 

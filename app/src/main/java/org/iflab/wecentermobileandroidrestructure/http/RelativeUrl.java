@@ -13,5 +13,7 @@ public class RelativeUrl {
     public static String USER_INFO_GET_EDIT = "api/profile.php";//用户信息修改前的获取信息
     public static String ATTACHMENT_UPLOAD = "?/api/publish/attach_upload/";//上传附件
     public static String UPLOAD_QUESTION = "?/api/publish/publish_question/";//上传问题
-    public static String ARTICLE_INFO = "?/api/article/article/"; //首页
+    public static String ARTICLE_INFO = "?/api/article/article/"; //文章
+    public static String QUESTION_INFO = "?/api/question/question/";//问题
+    public static String QUESTION_FOUCS = "?/question/ajax/focus/";//关注问题
 }

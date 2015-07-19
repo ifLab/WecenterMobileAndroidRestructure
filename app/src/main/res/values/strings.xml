@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_question_detail">QuestionDetailActivity</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="title_activity_topics">TopicsActivity</string>
 
 </resources>
