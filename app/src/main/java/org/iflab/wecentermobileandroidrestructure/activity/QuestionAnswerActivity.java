@@ -1,14 +1,20 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -19,60 +25,68 @@ import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
-import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
-import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
+import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
+import org.iflab.wecentermobileandroidrestructure.tools.Global;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ArticleActivity extends BaseActivity {
+public class QuestionAnswerActivity extends BaseActivity implements View.OnClickListener{
 
     Toolbar toolbar;
     SwipeRefreshLayout refreshLayout;
     CircleImageView circleImageView;
-    TextView userNameTextView;
+    TextView usernameTextView;
     WebView contentWebView;
     TextView votesTextView;
     TextView signatureTextView;
+    TextView addTimeTextView;
     ImageButton shareBtn;
     ImageButton commentBtn;
     CheckBox likeCheckBox;
     CheckBox dislikeCheckBox;
-    int articleID;
+    RelativeLayout topRel;
+    int answerID;
+    String questionTitle;
+    int uid = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        articleID = getIntent().getIntExtra("article_id",1);
+        answerID = getIntent().getIntExtra("answer_id",1);
+        questionTitle = getIntent().getStringExtra("question_title");
+
         findViews();
         setViews();
         setToolBars();
         setListenter();
         loadData();
+
     }
-
-
 
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipyrefreshlayout);
         circleImageView = (CircleImageView)findViewById(R.id.image_profile);
-        userNameTextView = (TextView)findViewById(R.id.txt_user_name);
+        usernameTextView = (TextView)findViewById(R.id.txt_user_name);
         contentWebView = (WebView)findViewById(R.id.webv_content);
         votesTextView = (TextView)findViewById(R.id.txt_votes);
         signatureTextView = (TextView)findViewById(R.id.txt_user_signature);
+        addTimeTextView = (TextView)findViewById(R.id.txt_add_time);
         shareBtn = (ImageButton) findViewById(R.id.btn_share);
         commentBtn = (ImageButton)findViewById(R.id.btn_comment);
         likeCheckBox = (CheckBox)findViewById(R.id.check_like);
         dislikeCheckBox = (CheckBox)findViewById(R.id.check_dislike);
+        topRel = (RelativeLayout)findViewById(R.id.rel_top);
     }
 
     private void setViews() {
-        refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
+        refreshLayout.setEnabled(false);
     }
 
     private void setListenter() {
@@ -90,6 +104,8 @@ public class ArticleActivity extends BaseActivity {
 
             }
         });
+
+        topRel.setOnClickListener(this);
     }
 
     public void gotoShare(View view){
@@ -101,7 +117,7 @@ public class ArticleActivity extends BaseActivity {
     }
 
     private void setToolBars() {
-        toolbar.setTitle("文章");//设置Toolbar标题
+        toolbar.setTitle(questionTitle);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -114,25 +130,25 @@ public class ArticleActivity extends BaseActivity {
     }
 
     private void loadData() {
-        AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_INFO, setParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
-            ArticleInfo artleInfo;
+        AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.QUESTION_ANSWER_INFO, setParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
+            AnswerInfo answerInfo;
 
             @Override
             public void parseJson(JSONObject response) {
                 Gson gson = new Gson();
-                try {
-                    artleInfo = gson.fromJson(response.getString("article_info"), ArticleInfo.class);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-                userNameTextView.setText(artleInfo.getUser_name());
-                contentWebView.loadDataWithBaseURL("about:blank", artleInfo.getMessage(), "text/html", "utf-8", null);
-                signatureTextView.setText(artleInfo.getSignature());
+                answerInfo = gson.fromJson(response.toString(), AnswerInfo.class);
+                signatureTextView.setText(answerInfo.getSignature());
+                usernameTextView.setText(answerInfo.getUser_name());
+                contentWebView.loadDataWithBaseURL("about:blank", answerInfo.getAnswer_content(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
-                ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                toolbar.setTitle(artleInfo.getArticleTitle());
-                votesTextView.setText(artleInfo.getVotes() + "");
+                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
+                votesTextView.setText(answerInfo.getVote_value() + "");
+
+                addTimeTextView.setVisibility(View.VISIBLE);
+                addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
+
+                uid = answerInfo.getUid();
             }
         });
 
@@ -140,12 +156,24 @@ public class ArticleActivity extends BaseActivity {
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
-//        params.put("id",articleID);
-        params.put("id", 1);
+        params.put("id", answerID);
         return params;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rel_top:
+                if(uid != -1) {
+                    Intent intent = new Intent(QuestionAnswerActivity.this, PersonalCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("uid", uid);
+                    bundle.putBoolean("isOwner", User.getLoginUser(QuestionAnswerActivity.this).getUid() == uid);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
+                break;
 
-
-
+        }
+    }
 }

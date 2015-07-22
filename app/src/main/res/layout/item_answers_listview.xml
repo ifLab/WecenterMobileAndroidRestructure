@@ -32,10 +32,12 @@
         android:layout_marginTop="5dp" />
 
     <RelativeLayout
-        android:id="@+id/rel"
+        android:id="@+id/rel_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/image_profile"
+        android:clickable="true"
+        android:background="@drawable/question_layout_selector"
         android:minHeight="@dimen/home_page_maxheight_two_cell">
 
 
@@ -81,10 +83,5 @@
         android:layout_toRightOf="@id/image_profile"
         android:background="#50000000"
         android:minHeight="@dimen/home_page_maxheight_one_cell" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@id/line2"
-        android:background="#50000000"/>
 
 </RelativeLayout>

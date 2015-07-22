@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
@@ -28,9 +29,12 @@ import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
+import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionTopics;
+import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
+import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,15 +56,21 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     ImageView userImageView;
     Button foucsBtn;
     FlowLayout topicFlowLayout;
+    RelativeLayout addAnswerRel;
+    RelativeLayout topRel;
+
     List<AnswerInfo> answersList = new ArrayList();
     List<QuestionTopics> questionsList;
     AnswerAdapter answerAdapter;
     int question_id;
+    int has_foucs;
+    int uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
+        uid = getIntent().getIntExtra("uid",-1);
         findViews();
         findHeaderView();
         setViews();
@@ -84,12 +94,16 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         bookMarkTextView = (TextView)headerView.findViewById(R.id.txt_bookmark);
         focusTextView = (TextView)headerView.findViewById(R.id.txt_focus);
         foucsBtn = (Button)headerView.findViewById(R.id.btn_foucs);
+        addAnswerRel = (RelativeLayout)headerView.findViewById(R.id.rel_add_answer);
+        topRel = (RelativeLayout)headerView.findViewById(R.id.rel_top);
     }
 
     private void setViews() {
-
         listView.addHeaderView(headerView);
-
+        foucsBtn.setOnClickListener(this);
+        topicFlowLayout.setOnClickListener(this);
+        addAnswerRel.setOnClickListener(this);
+        topRel.setOnClickListener(this);
     }
 
     private void setToolBars() {
@@ -137,7 +151,13 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_FOUCS, setFoucsParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
-
+                // update button UI
+                if(has_foucs == 0){
+                    has_foucs = 1;
+                }else if(has_foucs == 1){
+                    has_foucs = 0;
+                }
+                updateFoucsBtnUI(has_foucs);
             }
         });
     }
@@ -165,7 +185,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                         answersList.add(answerInfo);
                         Log.v("answerInfo", answerInfo.toString());
                     }
-                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this,answersList);
+                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this,answersList,questionInfo.getQuestion_content());
                     listView.setAdapter(answerAdapter);
 
                     //QuestionTopics
@@ -180,7 +200,8 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 }
 
                 question_id = questionInfo.getQuestion_id();
-                updateFoucsBtnUI(questionInfo.getHas_focus());
+                has_foucs = questionInfo.getHas_focus();
+                updateFoucsBtnUI(has_foucs);
 
                 contentWebView.loadDataWithBaseURL("about:blank", questionInfo.getQuestion_detail(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
@@ -192,6 +213,18 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     addFlowTopics(q.getTopic_title());
                 }
 
+            }
+        });
+
+        // load user data
+        AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.USER_INFO,setUserParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
+            @Override
+            public void parseJson(JSONObject response) {
+                UserPersonal user = new UserPersonal(response);
+                HawkControl.saveUserCount(user);
+
+                userNameTextView.setText(user.getUser_name());
+                ImageLoader.getInstance().displayImage(user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
             }
         });
     }
@@ -227,6 +260,12 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         RequestParams params = new RequestParams();
 //        params.put("id",articleID);
         params.put("question_id", question_id);
+        return params;
+    }
+
+    private RequestParams setUserParams(){
+        RequestParams params = new RequestParams();
+        params.put("uid", uid);
         return params;
     }
 

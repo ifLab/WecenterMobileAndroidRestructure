@@ -12,7 +12,16 @@ public class AnswerInfo {
     String user_name;
     String avatar_file;
     String signature;
+    Long add_time;
     int vote_value;
+
+    public Long getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(Long add_time) {
+        this.add_time = add_time;
+    }
 
     public int getAnswer_id() {
         return answer_id;

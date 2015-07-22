@@ -16,6 +16,9 @@
         android:layout_above="@+id/linearLayout"
         android:layout_below="@+id/toolbar"
         >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <RelativeLayout
             android:id="@+id/rel_user"
             android:layout_width="match_parent"
@@ -25,6 +28,7 @@
                 android:id="@+id/rel_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:background="@drawable/question_layout_selector"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -53,7 +57,7 @@
                     android:layout_alignParentTop="true" />
 
                 <TextView
-                    android:id="@+id/user_desc"
+                    android:id="@+id/txt_user_signature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="user_desc"
@@ -68,10 +72,21 @@
             <WebView
                 android:id="@+id/webv_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/rel_top"/>
 
+            <TextView
+                android:id="@+id/txt_add_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/webv_content"
+                android:layout_margin="10dp"
+                android:gravity="right"
+                android:visibility="gone"
+                android:text="time"/>
+
         </RelativeLayout>
+        </ScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
     <LinearLayout
