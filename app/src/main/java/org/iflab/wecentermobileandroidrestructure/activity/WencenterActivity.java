@@ -34,7 +34,6 @@ public class WencenterActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
-    //    private RelativeLayout nav_header;
     private ListView list_nav;
     private ActionBarDrawerToggle mDrawerToggle;
     private RelativeLayout rel_nav;
