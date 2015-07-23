@@ -49,6 +49,7 @@ public class FoundAdapter extends RecyclerView.Adapter {
             ((FoundHolder) holder).txt_user_action_content.setText(questionInfo.getQuestionContent());
             ((FoundHolder) holder).txt_cell_type_question_or_article.setText("问题");
             if (questionInfo.getAnswerUserName() != null) {
+                ((FoundHolder) holder).rel_bottom.setVisibility(View.VISIBLE);
                 ((FoundHolder) holder).txt_answer_user_name.setText(questionInfo.getAnswerUserName());
                 ((FoundHolder) holder).txt_answer.setText(questionInfo.getAnswerContent());
             } else {

@@ -92,7 +92,7 @@ public class FoundChildFragment extends BaseFragment {
                                     questionInfo.setAnswerUid(userInfoObject.getInt("uid"));
                                     questionInfo.setAnswerUserName(userInfoObject.getString("user_name"));
                                     questionInfo.setAnswerAvatarFile(userInfoObject.getString("avatar_file"));
-                                    questionInfo.setQuestionDetail(answerObject.getString("answer_content"));
+                                    questionInfo.setAnswerContent(answerObject.getString("answer_content"));
                                 }
                                 JSONObject userInfoObject = row.getJSONObject("user_info");
                                 questionInfo.setPublishUid(userInfoObject.getInt("uid"));
