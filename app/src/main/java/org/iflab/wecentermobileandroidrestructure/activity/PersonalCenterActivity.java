@@ -215,6 +215,13 @@ public class PersonalCenterActivity extends BaseActivity {
         return params;
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        swipeRefreshLayout.setRefreshing(true);
+        loadData();
+    }
+
     private void setData(UserPersonal user) {
         answerFavoriteCount.setText(user.getAnswer_favorite_count() + "");
         agreeCount.setText(user.getAgree_count() + "");
