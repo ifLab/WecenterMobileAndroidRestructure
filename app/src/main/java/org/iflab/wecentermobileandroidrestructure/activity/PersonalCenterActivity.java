@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
@@ -20,8 +21,11 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
+import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 /**
  * Created by hcjcch on 15/5/21.
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 
 public class PersonalCenterActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ImageView userImage;
     private TextView ask;
     private TextView askCount;
     private TextView answer;
@@ -53,6 +58,8 @@ public class PersonalCenterActivity extends BaseActivity {
     private TextView useredit;
     private Bundle bundle;
     private boolean isOwner;
+    private RelativeLayout rel_marz;
+    private RelativeLayout relContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +121,9 @@ public class PersonalCenterActivity extends BaseActivity {
         hasFocus = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
         hasFocusCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
         useredit = (TextView) findViewById(R.id.txt_user_edit);
+        rel_marz = (RelativeLayout) findViewById(R.id.rel_marz);
+        relContainer = (RelativeLayout) findViewById(R.id.rel);
+        userImage = (ImageView) findViewById(R.id.img_user);
     }
 
     private void setViews() {
@@ -121,7 +131,7 @@ public class PersonalCenterActivity extends BaseActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                loadData();
             }
         });
         useredit.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +173,12 @@ public class PersonalCenterActivity extends BaseActivity {
     private void loadData() {
         AsyncHttpWecnter.get(RelativeUrl.USER_INFO, getParams(), new AsyncHttpResponseHandler() {
             @Override
+            public void onStart() {
+                relContainer.setEnabled(false);
+                super.onStart();
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String json = new String(responseBody);
                 boolean jsonProgress = jsonPreproccess(json);
@@ -181,6 +197,14 @@ public class PersonalCenterActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 System.out.println("failure");
+            }
+
+            @Override
+            public void onFinish() {
+                rel_marz.setVisibility(View.GONE);
+                relContainer.setEnabled(true);
+                swipeRefreshLayout.setRefreshing(false);
+                super.onFinish();
             }
         });
     }
@@ -202,5 +226,7 @@ public class PersonalCenterActivity extends BaseActivity {
         topicCount.setText(user.getTopic_focus_count() + "");
         attentionCount.setText(user.getFriend_count() + "");
         followerCount.setText(user.getFans_count() + "");
+        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImage, ImageOptions.optionsImagePersonalDetailAvatar);
+
     }
 }

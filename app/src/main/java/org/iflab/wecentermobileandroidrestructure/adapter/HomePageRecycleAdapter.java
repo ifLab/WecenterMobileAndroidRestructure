@@ -9,9 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
+import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
+import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
 import java.util.List;
 
@@ -64,11 +69,13 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageTwoCellHolder) viewHolder).userAction.setText("回答了问题");
                     ((HomePageTwoCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
                     ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setText(homePage.getAnswerInfo().getAnswerContent());
+                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageTwoCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
                 case 204:
                     ((HomePageTwoCellHolder) viewHolder).userAction.setText("赞同了回答");
                     ((HomePageTwoCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
                     ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setText(homePage.getAnswerInfo().getAnswerContent());
+                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageTwoCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
             }
         } else {
@@ -78,11 +85,13 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("发布了问题");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
+                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
                 case 105:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("关注了问题");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
+                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
                 case 501:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
@@ -95,11 +104,13 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                             mContext.startActivity(intent);
                         }
                     });
+                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
                 case 502:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("赞同了了文章");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getArticleTitle());
+                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
             }
         }

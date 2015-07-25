@@ -9,10 +9,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.found.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.found.BaseFoundInfo;
 import org.iflab.wecentermobileandroidrestructure.model.found.QuestionInfo;
+import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
 import java.util.List;
 
@@ -43,15 +47,19 @@ public class FoundAdapter extends RecyclerView.Adapter {
             ((FoundHolder) holder).rel_bottom.setVisibility(View.GONE);
             ((FoundHolder) holder).txt_user_action_content.setText(articleInfo.getArticleMessage());
             ((FoundHolder) holder).txt_cell_type_question_or_article.setText("文章");
+            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + articleInfo.getAvatarFile(), ((FoundHolder) holder).profile_image, ImageOptions.optionsImage);
         } else {
             QuestionInfo questionInfo = (QuestionInfo) datas.get(position);
             ((FoundHolder) holder).txt_user_name.setText(questionInfo.getPublishUserName());
             ((FoundHolder) holder).txt_user_action_content.setText(questionInfo.getQuestionContent());
             ((FoundHolder) holder).txt_cell_type_question_or_article.setText("问题");
+            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + questionInfo.getPublishAvatarFile(), ((FoundHolder) holder).profile_image, ImageOptions.optionsImage);
             if (questionInfo.getAnswerUserName() != null) {
                 ((FoundHolder) holder).rel_bottom.setVisibility(View.VISIBLE);
                 ((FoundHolder) holder).txt_answer_user_name.setText(questionInfo.getAnswerUserName());
                 ((FoundHolder) holder).txt_answer.setText(questionInfo.getAnswerContent());
+                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + questionInfo.getAnswerAvatarFile(), ((FoundHolder) holder).profile_image_answer, ImageOptions.optionsImage);
+
             } else {
                 ((FoundHolder) holder).rel_bottom.setVisibility(View.GONE);
             }
