@@ -77,7 +77,7 @@ public class ArticleActivity extends BaseActivity {
 
     private void setListenter() {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            RequestParams params;
+            RequestParams params = new RequestParams();
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -95,7 +95,7 @@ public class ArticleActivity extends BaseActivity {
         });
 
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            RequestParams params;
+            RequestParams params = new RequestParams();
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
