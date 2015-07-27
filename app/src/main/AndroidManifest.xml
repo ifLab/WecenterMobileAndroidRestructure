@@ -40,11 +40,22 @@
         <activity
             android:name=".activity.QuestionDetailActivity"
             android:label="@string/title_activity_question_detail" >
-
         </activity>
         <activity
             android:name=".activity.ArticleActivity"
             android:label="@string/title_activity_article" >
+        </activity>
+        <activity
+            android:name=".activity.TopicsActivity"
+            android:label="@string/title_activity_topics" >
+        </activity>
+        <activity
+            android:name=".activity.QuestionAnswerActivity"
+            android:label="@string/title_activity_question_answer" >
+        </activity>
+        <activity
+            android:name=".activity.AnswerCommentActivity"
+            android:label="@string/title_activity_answer_comment" >
         </activity>
     </application>
 

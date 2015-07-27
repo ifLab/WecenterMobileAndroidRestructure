@@ -184,6 +184,11 @@ public class Global {
         return date;
     }
 
+    public static String TimeStamp2Date(Long timestampString, String formats) {
+        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestampString));
+        return date;
+    }
+
     //日期转化
     public static long Date2TimeStamp(String date) {
         long time = 0;

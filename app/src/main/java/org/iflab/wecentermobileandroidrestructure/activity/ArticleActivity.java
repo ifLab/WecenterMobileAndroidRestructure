@@ -1,36 +1,30 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
 import android.graphics.Color;
-import android.media.Image;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
-import org.iflab.wecentermobileandroidrestructure.model.article.ArticleRSM;
+import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
+import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,40 +33,42 @@ public class ArticleActivity extends BaseActivity {
     Toolbar toolbar;
     SwipeRefreshLayout refreshLayout;
     CircleImageView circleImageView;
-    TextView usernameTextView;
-    TextView conetntTextView;
+    TextView userNameTextView;
+    WebView contentWebView;
     TextView votesTextView;
+    TextView signatureTextView;
     ImageButton shareBtn;
     ImageButton commentBtn;
     CheckBox likeCheckBox;
     CheckBox dislikeCheckBox;
     int articleID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
+        articleID = getIntent().getIntExtra("article_id", 1);
         findViews();
         setViews();
         setToolBars();
         setListenter();
-        articleID = getIntent().getIntExtra("article_id",1);
         loadData();
     }
 
 
-
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipyrefreshlayout);
-        circleImageView = (CircleImageView)findViewById(R.id.image_profile);
-        usernameTextView = (TextView)findViewById(R.id.txt_user_name);
-        conetntTextView = (TextView)findViewById(R.id.txt_article_content);
-        votesTextView = (TextView)findViewById(R.id.txt_votes);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
+        circleImageView = (CircleImageView) findViewById(R.id.image_profile);
+        userNameTextView = (TextView) findViewById(R.id.txt_user_name);
+        contentWebView = (WebView) findViewById(R.id.webv_content);
+        votesTextView = (TextView) findViewById(R.id.txt_votes);
+        signatureTextView = (TextView) findViewById(R.id.txt_user_signature);
         shareBtn = (ImageButton) findViewById(R.id.btn_share);
-        commentBtn = (ImageButton)findViewById(R.id.btn_comment);
-        likeCheckBox = (CheckBox)findViewById(R.id.check_like);
-        dislikeCheckBox = (CheckBox)findViewById(R.id.check_dislike);
+        commentBtn = (ImageButton) findViewById(R.id.btn_comment);
+        likeCheckBox = (CheckBox) findViewById(R.id.check_like);
+        dislikeCheckBox = (CheckBox) findViewById(R.id.check_dislike);
     }
 
     private void setViews() {
@@ -81,25 +77,47 @@ public class ArticleActivity extends BaseActivity {
 
     private void setListenter() {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            RequestParams params;
+
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                params.put("answer_id", articleID);
+                params.put("value", 1);
+
+                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                    @Override
+                    public void parseJson(JSONObject response) {
+
+                    }
+                });
 
             }
         });
 
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            RequestParams params;
+
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                params.put("answer_id", articleID);
+                params.put("value", -1);
+
+                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                    @Override
+                    public void parseJson(JSONObject response) {
+
+                    }
+                });
 
             }
         });
     }
 
-    public void gotoShare(View view){
+    public void gotoShare(View view) {
 
     }
 
-    public void gotoComment(View view){
+    public void gotoComment(View view) {
 
     }
 
@@ -117,42 +135,45 @@ public class ArticleActivity extends BaseActivity {
     }
 
     private void loadData() {
-        AsyncHttpWecnter.get(RelativeUrl.ARTICLE_INFO, setParams(), new AsyncHttpResponseHandler() {
+        AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_INFO, setParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             ArticleInfo artleInfo;
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Gson gson = new Gson();
 
+            @Override
+            public void parseJson(JSONObject response) {
+                Gson gson = new Gson();
                 try {
-                    JSONObject obj = new JSONObject(new String(responseBody));
-//                    Log.v("111",obj.getString("rsm"));
-                    artleInfo =  gson.fromJson(new JSONObject(obj.getString("rsm")).getString("article_info"), ArticleInfo.class);
+                    artleInfo = gson.fromJson(response.getString("article_info"), ArticleInfo.class);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                Log.v("aaa",artleInfo.toString());
 
-                usernameTextView.setText(artleInfo.getUser_name());
-                conetntTextView.setText(artleInfo.getMessage());
+                userNameTextView.setText(artleInfo.getUser_name());
+                contentWebView.loadDataWithBaseURL("about:blank", artleInfo.getMessage(), "text/html", "utf-8", null);
+                signatureTextView.setText(artleInfo.getSignature());
+                contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
-                votesTextView.setText(artleInfo.getVotes()+"");
+                votesTextView.setText(artleInfo.getVotes() + "");
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+            public void failure() {
+                super.failure();
+                votesTextView.setText(artleInfo.getVotes() + "");
+                likeCheckBox.setChecked(artleInfo.getVote_value() == 1);
+                dislikeCheckBox.setChecked(artleInfo.getVote_value() == -1);
             }
-        });
 
+        });
 
     }
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
 //        params.put("id",articleID);
-        params.put("id",1);
+        params.put("id", 1);
         return params;
     }
+
 
 }

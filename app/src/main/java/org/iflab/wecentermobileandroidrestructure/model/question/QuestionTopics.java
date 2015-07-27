@@ -1,14 +1,11 @@
-package org.iflab.wecentermobileandroidrestructure.model.article;
-
-import org.litepal.crud.DataSupport;
+package org.iflab.wecentermobileandroidrestructure.model.question;
 
 /**
- * Created by Lyn on 15/7/16.
+ * Created by Lyn on 15/7/18.
  */
-public class ArticleTopics extends DataSupport {
+public class QuestionTopics {
     int topic_id;
     String topic_title;
-
 
     public int getTopic_id() {
         return topic_id;
@@ -28,7 +25,7 @@ public class ArticleTopics extends DataSupport {
 
     @Override
     public String toString() {
-        return "ArticleTopics{" +
+        return "QuestionTopics{" +
                 "topic_id=" + topic_id +
                 ", topic_title='" + topic_title + '\'' +
                 '}';
