@@ -53,6 +53,10 @@
             android:name=".activity.QuestionAnswerActivity"
             android:label="@string/title_activity_question_answer" >
         </activity>
+        <activity
+            android:name=".activity.AnswerCommentActivity"
+            android:label="@string/title_activity_answer_comment" >
+        </activity>
     </application>
 
 </manifest>

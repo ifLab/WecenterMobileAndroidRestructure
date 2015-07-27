@@ -3,7 +3,7 @@ package org.iflab.wecentermobileandroidrestructure.model.article;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by client on 15/7/16.
+ * Created by Lyn on 15/7/16.
  */
 public class ArticleRSM extends DataSupport {
     ArticleInfo article_info;

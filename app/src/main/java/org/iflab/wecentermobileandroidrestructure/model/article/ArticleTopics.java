@@ -3,7 +3,7 @@ package org.iflab.wecentermobileandroidrestructure.model.article;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by client on 15/7/16.
+ * Created by Lyn on 15/7/16.
  */
 public class ArticleTopics extends DataSupport {
     int topic_id;

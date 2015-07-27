@@ -1,7 +1,7 @@
 package org.iflab.wecentermobileandroidrestructure.model.question;
 
 /**
- * Created by client on 15/7/18.
+ * Created by Lyn on 15/7/18.
  */
 public class QuestionInfo {
 

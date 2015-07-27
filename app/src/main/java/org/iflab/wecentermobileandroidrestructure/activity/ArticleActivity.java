@@ -77,16 +77,35 @@ public class ArticleActivity extends BaseActivity {
 
     private void setListenter() {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            RequestParams params;
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                params.put("answer_id",articleID);
+                params.put("value",1);
 
+                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ANSWER_VOTE,params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                    @Override
+                    public void parseJson(JSONObject response) {
+
+                    }
+                });
 
             }
         });
 
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            RequestParams params;
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                params.put("answer_id",articleID);
+                params.put("value",-1);
+
+                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                    @Override
+                    public void parseJson(JSONObject response) {
+
+                    }
+                });
 
             }
         });
@@ -133,6 +152,9 @@ public class ArticleActivity extends BaseActivity {
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
                 votesTextView.setText(artleInfo.getVotes() + "");
+
+                likeCheckBox.setChecked(artleInfo.getVote_value() == 1);
+                dislikeCheckBox.setChecked(artleInfo.getVote_value() == -1);
             }
         });
 

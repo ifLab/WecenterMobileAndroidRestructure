@@ -8,7 +8,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import org.iflab.wecentermobileandroidrestructure.R;
 
 /**
- * Created by client on 15/7/16.
+ * Created by Lyn on 15/7/16.
  */
 public class ImageOptions {
     public static DisplayImageOptions optionsImage = new DisplayImageOptions

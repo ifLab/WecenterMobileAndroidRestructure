@@ -192,7 +192,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
                             }.getType());
-                    Log.v("QuestionTopics",questionsList.toString());
+//                    Log.v("QuestionTopics",questionsList.toString());
 
 
                 } catch (JSONException e) {

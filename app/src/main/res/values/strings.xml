@@ -9,5 +9,6 @@
     <string name="title_activity_topics">TopicsActivity</string>
     <string name="title_activity_publish_question_answer">PublishQuestionAnswerActivity</string>
     <string name="title_activity_question_answer">QuestionAnswerActivity</string>
+    <string name="title_activity_answer_comment">AnswerCommentActivity</string>
 
 </resources>

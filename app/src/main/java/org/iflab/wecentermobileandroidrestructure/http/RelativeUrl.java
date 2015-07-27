@@ -18,4 +18,6 @@ public class RelativeUrl {
     public static String QUESTION_INFO = "?/api/question/question/";//问题
     public static String QUESTION_FOUCS = "?/question/ajax/focus/";//关注问题
     public static String QUESTION_ANSWER_INFO = "?/api/question/answer_detail/";
+    public static String ANSWER_VOTE = "?/question/ajax/answer_vote/";
+    public static String ANSWER_COMMENT = "api/answer_comment.php";
 }

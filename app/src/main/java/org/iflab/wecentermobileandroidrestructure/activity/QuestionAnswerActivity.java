@@ -50,7 +50,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
     CheckBox likeCheckBox;
     CheckBox dislikeCheckBox;
     RelativeLayout topRel;
-    int answerID;
+    int answerID = -1;
     String questionTitle;
     int uid = -1;
     @Override
@@ -58,7 +58,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        answerID = getIntent().getIntExtra("answer_id",1);
+        answerID = getIntent().getIntExtra("answer_id",-1);
         questionTitle = getIntent().getStringExtra("question_title");
 
         findViews();
@@ -91,16 +91,35 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
 
     private void setListenter() {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            RequestParams params;
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                params.put("answer_id",answerID);
+                params.put("value",1);
 
+                AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE,params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                    @Override
+                    public void parseJson(JSONObject response) {
+
+                    }
+                });
 
             }
         });
 
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            RequestParams params;
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                params.put("answer_id",answerID);
+                params.put("value",-1);
+
+                AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                    @Override
+                    public void parseJson(JSONObject response) {
+
+                    }
+                });
 
             }
         });
@@ -113,7 +132,9 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
     }
 
     public void gotoComment(View view){
-
+        Intent intent = new Intent(QuestionAnswerActivity.this,AnswerCommentActivity.class);
+        intent.putExtra("answer_id",answerID);
+        startActivity(intent);
     }
 
     private void setToolBars() {
@@ -147,6 +168,9 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
 
                 addTimeTextView.setVisibility(View.VISIBLE);
                 addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
+
+                likeCheckBox.setChecked(answerInfo.getVote_value() == 1);
+                dislikeCheckBox.setChecked(answerInfo.getVote_value() == -1);
 
                 uid = answerInfo.getUid();
             }
