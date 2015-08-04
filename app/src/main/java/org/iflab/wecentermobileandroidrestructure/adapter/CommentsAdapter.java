@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.common.OnClickItemCallBack;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.question.CommentInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
@@ -25,10 +27,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     List<CommentInfo> commentInfoList = new ArrayList<>();
     Context context;
     LayoutInflater mLayoutInflater;
+    OnClickItemCallBack onClickItemCallBack;
 
-    public CommentsAdapter(Context context,List<CommentInfo> commentInfoList){
+    public CommentsAdapter(Context context,List<CommentInfo> commentInfoList,OnClickItemCallBack onClickItemCallBack){
         this.commentInfoList = commentInfoList;
         this.context = context;
+        this.onClickItemCallBack = onClickItemCallBack;
         mLayoutInflater = LayoutInflater.from(context);
     }
     @Override
@@ -38,7 +42,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
     @Override
     public void onBindViewHolder(CommentsAdapter.CommentsViewHolder holder, int position) {
-        CommentInfo commentInfo = commentInfoList.get(position);
+        final CommentInfo commentInfo = commentInfoList.get(position);
         holder.commentTextView.setText(commentInfo.getContent());
         holder.userNameTextView.setText(commentInfo.getUser_name());
 //        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + commentInfo.get(), holder.profileImageView, ImageOptions.optionsImage);
@@ -46,7 +50,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
          * http://we.bistu.edu.cn/api/answer_comment.php?id=7  没有头像地址！！
          */
 
-
+        holder.answerRel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickItemCallBack.clickItemCallBack(commentInfo.getUser_name(),commentInfo.getUid());
+            }
+        });
 
     }
 
@@ -65,6 +74,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         ImageView profileImageView;
         TextView userNameTextView;
         TextView commentTextView;
+        RelativeLayout answerRel;
 
         public CommentsViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +82,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             profileImageView = (ImageView)itemView.findViewById(R.id.image_profile);
             userNameTextView = (TextView)itemView.findViewById(R.id.txt_user_name);
             commentTextView = (TextView)itemView.findViewById(R.id.txt_user_comment);
+            answerRel = (RelativeLayout)itemView.findViewById(R.id.rel_answer);
         }
     }
 }

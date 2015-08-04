@@ -70,7 +70,8 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
-        uid = getIntent().getIntExtra("uid",-1);
+        uid = getIntent().getIntExtra("uid",22);
+        question_id = getIntent().getIntExtra("question_id",2);
         findViews();
         findHeaderView();
         setViews();
@@ -134,13 +135,13 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.flow_question_topic:
-                Intent intent = new Intent(QuestionDetailActivity.this,TopicsActivity.class);
-                ArrayList<String> topicsList = new ArrayList<>();
-                for(QuestionTopics t:questionsList){
-                    topicsList.add(t.getTopic_id()+"");
-                }
-                intent.putExtra("topics",topicsList);
-                startActivity(intent);
+//                Intent intent = new Intent(QuestionDetailActivity.this,TopicsActivity.class);
+//                ArrayList<String> topicsList = new ArrayList<>();
+//                for(QuestionTopics t:questionsList){
+//                    topicsList.add(t.getTopic_id()+"");
+//                }
+//                intent.putExtra("topics",topicsList);
+//                startActivity(intent);
                 break;
 
 
@@ -199,7 +200,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
 
-                question_id = questionInfo.getQuestion_id();
+//                question_id = questionInfo.getQuestion_id();
                 has_foucs = questionInfo.getHas_focus();
                 updateFoucsBtnUI(has_foucs);
 
@@ -251,8 +252,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
-//        params.put("id",articleID);
-        params.put("id", 2);
+        params.put("id",question_id);
         return params;
     }
 
