@@ -2,6 +2,7 @@ package org.iflab.wecentermobileandroidrestructure.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
+import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
@@ -61,9 +63,19 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         int userAction = homePages.get(i).getAssociateAction();
-        HomePage homePage = homePages.get(i);
+        final HomePage homePage = homePages.get(i);
         if (viewHolder instanceof HomePageTwoCellHolder) {
             ((HomePageTwoCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
+            ((HomePageTwoCellHolder) viewHolder).userProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PersonalCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("uid", homePage.getUid());
+                    intent.putExtra("bundle", bundle);
+                    mContext.startActivity(intent);
+                }
+            });
             switch (userAction) {
                 case 201:
                     ((HomePageTwoCellHolder) viewHolder).userAction.setText("回答了问题");
@@ -80,6 +92,16 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             }
         } else {
             ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
+            ((HomePageOneCellHolder) viewHolder).userProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PersonalCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("uid", homePage.getUid());
+                    intent.putExtra("bundle", bundle);
+                    mContext.startActivity(intent);
+                }
+            });
             switch (userAction) {
                 case 101:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());

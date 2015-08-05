@@ -33,6 +33,8 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class PersonalCenterActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView txt_motto;
+    private TextView txt_user_name;
     private ImageView userImage;
     private TextView ask;
     private TextView askCount;
@@ -124,6 +126,8 @@ public class PersonalCenterActivity extends BaseActivity {
         rel_marz = (RelativeLayout) findViewById(R.id.rel_marz);
         relContainer = (RelativeLayout) findViewById(R.id.rel);
         userImage = (ImageView) findViewById(R.id.img_user);
+        txt_motto = (TextView) findViewById(R.id.txt_motto);
+        txt_user_name = (TextView) findViewById(R.id.txt_user_name);
     }
 
     private void setViews() {
@@ -187,6 +191,8 @@ public class PersonalCenterActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
                     UserPersonal user = new UserPersonal(rsm);
+                    txt_motto.setText(user.getSignature());
+                    txt_user_name.setText(user.getUser_name());
                     HawkControl.saveUserCount(user);
                     setData(user);
                 } catch (JSONException e) {
