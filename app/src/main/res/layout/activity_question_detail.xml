@@ -24,6 +24,7 @@
         android:dividerHeight="10dp"
         android:divider="@color/bg_color_grey"
         android:padding="10dp"
+        android:scrollbars="none"
         />
 
     </android.support.v4.widget.SwipeRefreshLayout>

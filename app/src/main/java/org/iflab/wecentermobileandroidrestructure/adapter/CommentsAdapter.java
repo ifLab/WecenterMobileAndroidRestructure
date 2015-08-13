@@ -1,6 +1,8 @@
 package org.iflab.wecentermobileandroidrestructure.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +14,10 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
 import org.iflab.wecentermobileandroidrestructure.common.OnClickItemCallBack;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.question.CommentInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
@@ -54,6 +58,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             @Override
             public void onClick(View view) {
                 onClickItemCallBack.clickItemCallBack(commentInfo.getUser_name(),commentInfo.getUid());
+            }
+        });
+
+        holder.profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PersonalCenterActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("uid", commentInfo.getUid());
+                bundle.putBoolean("isOwner", User.getLoginUser(context).getUid() == commentInfo.getUid());
+                intent.putExtra("bundle", bundle);
+                context.startActivity(intent);
             }
         });
 

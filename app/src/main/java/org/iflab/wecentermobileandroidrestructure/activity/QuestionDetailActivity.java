@@ -28,6 +28,7 @@ import org.iflab.wecentermobileandroidrestructure.adapter.AnswerAdapter;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
@@ -63,8 +64,8 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     List<QuestionTopics> questionsList;
     AnswerAdapter answerAdapter;
     int question_id;
-    int has_foucs;
     int uid;
+    int foucsNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +133,14 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.rel_top:
                 //到个人中心
+                if(uid != -1) {
+                    Intent intent = new Intent(QuestionDetailActivity.this, PersonalCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("uid", uid);
+                    bundle.putBoolean("isOwner", User.getLoginUser(QuestionDetailActivity.this).getUid() == uid);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.flow_question_topic:
@@ -153,12 +162,25 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
             @Override
             public void parseJson(JSONObject response) {
                 // update button UI
-                if(has_foucs == 0){
-                    has_foucs = 1;
-                }else if(has_foucs == 1){
-                    has_foucs = 0;
+                String type = "";
+                try {
+                    type = response.getString("type");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                updateFoucsBtnUI(has_foucs);
+
+                switch (type){
+                    case "add":
+                        focusTextView.setText((foucsNum + 1)+"");
+                        updateFoucsBtnUI(1);
+                        break;
+                    case "remove":
+                        focusTextView.setText(foucsNum+"");
+                        updateFoucsBtnUI(0);
+                        break;
+                }
+                Log.v("foucsQuestion", response.toString());
+
             }
         });
     }
@@ -201,14 +223,15 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 }
 
 //                question_id = questionInfo.getQuestion_id();
-                has_foucs = questionInfo.getHas_focus();
-                updateFoucsBtnUI(has_foucs);
+                updateFoucsBtnUI(questionInfo.getHas_focus());
 
                 contentWebView.loadDataWithBaseURL("about:blank", questionInfo.getQuestion_detail(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 contentTextView.setText(questionInfo.getQuestion_content());
                 bookMarkTextView.setText(questionInfo.getFocus_count() + "");
-                focusTextView.setText(questionInfo.getHas_focus()+"");
+
+                foucsNum = questionInfo.getHas_focus();
+                focusTextView.setText(foucsNum+"");
 
                 for(QuestionTopics q:questionsList){
                     addFlowTopics(q.getTopic_title());
@@ -234,6 +257,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         switch (hasFoucs){
             case 0:
                 foucsBtn.setText("关注");
+
                 break;
             case 1:
                 foucsBtn.setText("已关注");

@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity {
                     User user = new User(rsm);
                     User.save(getApplicationContext(), user);
 //                    startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
-                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
+                    startActivity(new Intent(LoginActivity.this, ArticleActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

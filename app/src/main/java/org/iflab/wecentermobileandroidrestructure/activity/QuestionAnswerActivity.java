@@ -96,9 +96,10 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 dislikeCheckBox.setEnabled(!b);
 
-                params.put("answer_id", answerID);
-                params.put("value", 1);
-
+                if(!params.has("answer_id")) {
+                    params.put("answer_id", answerID);
+                    params.put("value", 1);
+                }
                 AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
                     @Override
                     public void parseJson(JSONObject response) {
@@ -115,8 +116,10 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 likeCheckBox.setEnabled(!b);
 
-                params.put("answer_id", answerID);
-                params.put("value", -1);
+                if(!params.has("answer_id")) {
+                    params.put("answer_id", answerID);
+                    params.put("value", -1);
+                }
 
                 AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
                     @Override
@@ -168,7 +171,8 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
                 contentWebView.loadDataWithBaseURL("about:blank", answerInfo.getAnswer_content(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                votesTextView.setText(answerInfo.getVote_value() + "");
+                if(answerInfo.getVote_value() > -1)
+                    votesTextView.setText(answerInfo.getVote_value() + "");
 
                 addTimeTextView.setVisibility(View.VISIBLE);
                 addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
