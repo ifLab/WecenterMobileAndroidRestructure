@@ -241,6 +241,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     for (QuestionTopics q : questionsList) {
                         addFlowTopics(q.getTopic_title());
                     }
+
                 }
 
             }
