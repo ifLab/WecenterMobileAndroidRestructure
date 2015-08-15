@@ -74,6 +74,9 @@ public class ArticleActivity extends BaseActivity {
 
     private void setViews() {
         refreshLayout.setEnabled(false);
+        contentWebView.getSettings().setUseWideViewPort(true);
+        contentWebView.getSettings().setLoadWithOverviewMode(true);
+        contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
     }
 
     private void setListenter() {

@@ -10,4 +10,5 @@
     <dimen name="home_page_margin_medium">10dp</dimen>
     <dimen name="item_homepage_nav_image_left">16dp</dimen>
     <dimen name="topic_min_width">35dp</dimen>
+    <dimen name="webview_font_size">14sp</dimen>
 </resources>

@@ -105,6 +105,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     private void setViews() {
         contentWebView.getSettings().setUseWideViewPort(true);
         contentWebView.getSettings().setLoadWithOverviewMode(true);
+        contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
         listView.addHeaderView(headerView);
         foucsBtn.setOnClickListener(this);
         topicFlowLayout.setOnClickListener(this);
@@ -228,7 +229,6 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
 //                question_id = questionInfo.getQuestion_id();
                 updateFoucsBtnUI(questionInfo.getHas_focus());
-
                 contentWebView.loadDataWithBaseURL("about:blank", questionInfo.getQuestion_detail(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 contentTextView.setText(questionInfo.getQuestion_content());
