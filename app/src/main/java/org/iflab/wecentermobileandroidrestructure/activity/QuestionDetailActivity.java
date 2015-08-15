@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import org.iflab.wecentermobileandroidrestructure.adapter.AnswerAdapter;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
@@ -63,14 +66,15 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     List<QuestionTopics> questionsList;
     AnswerAdapter answerAdapter;
     int question_id;
-    int has_foucs;
     int uid;
+    int foucsNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
-        uid = getIntent().getIntExtra("uid",-1);
+        uid = getIntent().getIntExtra("uid",22);
+        question_id = getIntent().getIntExtra("question_id",2);
         findViews();
         findHeaderView();
         setViews();
@@ -99,6 +103,8 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void setViews() {
+        contentWebView.getSettings().setUseWideViewPort(true);
+        contentWebView.getSettings().setLoadWithOverviewMode(true);
         listView.addHeaderView(headerView);
         foucsBtn.setOnClickListener(this);
         topicFlowLayout.setOnClickListener(this);
@@ -131,16 +137,24 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.rel_top:
                 //到个人中心
+                if(uid != -1) {
+                    Intent intent = new Intent(QuestionDetailActivity.this, PersonalCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("uid", uid);
+                    bundle.putBoolean("isOwner", User.getLoginUser(QuestionDetailActivity.this).getUid() == uid);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.flow_question_topic:
-                Intent intent = new Intent(QuestionDetailActivity.this,TopicsActivity.class);
-                ArrayList<String> topicsList = new ArrayList<>();
-                for(QuestionTopics t:questionsList){
-                    topicsList.add(t.getTopic_id()+"");
-                }
-                intent.putExtra("topics",topicsList);
-                startActivity(intent);
+//                Intent intent = new Intent(QuestionDetailActivity.this,TopicsActivity.class);
+//                ArrayList<String> topicsList = new ArrayList<>();
+//                for(QuestionTopics t:questionsList){
+//                    topicsList.add(t.getTopic_id()+"");
+//                }
+//                intent.putExtra("topics",topicsList);
+//                startActivity(intent);
                 break;
 
 
@@ -152,12 +166,25 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
             @Override
             public void parseJson(JSONObject response) {
                 // update button UI
-                if(has_foucs == 0){
-                    has_foucs = 1;
-                }else if(has_foucs == 1){
-                    has_foucs = 0;
+                String type = "";
+                try {
+                    type = response.getString("type");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                updateFoucsBtnUI(has_foucs);
+
+                switch (type){
+                    case "add":
+                        focusTextView.setText((foucsNum + 1)+"");
+                        updateFoucsBtnUI(1);
+                        break;
+                    case "remove":
+                        focusTextView.setText(foucsNum+"");
+                        updateFoucsBtnUI(0);
+                        break;
+                }
+                Log.v("foucsQuestion", response.toString());
+
             }
         });
     }
@@ -199,18 +226,21 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
 
-                question_id = questionInfo.getQuestion_id();
-                has_foucs = questionInfo.getHas_focus();
-                updateFoucsBtnUI(has_foucs);
+//                question_id = questionInfo.getQuestion_id();
+                updateFoucsBtnUI(questionInfo.getHas_focus());
 
                 contentWebView.loadDataWithBaseURL("about:blank", questionInfo.getQuestion_detail(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 contentTextView.setText(questionInfo.getQuestion_content());
                 bookMarkTextView.setText(questionInfo.getFocus_count() + "");
-                focusTextView.setText(questionInfo.getHas_focus()+"");
 
-                for(QuestionTopics q:questionsList){
-                    addFlowTopics(q.getTopic_title());
+                foucsNum = questionInfo.getHas_focus();
+                focusTextView.setText(foucsNum+"");
+
+                if (questionsList != null){
+                    for (QuestionTopics q : questionsList) {
+                        addFlowTopics(q.getTopic_title());
+                    }
                 }
 
             }
@@ -233,6 +263,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         switch (hasFoucs){
             case 0:
                 foucsBtn.setText("关注");
+
                 break;
             case 1:
                 foucsBtn.setText("已关注");
@@ -242,6 +273,8 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private void addFlowTopics(String toipcString){
         TextView button = new TextView(QuestionDetailActivity.this);
+        button.setMinWidth(getResources().getDimensionPixelSize(R.dimen.topic_min_width));
+        button.setGravity(Gravity.CENTER);
         button.setText(toipcString);
         button.setBackground(getResources().getDrawable(R.drawable.public_topic));
         button.setTextColor(Color.WHITE);
@@ -251,8 +284,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
-//        params.put("id",articleID);
-        params.put("id", 2);
+        params.put("id",question_id);
         return params;
     }
 

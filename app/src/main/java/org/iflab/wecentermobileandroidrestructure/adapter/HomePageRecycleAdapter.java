@@ -82,7 +82,8 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                    intent.putExtra("uid", homePage.getQuestionInfo().getQuestionId());
+                    intent.putExtra("uid", homePage.getUid());
+                    intent.putExtra("question_id",homePage.getQuestionInfo().getQuestionId());
                     mContext.startActivity(intent);
                 }
             });
@@ -90,7 +91,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ArticleActivity.class);
-                    intent.putExtra("uid", homePage.getAnswerInfo().getAnswerId());
+                    intent.putExtra("article_id", homePage.getAnswerInfo().getAnswerId());
                     mContext.startActivity(intent);
                 }
             });
@@ -130,7 +131,8 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                            intent.putExtra("uid", homePage.getQuestionInfo().getQuestionId());
+                            intent.putExtra("uid", homePage.getUid());
+                            intent.putExtra("question_id",homePage.getQuestionInfo().getQuestionId());
                             mContext.startActivity(intent);
                         }
                     });
@@ -144,7 +146,8 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                            intent.putExtra("uid", homePage.getQuestionInfo().getQuestionId());
+                            intent.putExtra("uid", homePage.getUid());
+                            intent.putExtra("question_id",homePage.getQuestionInfo().getQuestionId());
                             mContext.startActivity(intent);
                         }
                     });

@@ -15,4 +15,5 @@
     <color name="text_color_black">#000000</color>
     <color name="bg_color_grey">#eeeeee</color>
     <color name="background_tab_pressed">#fff</color>
+    <color name="line">#50000000</color>
 </resources>

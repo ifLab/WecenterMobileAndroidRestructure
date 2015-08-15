@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -72,19 +73,21 @@ public class ArticleActivity extends BaseActivity {
     }
 
     private void setViews() {
-        refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
+        refreshLayout.setEnabled(false);
     }
 
     private void setListenter() {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            RequestParams params;
+            RequestParams params = new RequestParams();
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                dislikeCheckBox.setEnabled(!b);
+
                 params.put("answer_id", articleID);
                 params.put("value", 1);
 
-                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
                     @Override
                     public void parseJson(JSONObject response) {
 
@@ -95,14 +98,16 @@ public class ArticleActivity extends BaseActivity {
         });
 
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            RequestParams params;
+            RequestParams params = new RequestParams();
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                likeCheckBox.setEnabled(!b);
+
                 params.put("answer_id", articleID);
                 params.put("value", -1);
 
-                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
                     @Override
                     public void parseJson(JSONObject response) {
 
@@ -118,7 +123,9 @@ public class ArticleActivity extends BaseActivity {
     }
 
     public void gotoComment(View view) {
-
+        Intent intent = new Intent(ArticleActivity.this,AnswerCommentActivity.class);
+        intent.putExtra("article_id",articleID);
+        startActivity(intent);
     }
 
     private void setToolBars() {
@@ -154,24 +161,28 @@ public class ArticleActivity extends BaseActivity {
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
                 votesTextView.setText(artleInfo.getVotes() + "");
+
+                if(artleInfo.getVote_value() == 1){
+                    likeCheckBox.setChecked(true);
+                    dislikeCheckBox.setEnabled(false);
+                }else if(artleInfo.getVote_value() == -1){
+                    dislikeCheckBox.setChecked(true);
+                    likeCheckBox.setEnabled(false);
+                }
             }
 
             @Override
             public void failure() {
                 super.failure();
                 votesTextView.setText(artleInfo.getVotes() + "");
-                likeCheckBox.setChecked(artleInfo.getVote_value() == 1);
-                dislikeCheckBox.setChecked(artleInfo.getVote_value() == -1);
             }
-
         });
 
     }
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
-//        params.put("id",articleID);
-        params.put("id", 1);
+        params.put("id",articleID);
         return params;
     }
 

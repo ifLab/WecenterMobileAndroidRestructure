@@ -94,10 +94,13 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
             RequestParams params = new RequestParams();
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                params.put("answer_id",answerID);
-                params.put("value",1);
+                dislikeCheckBox.setEnabled(!b);
 
-                AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE,params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                if(!params.has("answer_id")) {
+                    params.put("answer_id", answerID);
+                    params.put("value", 1);
+                }
+                AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
                     @Override
                     public void parseJson(JSONObject response) {
 
@@ -111,8 +114,12 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
             RequestParams params = new RequestParams();
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                params.put("answer_id",answerID);
-                params.put("value",-1);
+                likeCheckBox.setEnabled(!b);
+
+                if(!params.has("answer_id")) {
+                    params.put("answer_id", answerID);
+                    params.put("value", -1);
+                }
 
                 AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
                     @Override
@@ -164,13 +171,19 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
                 contentWebView.loadDataWithBaseURL("about:blank", answerInfo.getAnswer_content(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                votesTextView.setText(answerInfo.getVote_value() + "");
+                if(answerInfo.getVote_value() > -1)
+                    votesTextView.setText(answerInfo.getVote_value() + "");
 
                 addTimeTextView.setVisibility(View.VISIBLE);
                 addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
 
-                likeCheckBox.setChecked(answerInfo.getVote_value() == 1);
-                dislikeCheckBox.setChecked(answerInfo.getVote_value() == -1);
+                if(answerInfo.getVote_value() == 1){
+                    likeCheckBox.setChecked(true);
+                    dislikeCheckBox.setEnabled(false);
+                }else if(answerInfo.getVote_value() == -1){
+                    dislikeCheckBox.setChecked(true);
+                    likeCheckBox.setEnabled(false);
+                }
 
                 uid = answerInfo.getUid();
             }
