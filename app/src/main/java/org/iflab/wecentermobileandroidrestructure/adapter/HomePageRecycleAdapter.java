@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
+import org.iflab.wecentermobileandroidrestructure.activity.QuestionDetailActivity;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
@@ -31,7 +33,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
     private List<HomePage> homePages;
 
 
-    public static enum ITEM_TYPE {
+    public enum ITEM_TYPE {
         HOME_PAGE_TWO_CELL,
         HOME_PAGE_ONE_CELL
     }
@@ -63,16 +65,32 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         int userAction = homePages.get(i).getAssociateAction();
-        final HomePage homePage = homePages.get(i);
+         final HomePage homePage = homePages.get(i);
         if (viewHolder instanceof HomePageTwoCellHolder) {
             ((HomePageTwoCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
-            ((HomePageTwoCellHolder) viewHolder).userProfile.setOnClickListener(new View.OnClickListener() {
+            ((HomePageTwoCellHolder) viewHolder).rel_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, PersonalCenterActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("uid", homePage.getUid());
                     intent.putExtra("bundle", bundle);
+                    mContext.startActivity(intent);
+                }
+            });
+            ((HomePageTwoCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+                    intent.putExtra("uid", homePage.getQuestionInfo().getQuestionId());
+                    mContext.startActivity(intent);
+                }
+            });
+            ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ArticleActivity.class);
+                    intent.putExtra("uid", homePage.getAnswerInfo().getAnswerId());
                     mContext.startActivity(intent);
                 }
             });
@@ -108,12 +126,28 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("发布了问题");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
                     ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+                            intent.putExtra("uid", homePage.getQuestionInfo().getQuestionId());
+                            mContext.startActivity(intent);
+                        }
+                    });
                     break;
                 case 105:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("关注了问题");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
                     ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+                            intent.putExtra("uid", homePage.getQuestionInfo().getQuestionId());
+                            mContext.startActivity(intent);
+                        }
+                    });
                     break;
                 case 501:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
@@ -123,6 +157,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, ArticleActivity.class);
+                            intent.putExtra("article_id", homePage.getArticleInfo().getArticleId());
                             mContext.startActivity(intent);
                         }
                     });
@@ -133,6 +168,14 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("赞同了了文章");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getArticleTitle());
                     ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, ArticleActivity.class);
+                            intent.putExtra("article_id", homePage.getArticleInfo().getArticleId());
+                            mContext.startActivity(intent);
+                        }
+                    });
                     break;
             }
         }
@@ -158,6 +201,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
         TextView userActionContent;
         TextView userAnswerContent;
         TextView userAgreeCount;
+        RelativeLayout rel_left;
 
         public HomePageTwoCellHolder(View itemView) {
             super(itemView);
@@ -167,6 +211,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             userActionContent = (TextView) itemView.findViewById(R.id.txt_user_action_content);
             userAgreeCount = (TextView) itemView.findViewById(R.id.txt_agree_count);
             userAnswerContent = (TextView) itemView.findViewById(R.id.txt_answer_content);
+            rel_left = (RelativeLayout) itemView.findViewById(R.id.rel_left);
         }
     }
 
@@ -176,6 +221,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
         TextView userName;
         TextView userAction;
         TextView userActionContent;
+        RelativeLayout rel;
 
         public HomePageOneCellHolder(View itemView) {
             super(itemView);
@@ -183,6 +229,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             userName = (TextView) itemView.findViewById(R.id.txt_user_name);
             userAction = (TextView) itemView.findViewById(R.id.txt_user_action);
             userActionContent = (TextView) itemView.findViewById(R.id.txt_user_action_content);
+            rel = (RelativeLayout) itemView.findViewById(R.id.rel);
         }
     }
 }

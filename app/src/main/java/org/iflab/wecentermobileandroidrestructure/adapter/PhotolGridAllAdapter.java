@@ -74,7 +74,7 @@ public class PhotolGridAllAdapter extends PhotoPickGridAdapter {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        mActivity.camera();
+                        activity.camera();
                     }
                 });
             }

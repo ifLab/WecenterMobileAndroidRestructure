@@ -25,7 +25,7 @@ import org.iflab.wecentermobileandroidrestructure.activity.PhotoPickActivity.Gri
 public class PhotoPickGridAdapter extends CursorAdapter {
 
     protected LayoutInflater layoutInflater;
-    private PhotoPickActivity activity;
+    protected PhotoPickActivity activity;
 
     public PhotoPickGridAdapter(Context context, Cursor c, boolean autoRequery, PhotoPickActivity activity) {
         super(context, c, autoRequery);

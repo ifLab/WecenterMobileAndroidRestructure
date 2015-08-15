@@ -25,8 +25,6 @@ import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.castorflex.android.circularprogressbar.CircularProgressBar;
-
 /**
  * Created by hcjcch on 15/5/21.
  */
@@ -44,7 +42,7 @@ public class PersonalCenterActivity extends BaseActivity {
     private TextView articleCount;
     private TextView topic;
     private TextView topicCount;
-    private TextView atteneion;
+    private TextView attention;
     private TextView attentionCount;
     private TextView follower;
     private TextView followerCount;
@@ -62,6 +60,8 @@ public class PersonalCenterActivity extends BaseActivity {
     private boolean isOwner;
     private RelativeLayout rel_marz;
     private RelativeLayout relContainer;
+    private RelativeLayout in_ask_count,in_answer_count;
+    private UserPersonal user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,24 +92,33 @@ public class PersonalCenterActivity extends BaseActivity {
 
     private void findViews() {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swi_personal_center);
+
+        in_ask_count = (RelativeLayout) findViewById(R.id.in_ask_count);
+        in_ask_count.setOnClickListener(new Click());
+        askCount = (TextView) in_ask_count.findViewById(R.id.txt_ask_count);
+        ask = (TextView) in_ask_count.findViewById(R.id.txt_ask);
+
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_count);
-        askCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
-        ask = (TextView) relativeLayout.findViewById(R.id.txt_ask);
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_count);
         answer = (TextView) relativeLayout.findViewById(R.id.txt_ask);
         answerCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+
         relativeLayout = (RelativeLayout) findViewById(R.id.in_article_count);
         article = (TextView) relativeLayout.findViewById(R.id.txt_ask);
         articleCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+
         relativeLayout = (RelativeLayout) findViewById(R.id.in_topic_count);
         topic = (TextView) relativeLayout.findViewById(R.id.txt_ask);
         topicCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+
         relativeLayout = (RelativeLayout) findViewById(R.id.in_attention_count);
-        atteneion = (TextView) relativeLayout.findViewById(R.id.txt_ask);
+        attention = (TextView) relativeLayout.findViewById(R.id.txt_ask);
         attentionCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+
         relativeLayout = (RelativeLayout) findViewById(R.id.in_follower_count);
         follower = (TextView) relativeLayout.findViewById(R.id.txt_ask);
         followerCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+
+
         relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_favorite);
         answerFavorite = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
         answerFavoriteCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
@@ -154,7 +163,7 @@ public class PersonalCenterActivity extends BaseActivity {
         articleCount.setText("5");
         topic.setText("话题");
         topicCount.setText("11");
-        atteneion.setText("关注中");
+        attention.setText("关注中");
         attentionCount.setText("4");
         follower.setText("追随者");
         followerCount.setText("1");
@@ -190,7 +199,7 @@ public class PersonalCenterActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
-                    UserPersonal user = new UserPersonal(rsm);
+                    user = new UserPersonal(rsm);
                     txt_motto.setText(user.getSignature());
                     txt_user_name.setText(user.getUser_name());
                     HawkControl.saveUserCount(user);
@@ -241,5 +250,22 @@ public class PersonalCenterActivity extends BaseActivity {
         followerCount.setText(user.getFans_count() + "");
         ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImage, ImageOptions.optionsImagePersonalDetailAvatar);
 
+    }
+
+    class Click implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            switch (v.getId()) {
+                case R.id.in_ask_count:
+                    intent.setClass(PersonalCenterActivity.this, PersonalQuestionActivity.class);
+                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("avatar",user.getAvatar_file());
+                    startActivity(intent);
+                    break;
+            }
+        }
     }
 }

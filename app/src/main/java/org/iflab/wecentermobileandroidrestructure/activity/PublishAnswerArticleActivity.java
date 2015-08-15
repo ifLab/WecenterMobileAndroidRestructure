@@ -35,7 +35,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -53,7 +52,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     private EditText topicEditText;
     private EditText titleEditText;
     private EditText descriptionEditText;
-    private String toipcString;
+    private String topicString;
     private Button addTopicButton;
     private ArrayList<String> topics = new ArrayList<>();
     private static final String attach_access_key = MD5Transform.MD5(System.currentTimeMillis() + "");
@@ -123,12 +122,12 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         addTopicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toipcString = topicEditText.getText().toString();
-                if (toipcString.equals("") || toipcString == null) {
+                topicString = topicEditText.getText().toString();
+                if (topicString.equals("") || topicString == null) {
                     Toast.makeText(PublishAnswerArticleActivity.this, "请输入话题", Toast.LENGTH_SHORT).show();
                 } else {
                     TextView button = new TextView(PublishAnswerArticleActivity.this);
-                    button.setText(toipcString);
+                    button.setText(topicString);
                     topics.add(button.getText().toString());
                     button.setBackground(getResources().getDrawable(R.drawable.public_topic));
                     button.setTextColor(Color.WHITE);
@@ -162,7 +161,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                     try {
                         File out = photoOperate.scal(uri);
                         uploadAttachment(out);
-                        mData.add(new PhotoData(out));
+                        mData.add(new PhotoData(uri));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -193,6 +192,10 @@ public class PublishAnswerArticleActivity extends BaseActivity {
 
         public PhotoData(File file) {
             uri = Uri.fromFile(file);
+        }
+
+        public PhotoData(Uri file) {
+            uri = file;
         }
 
         public PhotoData(PhotoDataSerializable data) {

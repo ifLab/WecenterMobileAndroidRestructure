@@ -57,6 +57,10 @@
             android:name=".activity.AnswerCommentActivity"
             android:label="@string/title_activity_answer_comment" >
         </activity>
+        <activity
+            android:name=".activity.PersonalQuestionActivity"
+            android:label="@string/title_activity_personal_question" >
+        </activity>
     </application>
 
 </manifest>

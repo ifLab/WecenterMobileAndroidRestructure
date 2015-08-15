@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,7 @@ import org.iflab.wecentermobileandroidrestructure.adapter.PhotoPickGridAdapter;
 import org.iflab.wecentermobileandroidrestructure.adapter.PhotolGridAllAdapter;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfoExtra;
+import org.iflab.wecentermobileandroidrestructure.tools.CameraPhotoUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -42,6 +44,7 @@ import java.util.LinkedHashMap;
  */
 
 public class PhotoPickActivity extends BaseActivity implements LoaderManager.LoaderCallbacks {
+    final int RESULT_CAMERA = 21;
     private PhotoPickGridAdapter photoPickGridAdapter;
     private GridView photoGridview;
     private ListView photoFolderlistView;
@@ -51,6 +54,7 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
     private TextView txtPhotoFolder;
     private int mFolderId = 0;
     private MenuItem mMenuItem;
+    private Uri fileUri;
     //    private FrameLayout photoFolderParent;
     private ArrayList<ImageInfo> mPickData = new ArrayList<>();
     private String[] projection = {
@@ -338,5 +342,25 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
             setResult(Activity.RESULT_OK, intent);
         }
         finish();
+    }
+
+    public void camera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        fileUri = CameraPhotoUtil.getOutputMediaFileUri();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        startActivityForResult(intent, RESULT_CAMERA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_CAMERA){
+            if (resultCode == RESULT_OK){
+                ImageInfo item = new ImageInfo(fileUri.toString());
+                mPickData.add(item);
+                updatePickCount();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
