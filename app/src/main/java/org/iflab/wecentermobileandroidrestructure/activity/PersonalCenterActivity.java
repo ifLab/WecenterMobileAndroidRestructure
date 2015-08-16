@@ -60,7 +60,7 @@ public class PersonalCenterActivity extends BaseActivity {
     private boolean isOwner;
     private RelativeLayout rel_marz;
     private RelativeLayout relContainer;
-    private RelativeLayout in_ask_count,in_answer_count;
+    private RelativeLayout in_ask_count,in_answer_count,in_article_count;
     private UserPersonal user;
 
     @Override
@@ -91,10 +91,11 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     private void findViews() {
+        View.OnClickListener clickListener = new Click();
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swi_personal_center);
 
         in_ask_count = (RelativeLayout) findViewById(R.id.in_ask_count);
-        in_ask_count.setOnClickListener(new Click());
+        in_ask_count.setOnClickListener(clickListener);
         askCount = (TextView) in_ask_count.findViewById(R.id.txt_ask_count);
         ask = (TextView) in_ask_count.findViewById(R.id.txt_ask);
 
@@ -102,9 +103,10 @@ public class PersonalCenterActivity extends BaseActivity {
         answer = (TextView) relativeLayout.findViewById(R.id.txt_ask);
         answerCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_article_count);
-        article = (TextView) relativeLayout.findViewById(R.id.txt_ask);
-        articleCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+        in_article_count = (RelativeLayout) findViewById(R.id.in_article_count);
+        in_article_count.setOnClickListener(clickListener);
+        article = (TextView) in_article_count.findViewById(R.id.txt_ask);
+        articleCount = (TextView) in_article_count.findViewById(R.id.txt_ask_count);
 
         relativeLayout = (RelativeLayout) findViewById(R.id.in_topic_count);
         topic = (TextView) relativeLayout.findViewById(R.id.txt_ask);
@@ -260,6 +262,13 @@ public class PersonalCenterActivity extends BaseActivity {
             switch (v.getId()) {
                 case R.id.in_ask_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalQuestionActivity.class);
+                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("avatar",user.getAvatar_file());
+                    startActivity(intent);
+                    break;
+                case R.id.in_article_count:
+                    intent.setClass(PersonalCenterActivity.this, PersonalArticleActivity.class);
                     intent.putExtra("userName", user.getUser_name());
                     intent.putExtra("uid", uid);
                     intent.putExtra("avatar",user.getAvatar_file());

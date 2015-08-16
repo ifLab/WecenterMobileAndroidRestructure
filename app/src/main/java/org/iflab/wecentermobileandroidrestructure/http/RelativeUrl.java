@@ -14,6 +14,7 @@ public class RelativeUrl {
     public static String ATTACHMENT_UPLOAD = "?/api/publish/attach_upload/";//上传附件
     public static String UPLOAD_QUESTION = "?/api/publish/publish_question/";//上传问题
     public static String FOUND = "?/api/explore/";//发现
+    public static String PERSONAL_ARTICLE = "api/my_article.php";//个人文章
     public static String PERSONAL_QUESTION = "api/my_question.php";//我的提问列表
     public static String UPLOAD_ANSWER=  "?/question/ajax/save_answer_comment/";//发布回答评论
     public static String ARTICLE_INFO = "?/api/article/article/"; //文章

@@ -61,6 +61,9 @@
             android:name=".activity.PersonalQuestionActivity"
             android:label="@string/title_activity_personal_question" >
         </activity>
+        <activity
+            android:name=".activity.PersonalArticleActivity">
+        </activity>
     </application>
 
 </manifest>
