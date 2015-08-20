@@ -3,13 +3,13 @@
     android:id="@+id/rel_top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rectangle"
-    android:minHeight="@dimen/home_page_maxheight_two_cell">
+    android:layout_marginTop="10dp"
+    android:background="@drawable/rectangle">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image_profile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_marginLeft="@dimen/home_page_margin_medium"
         android:layout_marginRight="@dimen/home_page_margin_medium"
         android:src="@mipmap/user_place"
@@ -38,8 +38,7 @@
         android:layout_toRightOf="@+id/image_profile"
         android:clickable="true"
         android:background="@drawable/question_layout_selector"
-        android:minHeight="@dimen/home_page_maxheight_two_cell"
-        android:layout_margin="1dp">
+        android:layout_margin="0.5dp">
 
 
         <RelativeLayout
@@ -65,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_user_name"
-                android:layout_marginTop="@dimen/home_page_margin_small"
+                android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="user_content"
@@ -80,8 +79,7 @@
         android:layout_width="0.5dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/image_profile"
-        android:background="@color/bg_color_grey"
-        android:minHeight="@dimen/home_page_maxheight_one_cell"
+        android:background="@color/line"
         android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/rel_answer" />
 

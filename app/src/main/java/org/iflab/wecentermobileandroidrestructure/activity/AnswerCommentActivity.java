@@ -100,7 +100,7 @@ public class AnswerCommentActivity extends AppCompatActivity {
     private void setViews() {
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new ItemDivider(AnswerCommentActivity.this, R.drawable.item_divider));
+//        recyclerView.addItemDecoration(new ItemDivider(AnswerCommentActivity.this, R.drawable.item_divider));
 
         refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

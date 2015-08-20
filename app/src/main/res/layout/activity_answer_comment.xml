@@ -32,6 +32,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@drawable/rectangle"
+        android:padding="0.5dp"
         android:id="@+id/linearLayout2">
 
         <EditText
@@ -42,6 +43,11 @@
             android:hint="在此输入评论……"
             android:paddingLeft="5dp"
             android:layout_weight="0.8"/>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/line"/>
 
         <Button
             android:layout_width="0dp"

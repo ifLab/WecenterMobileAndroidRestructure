@@ -80,7 +80,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         String passWordString = passWord.getText().toString();
-        passWordString = "huahua";
+        passWordString = "935600f12";
         if (passWordString.equals("")) {
             toast("密码不能为空");
             return;
@@ -102,6 +102,7 @@ public class LoginActivity extends BaseActivity {
                     User user = new User(rsm);
                     User.save(getApplicationContext(), user);
                     startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
+//                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
