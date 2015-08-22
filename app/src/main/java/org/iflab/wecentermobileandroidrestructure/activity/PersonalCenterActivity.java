@@ -19,6 +19,7 @@ import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalFollowing;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
@@ -60,7 +61,7 @@ public class PersonalCenterActivity extends BaseActivity {
     private boolean isOwner;
     private RelativeLayout rel_marz;
     private RelativeLayout relContainer;
-    private RelativeLayout in_ask_count,in_answer_count,in_article_count;
+    private RelativeLayout in_ask_count, in_answer_count, in_article_count, in_topic_count, in_attention_count, in_follower_count;
     private UserPersonal user;
 
     @Override
@@ -99,29 +100,33 @@ public class PersonalCenterActivity extends BaseActivity {
         askCount = (TextView) in_ask_count.findViewById(R.id.txt_ask_count);
         ask = (TextView) in_ask_count.findViewById(R.id.txt_ask);
 
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_count);
-        answer = (TextView) relativeLayout.findViewById(R.id.txt_ask);
-        answerCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+        in_answer_count = (RelativeLayout) findViewById(R.id.in_answer_count);
+        in_answer_count.setOnClickListener(clickListener);
+        answer = (TextView) in_answer_count.findViewById(R.id.txt_ask);
+        answerCount = (TextView) in_answer_count.findViewById(R.id.txt_ask_count);
 
         in_article_count = (RelativeLayout) findViewById(R.id.in_article_count);
         in_article_count.setOnClickListener(clickListener);
         article = (TextView) in_article_count.findViewById(R.id.txt_ask);
         articleCount = (TextView) in_article_count.findViewById(R.id.txt_ask_count);
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_topic_count);
-        topic = (TextView) relativeLayout.findViewById(R.id.txt_ask);
-        topicCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+        in_topic_count = (RelativeLayout) findViewById(R.id.in_topic_count);
+        in_topic_count.setOnClickListener(clickListener);
+        topic = (TextView) in_topic_count.findViewById(R.id.txt_ask);
+        topicCount = (TextView) in_topic_count.findViewById(R.id.txt_ask_count);
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_attention_count);
-        attention = (TextView) relativeLayout.findViewById(R.id.txt_ask);
-        attentionCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+        in_attention_count = (RelativeLayout) findViewById(R.id.in_attention_count);
+        in_attention_count.setOnClickListener(clickListener);
+        attention = (TextView) in_attention_count.findViewById(R.id.txt_ask);
+        attentionCount = (TextView) in_attention_count.findViewById(R.id.txt_ask_count);
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_follower_count);
-        follower = (TextView) relativeLayout.findViewById(R.id.txt_ask);
-        followerCount = (TextView) relativeLayout.findViewById(R.id.txt_ask_count);
+        in_follower_count = (RelativeLayout) findViewById(R.id.in_follower_count);
+        in_follower_count.setOnClickListener(clickListener);
+        follower = (TextView) in_follower_count.findViewById(R.id.txt_ask);
+        followerCount = (TextView) in_follower_count.findViewById(R.id.txt_ask_count);
 
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_favorite);
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_favorite);
         answerFavorite = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
         answerFavoriteCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
         relativeLayout = (RelativeLayout) findViewById(R.id.in_agree);
@@ -264,14 +269,42 @@ public class PersonalCenterActivity extends BaseActivity {
                     intent.setClass(PersonalCenterActivity.this, PersonalQuestionActivity.class);
                     intent.putExtra("userName", user.getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("avatar",user.getAvatar_file());
+                    intent.putExtra("avatar", user.getAvatar_file());
                     startActivity(intent);
                     break;
                 case R.id.in_article_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalArticleActivity.class);
                     intent.putExtra("userName", user.getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("avatar",user.getAvatar_file());
+                    intent.putExtra("avatar", user.getAvatar_file());
+                    startActivity(intent);
+                    break;
+                case R.id.in_answer_count:
+                    intent.setClass(PersonalCenterActivity.this, PersonalAnswerActivity.class);
+                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("avatar", user.getAvatar_file());
+                    intent.putExtra("sign", user.getSignature());
+                    startActivity(intent);
+                    break;
+                case R.id.in_topic_count:
+                    intent.setClass(PersonalCenterActivity.this, PersonalTopicActivity.class);
+                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("uid", uid);
+                    startActivity(intent);
+                    break;
+                case R.id.in_attention_count:
+                    intent.setClass(PersonalCenterActivity.this, PersonalFollowingActivity.class);
+                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("type",PersonalFollowingActivity.FOLLOWING);
+                    startActivity(intent);
+                    break;
+                case R.id.in_follower_count:
+                    intent.setClass(PersonalCenterActivity.this, PersonalFollowingActivity.class);
+                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("type",PersonalFollowingActivity.FOLLOWER);
                     startActivity(intent);
                     break;
             }

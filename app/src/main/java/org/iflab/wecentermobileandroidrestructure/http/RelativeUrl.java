@@ -16,7 +16,11 @@ public class RelativeUrl {
     public static String FOUND = "?/api/explore/";//发现
     public static String PERSONAL_ARTICLE = "api/my_article.php";//个人文章
     public static String PERSONAL_QUESTION = "api/my_question.php";//我的提问列表
-    public static String UPLOAD_ANSWER=  "?/question/ajax/save_answer_comment/";//发布回答评论
+    public static String UPLOAD_ANSWER = "?/question/ajax/save_answer_comment/";//发布回答评论
+    public static String PERSONAL_ANSWER = "api/my_answer.php";//个人回答
+    public static String PERSONAL_TOPIC = "api/my_focus_topic.php";//个人话题
+    public static String FOLLOWING = "api/my_focus_user.php";//关注者
+    public static String FOLLOWER = "api/my_fans_user.php";//个人粉丝
     public static String ARTICLE_INFO = "?/api/article/article/"; //文章
     public static String QUESTION_INFO = "?/api/question/question/";//问题
     public static String QUESTION_FOUCS = "?/question/ajax/focus/";//关注问题
@@ -24,6 +28,6 @@ public class RelativeUrl {
     public static String ANSWER_VOTE = "?/question/ajax/answer_vote/";
     public static String ARTICLE_VOTE = "?/article/ajax/article_vote/";
     public static String ANSWER_COMMENT = "api/answer_comment.php";
-    public static String ARTICLE_COMMENT =  "?/api/article/comment/";
+    public static String ARTICLE_COMMENT = "?/api/article/comment/";
     public static String PUBLISH_ARTICLE = "?/api/publish/save_comment/";
 }

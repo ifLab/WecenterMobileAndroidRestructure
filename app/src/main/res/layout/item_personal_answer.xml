@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    >
+    <RelativeLayout
+        android:id="@id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|"
+        android:minHeight="35dp">
+        <TextView
+            android:id="@+id/txt_question_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/home_page_margin_small"
+            android:paddingLeft="@dimen/home_page_margin_small"
+            android:paddingBottom="@dimen/home_page_margin_small"
+            android:paddingRight="@dimen/home_page_margin_small"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="大四专业课选什么好呢"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/middle_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#50000000"
+        android:layout_below="@id/rel_top"/>
+    <RelativeLayout
+        android:id="@+id/rel_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="49dp"
+        android:paddingLeft="10dp"
+        android:layout_below="@id/middle_line"
+        android:paddingTop="@dimen/home_page_margin_small"
+        android:minHeight="@dimen/home_page_maxheight_two_cell">
+        <TextView
+            android:id="@+id/txt_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hc"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txt_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="青山依旧在，几度夕阳红"
+            android:layout_toRightOf="@id/txt_user_name"
+            android:layout_marginLeft="@dimen/home_page_margin_medium"/>
+        <TextView
+            android:id="@+id/txt_answer_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当然是选java好了"
+            android:layout_alignLeft="@id/txt_user_name"
+            android:layout_below="@id/txt_user_name"
+            android:layout_marginTop="@dimen/home_page_margin_small"
+            android:paddingBottom="@dimen/home_page_margin_small"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rel_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/rel_right"
+        android:layout_alignTop="@id/rel_right"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_user"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/user_place" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/img_user"
+                android:layout_alignRight="@id/img_user"
+                android:layout_below="@id/img_user"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rectangle"
+                android:gravity="center"
+                android:text="1" />
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="0.5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/rel_right"
+        android:layout_alignBottom="@id/rel_right"
+        android:background="#50000000"
+        android:layout_toRightOf="@id/rel_left" />
+
+</RelativeLayout>

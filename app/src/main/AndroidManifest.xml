@@ -61,8 +61,17 @@
             android:name=".activity.PersonalQuestionActivity"
             android:label="@string/title_activity_personal_question" >
         </activity>
+        <activity android:name=".activity.PersonalArticleActivity" >
+        </activity>
         <activity
-            android:name=".activity.PersonalArticleActivity">
+            android:name=".activity.PersonalAnswerActivity"
+            android:label="@string/title_activity_personal_answer" >
+        </activity>
+        <activity android:name=".activity.PersonalTopicActivity">
+
+        </activity>
+        <activity android:name=".activity.PersonalFollowingActivity">
+
         </activity>
     </application>
 

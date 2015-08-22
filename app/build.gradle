@@ -42,4 +42,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.3.9'
     compile files('libs/volley.jar')
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
