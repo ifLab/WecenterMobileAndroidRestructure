@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalFollowing;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
@@ -69,9 +71,9 @@ public class PersonalCenterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_center);
         Intent intent = getIntent();
-        bundle = intent.getBundleExtra("bundle");
+        bundle = intent.getExtras();
         uid = bundle.getInt("uid", -1);
-        isOwner = bundle.getBoolean("isOwner");
+        isOwner = isMe(uid, User.getLoginUser(getApplicationContext()).getUid());
         findViews();
         setViews();
         setToolBar();
@@ -80,6 +82,19 @@ public class PersonalCenterActivity extends BaseActivity {
         } else {
             //TODO 用户错误
         }
+    }
+
+    public static void openPersonalCenter(Context context, int uid) {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", uid);
+        intent.putExtras(bundle);
+        intent.setClass(context, PersonalCenterActivity.class);
+        context.startActivity(intent);
+    }
+
+    private boolean isMe(int currentUid, int sqlUid) {
+        return currentUid == sqlUid;
     }
 
     private void setToolBar() {
@@ -297,14 +312,14 @@ public class PersonalCenterActivity extends BaseActivity {
                     intent.setClass(PersonalCenterActivity.this, PersonalFollowingActivity.class);
                     intent.putExtra("userName", user.getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("type",PersonalFollowingActivity.FOLLOWING);
+                    intent.putExtra("type", PersonalFollowingActivity.FOLLOWING);
                     startActivity(intent);
                     break;
                 case R.id.in_follower_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalFollowingActivity.class);
                     intent.putExtra("userName", user.getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("type",PersonalFollowingActivity.FOLLOWER);
+                    intent.putExtra("type", PersonalFollowingActivity.FOLLOWER);
                     startActivity(intent);
                     break;
             }
