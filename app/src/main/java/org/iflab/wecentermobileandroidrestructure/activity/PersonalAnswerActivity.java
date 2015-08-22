@@ -58,7 +58,7 @@ public class PersonalAnswerActivity extends AppCompatActivity {
     }
 
     private void setViews() {
-        answerAdapter = new PersonalAnswerAdapter(sign, userName, data, this);
+        answerAdapter = new PersonalAnswerAdapter(sign, userName, data, this, uid+"");
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(answerAdapter);

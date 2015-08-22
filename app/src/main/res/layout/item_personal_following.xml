@@ -9,6 +9,7 @@
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="6dp"
@@ -16,6 +17,7 @@
         android:src="@mipmap/user_place" />
 
     <RelativeLayout
+        android:id="@+id/rel_right"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="10dp"

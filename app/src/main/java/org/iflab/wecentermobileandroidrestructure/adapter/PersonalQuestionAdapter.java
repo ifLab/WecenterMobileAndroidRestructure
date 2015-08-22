@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
+import org.iflab.wecentermobileandroidrestructure.activity.QuestionDetailActivity;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalQuestion;
 
 import java.util.List;
@@ -29,13 +31,15 @@ public class PersonalQuestionAdapter extends RecyclerView.Adapter {
     private List<PersonalQuestion.RowsEntity> datas;
     private String userName;
     private String userAvatar;
+    private int uid;
 
-    public PersonalQuestionAdapter(Context mContext, List<PersonalQuestion.RowsEntity> datas, String userName, String userAvatar) {
+    public PersonalQuestionAdapter(Context mContext, List<PersonalQuestion.RowsEntity> datas, String userName, String userAvatar,int uid) {
         this.mContext = mContext;
         this.datas = datas;
         this.userName = userName;
         this.userAvatar = userAvatar;
         this.mLayoutInflater = LayoutInflater.from(mContext);
+        this.uid = uid;
     }
 
     public void setData(List<PersonalQuestion.RowsEntity> datas) {
@@ -49,10 +53,22 @@ public class PersonalQuestionAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((PersonalQuestionHolder) holder).txt_user_name.setText(userName);
         ((PersonalQuestionHolder) holder).txt_question_title.setText(datas.get(position).getTitle());
         ((PersonalQuestionHolder) holder).txt_question_content.setText(datas.get(position).getDetail());
+        ((PersonalQuestionHolder) holder).relLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersonalCenterActivity.openPersonalCenter(mContext, uid);
+            }
+        });
+        ((PersonalQuestionHolder) holder).relRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuestionDetailActivity.openQuestionDetail(mContext, uid, Integer.parseInt(datas.get(position).getId()));
+            }
+        });
     }
 
     @Override
