@@ -220,17 +220,19 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     Log.v("questionInfo", questionInfo.toString());
 
                     //answer
-                    JSONObject answersObj = new JSONObject(response.getString("answers"));
-                    Iterator<String> iterator = answersObj.keys();
-                    while (iterator.hasNext()) {
-                        answerInfo = new AnswerInfo();
-                        answerInfo = gson.fromJson(answersObj.getString(iterator.next()), AnswerInfo.class);
-                        answersList.add(answerInfo);
-                        Log.v("answerInfo", answerInfo.toString());
+                    String answers = response.getString("answers");
+                    if(!answers.equals("[]")) {
+                        JSONObject answersObj = new JSONObject(answers);
+                        Iterator<String> iterator = answersObj.keys();
+                        while (iterator.hasNext()) {
+                            answerInfo = new AnswerInfo();
+                            answerInfo = gson.fromJson(answersObj.getString(iterator.next()), AnswerInfo.class);
+                            answersList.add(answerInfo);
+                            Log.v("answerInfo", answerInfo.toString());
+                        }
+                        answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
+                        listView.setAdapter(answerAdapter);
                     }
-                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
-                    listView.setAdapter(answerAdapter);
-
                     //QuestionTopics
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
