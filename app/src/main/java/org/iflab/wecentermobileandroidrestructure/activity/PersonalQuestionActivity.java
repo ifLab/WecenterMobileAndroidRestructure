@@ -97,7 +97,7 @@ public class PersonalQuestionActivity extends AppCompatActivity {
     }
 
     private void setViews() {
-        adapter = new PersonalQuestionAdapter(PersonalQuestionActivity.this, data, userName, avatar);
+        adapter = new PersonalQuestionAdapter(PersonalQuestionActivity.this, data, userName, avatar, uid);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);

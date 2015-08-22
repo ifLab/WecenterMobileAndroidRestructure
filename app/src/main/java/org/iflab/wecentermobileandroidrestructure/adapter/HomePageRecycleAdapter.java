@@ -65,34 +65,25 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         int userAction = homePages.get(i).getAssociateAction();
-         final HomePage homePage = homePages.get(i);
+        final HomePage homePage = homePages.get(i);
         if (viewHolder instanceof HomePageTwoCellHolder) {
             ((HomePageTwoCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
             ((HomePageTwoCellHolder) viewHolder).rel_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, PersonalCenterActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("uid", homePage.getUid());
-                    intent.putExtra("bundle", bundle);
-                    mContext.startActivity(intent);
+                    PersonalCenterActivity.openPersonalCenter(mContext, homePage.getUid());
                 }
             });
             ((HomePageTwoCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                    intent.putExtra("uid", homePage.getUid());
-                    intent.putExtra("question_id",homePage.getQuestionInfo().getQuestionId());
-                    mContext.startActivity(intent);
+                    QuestionDetailActivity.openQuestionDetail(mContext, homePage.getUid(), homePage.getQuestionInfo().getQuestionId());
                 }
             });
             ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ArticleActivity.class);
-                    intent.putExtra("article_id", homePage.getAnswerInfo().getAnswerId());
-                    mContext.startActivity(intent);
+                    ArticleActivity.openArticle(mContext, homePage.getAnswerInfo().getAnswerId());
                 }
             });
             switch (userAction) {
@@ -114,11 +105,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             ((HomePageOneCellHolder) viewHolder).userProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, PersonalCenterActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("uid", homePage.getUid());
-                    intent.putExtra("bundle", bundle);
-                    mContext.startActivity(intent);
+                    PersonalCenterActivity.openPersonalCenter(mContext,homePage.getUid());
                 }
             });
             switch (userAction) {
@@ -130,10 +117,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                            intent.putExtra("uid", homePage.getUid());
-                            intent.putExtra("question_id",homePage.getQuestionInfo().getQuestionId());
-                            mContext.startActivity(intent);
+                            QuestionDetailActivity.openQuestionDetail(mContext,homePage.getUid(),homePage.getQuestionInfo().getQuestionId());
                         }
                     });
                     break;
@@ -145,10 +129,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                            intent.putExtra("uid", homePage.getUid());
-                            intent.putExtra("question_id",homePage.getQuestionInfo().getQuestionId());
-                            mContext.startActivity(intent);
+                            QuestionDetailActivity.openQuestionDetail(mContext, homePage.getUid(), homePage.getQuestionInfo().getQuestionId());
                         }
                     });
                     break;
@@ -159,9 +140,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext, ArticleActivity.class);
-                            intent.putExtra("article_id", homePage.getArticleInfo().getArticleId());
-                            mContext.startActivity(intent);
+                            ArticleActivity.openArticle(mContext,homePage.getArticleInfo().getArticleId());
                         }
                     });
                     ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
@@ -174,9 +153,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext, ArticleActivity.class);
-                            intent.putExtra("article_id", homePage.getArticleInfo().getArticleId());
-                            mContext.startActivity(intent);
+                            ArticleActivity.openArticle(mContext, homePage.getArticleInfo().getArticleId());
                         }
                     });
                     break;

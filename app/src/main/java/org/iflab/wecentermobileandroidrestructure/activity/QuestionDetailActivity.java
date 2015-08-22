@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class QuestionDetailActivity extends BaseActivity implements View.OnClickListener{
+public class QuestionDetailActivity extends BaseActivity implements View.OnClickListener {
 
 
     private Toolbar toolbar;
@@ -70,13 +70,14 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     int question_id;
     int uid;
     int foucsNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
-        uid = getIntent().getIntExtra("uid",22);
-        question_id = getIntent().getIntExtra("question_id",2);
+        uid = getIntent().getIntExtra("uid", 22);
+        question_id = getIntent().getIntExtra("question_id", 2);
         findViews();
         findHeaderView();
         setViews();
@@ -87,12 +88,12 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        listView = (ListView)findViewById(R.id.list_question_pic);
+        listView = (ListView) findViewById(R.id.list_question_pic);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
     }
 
 
-    public static void openQuestionDetail(Context context, int uid,int question_id) {
+    public static void openQuestionDetail(Context context, int uid, int question_id) {
         Intent intent = new Intent();
         intent.putExtra("uid", uid);
         intent.putExtra("question_id", question_id);
@@ -102,17 +103,17 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
 
     private void findHeaderView() {
-        headerView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.question_header_view,null);
-        userNameTextView =  (TextView)headerView.findViewById(R.id.txt_user_name);
-        userImageView = (ImageView)headerView.findViewById(R.id.image_profile);
-        contentTextView = (TextView)headerView.findViewById(R.id.txt_question_content);
-        contentWebView = (WebView)headerView.findViewById(R.id.webv_question_content);
-        topicFlowLayout = (FlowLayout)headerView.findViewById(R.id.flow_question_topic);
-        bookMarkTextView = (TextView)headerView.findViewById(R.id.txt_bookmark);
-        focusTextView = (TextView)headerView.findViewById(R.id.txt_focus);
-        foucsBtn = (Button)headerView.findViewById(R.id.btn_foucs);
-        addAnswerRel = (RelativeLayout)headerView.findViewById(R.id.rel_add_answer);
-        topRel = (RelativeLayout)headerView.findViewById(R.id.rel_top);
+        headerView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.question_header_view, null);
+        userNameTextView = (TextView) headerView.findViewById(R.id.txt_user_name);
+        userImageView = (ImageView) headerView.findViewById(R.id.image_profile);
+        contentTextView = (TextView) headerView.findViewById(R.id.txt_question_content);
+        contentWebView = (WebView) headerView.findViewById(R.id.webv_question_content);
+        topicFlowLayout = (FlowLayout) headerView.findViewById(R.id.flow_question_topic);
+        bookMarkTextView = (TextView) headerView.findViewById(R.id.txt_bookmark);
+        focusTextView = (TextView) headerView.findViewById(R.id.txt_focus);
+        foucsBtn = (Button) headerView.findViewById(R.id.btn_foucs);
+        addAnswerRel = (RelativeLayout) headerView.findViewById(R.id.rel_add_answer);
+        topRel = (RelativeLayout) headerView.findViewById(R.id.rel_top);
     }
 
     private void setViews() {
@@ -143,7 +144,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.rel_add_answer:
                 //到发布
                 break;
@@ -152,7 +153,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.rel_top:
                 //到个人中心
-                if(uid != -1) {
+                if (uid != -1) {
                     Intent intent = new Intent(QuestionDetailActivity.this, PersonalCenterActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("uid", uid);
@@ -176,7 +177,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    private void foucsQuestion(){
+    private void foucsQuestion() {
         AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_FOUCS, setFoucsParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
@@ -188,13 +189,13 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
 
-                switch (type){
+                switch (type) {
                     case "add":
-                        focusTextView.setText((foucsNum + 1)+"");
+                        focusTextView.setText((foucsNum + 1) + "");
                         updateFoucsBtnUI(1);
                         break;
                     case "remove":
-                        focusTextView.setText(foucsNum+"");
+                        focusTextView.setText((foucsNum - 1) + "");
                         updateFoucsBtnUI(0);
                         break;
                 }
@@ -216,7 +217,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 try {
                     //questionInfo
                     questionInfo = gson.fromJson(response.getString("question_info"), QuestionInfo.class);
-                    Log.v("questionInfo",questionInfo.toString());
+                    Log.v("questionInfo", questionInfo.toString());
 
                     //answer
                     String answers = response.getString("answers");
@@ -229,9 +230,11 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                             answersList.add(answerInfo);
                             Log.v("answerInfo", answerInfo.toString());
                         }
-                        answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
-                        listView.setAdapter(answerAdapter);
                     }
+
+                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this,answersList,questionInfo.getQuestion_content());
+                    listView.setAdapter(answerAdapter);
+
                     //QuestionTopics
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
@@ -251,9 +254,9 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 bookMarkTextView.setText(questionInfo.getFocus_count() + "");
 
                 foucsNum = questionInfo.getHas_focus();
-                focusTextView.setText(foucsNum+"");
+                focusTextView.setText(foucsNum + "");
 
-                if (questionsList != null){
+                if (questionsList != null) {
                     for (QuestionTopics q : questionsList) {
                         addFlowTopics(q.getTopic_title());
                     }
@@ -264,20 +267,20 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         });
 
         // load user data
-        AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.USER_INFO,setUserParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
+        AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.USER_INFO, setUserParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 UserPersonal user = new UserPersonal(response);
                 HawkControl.saveUserCount(user);
 
                 userNameTextView.setText(user.getUser_name());
-                ImageLoader.getInstance().displayImage(user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
+                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
             }
         });
     }
 
-    private void updateFoucsBtnUI(int hasFoucs){
-        switch (hasFoucs){
+    private void updateFoucsBtnUI(int hasFoucs) {
+        switch (hasFoucs) {
             case 0:
                 foucsBtn.setText("关注");
 
@@ -288,7 +291,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    private void addFlowTopics(String toipcString){
+    private void addFlowTopics(String toipcString) {
         TextView button = new TextView(QuestionDetailActivity.this);
         button.setMinWidth(getResources().getDimensionPixelSize(R.dimen.topic_min_width));
         button.setGravity(Gravity.CENTER);
@@ -301,7 +304,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
-        params.put("id",question_id);
+        params.put("id", question_id);
         return params;
     }
 
@@ -312,7 +315,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         return params;
     }
 
-    private RequestParams setUserParams(){
+    private RequestParams setUserParams() {
         RequestParams params = new RequestParams();
         params.put("uid", uid);
         return params;

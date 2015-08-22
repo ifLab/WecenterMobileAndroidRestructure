@@ -62,7 +62,7 @@ public class PersonalArticleActivity extends BaseActivity{
         recyclerView = (RecyclerView) findViewById(R.id.list_personal_question);
     }
     private void setViews() {
-        articleAdapter = new PersonalArticleAdapter(PersonalArticleActivity.this, data, userName, avatar);
+        articleAdapter = new PersonalArticleAdapter(PersonalArticleActivity.this, data, userName, avatar, uid);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(articleAdapter);
