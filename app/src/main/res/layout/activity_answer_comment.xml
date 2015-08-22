@@ -55,7 +55,8 @@
             android:layout_weight="0.2"
             android:background="@drawable/question_btn_selector"
             android:onClick="commentOnClick"
-            android:text="发布"/>
+            android:text="发布"
+            android:layout_margin="0.5dp" />
 
 
     </LinearLayout>

@@ -6,48 +6,50 @@
     android:layout_marginTop="10dp"
     android:background="@drawable/rectangle">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_marginLeft="@dimen/home_page_margin_medium"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginRight="@dimen/home_page_margin_medium"
+        android:layout_alignBottom="@+id/rel_answer"
+        android:layout_alignTop="@+id/rel_answer">
+
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image_profile"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_marginLeft="@dimen/home_page_margin_medium"
-        android:layout_marginRight="@dimen/home_page_margin_medium"
+
         android:src="@mipmap/user_place"
         app:border_color="#50000000"
-        app:border_width="0.5dp"
-        android:layout_marginTop="10dp" />
+        app:border_width="0.5dp" />
 
     <TextView
         android:id="@+id/txt_agree_count"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/rectangle"
         android:text="0"
         android:gravity="center"
-        android:layout_below="@+id/image_profile"
-        android:layout_alignRight="@+id/image_profile"
-        android:layout_alignEnd="@+id/image_profile"
-        android:layout_alignLeft="@+id/image_profile"
-        android:layout_alignStart="@+id/image_profile"
         android:layout_marginTop="5dp" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rel_answer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image_profile"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="49dp"
         android:clickable="true"
         android:background="@drawable/question_layout_selector"
-        android:layout_margin="0.5dp">
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/home_page_margin_medium"
-            android:layout_marginLeft="@dimen/home_page_margin_medium"
-            android:layout_marginRight="@dimen/home_page_margin_medium"
-            android:layout_marginTop="@dimen/home_page_margin_medium">
+        android:padding="10dp"
+        android:layout_marginTop="0.5dp"
+        android:layout_marginBottom="0.5dp"
+        android:layout_marginRight="0.5dp">
 
             <TextView
                 android:id="@+id/txt_user_name"
@@ -69,18 +71,18 @@
                 android:maxLines="2"
                 android:text="user_content"
                 android:textColor="@color/text_color_grey" />
-        </RelativeLayout>
 
     </RelativeLayout>
 
-
-    <TextView
-        android:id="@+id/line2"
+    <View
         android:layout_width="0.5dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image_profile"
-        android:background="@color/line"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/rel_answer" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="48.5dp"
+        android:background="#50000000"
+        android:layout_alignBottom="@+id/rel_answer"
+        android:layout_alignTop="@+id/rel_answer"
+        />
+
 
 </RelativeLayout>

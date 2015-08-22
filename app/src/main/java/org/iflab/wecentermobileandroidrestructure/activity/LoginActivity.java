@@ -101,8 +101,8 @@ public class LoginActivity extends BaseActivity {
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
                     User user = new User(rsm);
                     User.save(getApplicationContext(), user);
-                    startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
-//                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
+//                    startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
+                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
