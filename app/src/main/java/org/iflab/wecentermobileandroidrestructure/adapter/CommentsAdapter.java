@@ -64,11 +64,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         holder.profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, PersonalCenterActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("uid", commentInfo.getUid());
-                intent.putExtra("bundle", bundle);
-                context.startActivity(intent);
+
+                PersonalCenterActivity.openPersonalCenter(context, commentInfo.getUid());
             }
         });
 

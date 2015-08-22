@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -89,6 +90,16 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         listView = (ListView)findViewById(R.id.list_question_pic);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
     }
+
+
+    public static void openQuestionDetail(Context context, int uid,int question_id) {
+        Intent intent = new Intent();
+        intent.putExtra("uid", uid);
+        intent.putExtra("question_id",question_id);
+        intent.setClass(context, QuestionDetailActivity.class);
+        context.startActivity(intent);
+    }
+
 
     private void findHeaderView() {
         headerView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.question_header_view,null);

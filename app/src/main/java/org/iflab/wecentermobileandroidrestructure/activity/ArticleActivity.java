@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -72,6 +73,13 @@ public class ArticleActivity extends BaseActivity {
         commentBtn = (ImageButton) findViewById(R.id.btn_comment);
         likeCheckBox = (CheckBox) findViewById(R.id.check_like);
         dislikeCheckBox = (CheckBox) findViewById(R.id.check_dislike);
+    }
+
+    public static void openArticle(Context context, int article_id) {
+        Intent intent = new Intent();
+        intent.putExtra("article_id",article_id);
+        intent.setClass(context, ArticleActivity.class);
+        context.startActivity(intent);
     }
 
     private void setViews() {
