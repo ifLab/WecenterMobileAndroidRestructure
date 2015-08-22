@@ -13,9 +13,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
@@ -43,7 +45,7 @@ public class ArticleActivity extends BaseActivity {
     CheckBox likeCheckBox;
     CheckBox dislikeCheckBox;
     int articleID;
-
+    int voteValue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +76,7 @@ public class ArticleActivity extends BaseActivity {
 
     private void setViews() {
         refreshLayout.setEnabled(false);
+        contentWebView.setPadding(5,5,5,5);
         contentWebView.getSettings().setUseWideViewPort(true);
         contentWebView.getSettings().setLoadWithOverviewMode(true);
         contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
@@ -84,15 +87,21 @@ public class ArticleActivity extends BaseActivity {
             RequestParams params = new RequestParams();
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
                 dislikeCheckBox.setEnabled(!b);
 
                 params.put("answer_id", articleID);
                 params.put("value", 1);
 
-                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void parseJson(JSONObject response) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        voteValue = b ? voteValue + 1 : voteValue - 1;
+                        votesTextView.setText(voteValue + "");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
                     }
                 });
@@ -104,15 +113,21 @@ public class ArticleActivity extends BaseActivity {
             RequestParams params = new RequestParams();
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
                 likeCheckBox.setEnabled(!b);
 
                 params.put("answer_id", articleID);
                 params.put("value", -1);
 
-                AsyncHttpWecnter.loadData(ArticleActivity.this, RelativeUrl.ARTICLE_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void parseJson(JSONObject response) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        voteValue = b ? voteValue - 1 : voteValue + 1;
+                        votesTextView.setText(voteValue + "");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
                     }
                 });
@@ -163,9 +178,12 @@ public class ArticleActivity extends BaseActivity {
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
-                votesTextView.setText(artleInfo.getVotes() + "");
+                if(artleInfo.getVotes() > -1) {
+                    voteValue = artleInfo.getVotes();
+                    votesTextView.setText(voteValue + "");
+                }
 
-                if(artleInfo.getVote_value() == 1){
+                if (artleInfo.getVote_value() == 1){
                     likeCheckBox.setChecked(true);
                     dislikeCheckBox.setEnabled(false);
                 }else if(artleInfo.getVote_value() == -1){

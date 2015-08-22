@@ -3,6 +3,7 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.Log;
@@ -61,7 +62,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     FlowLayout topicFlowLayout;
     RelativeLayout addAnswerRel;
     RelativeLayout topRel;
-
+    SwipeRefreshLayout refreshLayout;
     List<AnswerInfo> answersList = new ArrayList();
     List<QuestionTopics> questionsList;
     AnswerAdapter answerAdapter;
@@ -86,6 +87,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (ListView)findViewById(R.id.list_question_pic);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
     }
 
     private void findHeaderView() {
@@ -103,6 +105,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void setViews() {
+        refreshLayout.setEnabled(false);
         contentWebView.getSettings().setUseWideViewPort(true);
         contentWebView.getSettings().setLoadWithOverviewMode(true);
         contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));

@@ -18,9 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
@@ -53,6 +55,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
     int answerID = -1;
     String questionTitle;
     int uid = -1;
+    int voteValue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,16 +96,22 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             RequestParams params = new RequestParams();
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
                 dislikeCheckBox.setEnabled(!b);
 
                 if(!params.has("answer_id")) {
                     params.put("answer_id", answerID);
                     params.put("value", 1);
                 }
-                AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void parseJson(JSONObject response) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        voteValue = b ? voteValue + 1:voteValue - 1;
+                        votesTextView.setText(voteValue+"");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
                     }
                 });
@@ -113,7 +122,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             RequestParams params = new RequestParams();
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
                 likeCheckBox.setEnabled(!b);
 
                 if(!params.has("answer_id")) {
@@ -121,9 +130,15 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
                     params.put("value", -1);
                 }
 
-                AsyncHttpWecnter.loadData(QuestionAnswerActivity.this, RelativeUrl.ANSWER_VOTE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void parseJson(JSONObject response) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        voteValue = b ? voteValue - 1 : voteValue + 1;
+                        votesTextView.setText(voteValue + "");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
                     }
                 });
@@ -140,7 +155,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
 
     public void gotoComment(View view){
         Intent intent = new Intent(QuestionAnswerActivity.this,AnswerCommentActivity.class);
-        intent.putExtra("answer_id",answerID);
+        intent.putExtra("answer_id", answerID);
         startActivity(intent);
     }
 
@@ -171,9 +186,10 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
                 contentWebView.loadDataWithBaseURL("about:blank", answerInfo.getAnswer_content(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                if(answerInfo.getVote_value() > -1)
-                    votesTextView.setText(answerInfo.getVote_value() + "");
-
+                if(answerInfo.getVote_value() > -1) {
+                    voteValue = answerInfo.getVote_value();
+                    votesTextView.setText(voteValue + "");
+                }
                 addTimeTextView.setVisibility(View.VISIBLE);
                 addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
 

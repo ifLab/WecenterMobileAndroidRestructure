@@ -63,7 +63,6 @@ public class ArticleCommentsAdapter extends RecyclerView.Adapter<ArticleComments
                     Intent intent = new Intent(context, PersonalCenterActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("uid", userinfo.getUid());
-                    bundle.putBoolean("isOwner", User.getLoginUser(context).getUid() == userinfo.getUid());
                     intent.putExtra("bundle", bundle);
                     context.startActivity(intent);
                 }

@@ -82,7 +82,6 @@ public class AnswerAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, PersonalCenterActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("uid",answerInfo.getUid());
-                bundle.putBoolean("isOwner", User.getLoginUser(context).getUid() == answerInfo.getUid());
                 intent.putExtra("bundle", bundle);
                 context.startActivity(intent);
             }

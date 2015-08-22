@@ -32,6 +32,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@drawable/rectangle"
+        android:padding="0.5dp"
         android:id="@+id/linearLayout2">
 
         <EditText
@@ -43,13 +44,19 @@
             android:paddingLeft="5dp"
             android:layout_weight="0.8"/>
 
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/line"/>
+
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:background="@drawable/question_btn_selector"
             android:onClick="commentOnClick"
-            android:text="发布"/>
+            android:text="发布"
+            android:layout_margin="0.5dp" />
 
 
     </LinearLayout>

@@ -29,7 +29,6 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleComment;
 import org.iflab.wecentermobileandroidrestructure.model.question.CommentInfo;
-import org.iflab.wecentermobileandroidrestructure.ui.ItemDivider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,7 +99,7 @@ public class AnswerCommentActivity extends AppCompatActivity {
     private void setViews() {
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new ItemDivider(AnswerCommentActivity.this, R.drawable.item_divider));
+//        recyclerView.addItemDecoration(new ItemDivider(AnswerCommentActivity.this, R.drawable.item_divider));
 
         refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -237,7 +236,6 @@ public class AnswerCommentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                System.out.println("失败" + new String(responseBody));
             }
 
             @Override
