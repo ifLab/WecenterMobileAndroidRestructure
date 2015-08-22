@@ -195,7 +195,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                         updateFoucsBtnUI(1);
                         break;
                     case "remove":
-                        focusTextView.setText(foucsNum + "");
+                        focusTextView.setText((foucsNum - 1) + "");
                         updateFoucsBtnUI(0);
                         break;
                 }
@@ -230,9 +230,10 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                             answersList.add(answerInfo);
                             Log.v("answerInfo", answerInfo.toString());
                         }
-                        answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
-                        listView.setAdapter(answerAdapter);
                     }
+                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this,answersList,questionInfo.getQuestion_content());
+                    listView.setAdapter(answerAdapter);
+
                     //QuestionTopics
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
@@ -272,7 +273,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 HawkControl.saveUserCount(user);
 
                 userNameTextView.setText(user.getUser_name());
-                ImageLoader.getInstance().displayImage(user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
+                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
             }
         });
     }
