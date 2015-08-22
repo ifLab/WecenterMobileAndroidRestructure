@@ -95,7 +95,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     public static void openQuestionDetail(Context context, int uid,int question_id) {
         Intent intent = new Intent();
         intent.putExtra("uid", uid);
-        intent.putExtra("question_id",question_id);
+        intent.putExtra("question_id", question_id);
         intent.setClass(context, QuestionDetailActivity.class);
         context.startActivity(intent);
     }
@@ -219,17 +219,19 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                     Log.v("questionInfo",questionInfo.toString());
 
                     //answer
-                    JSONObject answersObj = new JSONObject(response.getString("answers"));
-                    Iterator<String> iterator = answersObj.keys();
-                    while (iterator.hasNext()) {
-                        answerInfo = new AnswerInfo();
-                        answerInfo = gson.fromJson(answersObj.getString(iterator.next()), AnswerInfo.class);
-                        answersList.add(answerInfo);
-                        Log.v("answerInfo", answerInfo.toString());
+                    String answers = response.getString("answers");
+                    if(!answers.equals("[]")) {
+                        JSONObject answersObj = new JSONObject(answers);
+                        Iterator<String> iterator = answersObj.keys();
+                        while (iterator.hasNext()) {
+                            answerInfo = new AnswerInfo();
+                            answerInfo = gson.fromJson(answersObj.getString(iterator.next()), AnswerInfo.class);
+                            answersList.add(answerInfo);
+                            Log.v("answerInfo", answerInfo.toString());
+                        }
+                        answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
+                        listView.setAdapter(answerAdapter);
                     }
-                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this,answersList,questionInfo.getQuestion_content());
-                    listView.setAdapter(answerAdapter);
-
                     //QuestionTopics
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
