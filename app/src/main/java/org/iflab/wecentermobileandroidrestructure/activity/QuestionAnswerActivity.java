@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,15 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
@@ -37,7 +47,7 @@ import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class QuestionAnswerActivity extends BaseActivity implements View.OnClickListener{
+public class QuestionAnswerActivity extends ShareBaseActivity implements View.OnClickListener{
 
     Toolbar toolbar;
     SwipeRefreshLayout refreshLayout;
@@ -56,6 +66,8 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
     String questionTitle;
     int uid = -1;
     int voteValue;
+    String shareUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +75,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
 
         answerID = getIntent().getIntExtra("answer_id", -1);
         questionTitle = getIntent().getStringExtra("question_title");
+        shareUrl = "iflab.org";
 
         findViews();
         setViews();
@@ -121,11 +134,12 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
 
         dislikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             RequestParams params = new RequestParams();
+
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
                 likeCheckBox.setEnabled(!b);
 
-                if(!params.has("answer_id")) {
+                if (!params.has("answer_id")) {
                     params.put("answer_id", answerID);
                     params.put("value", -1);
                 }
@@ -150,6 +164,7 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
     }
 
     public void gotoShare(View view){
+        mController.openShare(QuestionAnswerActivity.this, false);
 
     }
 
@@ -186,17 +201,17 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
                 contentWebView.loadDataWithBaseURL("about:blank", answerInfo.getAnswer_content(), "text/html", "utf-8", null);
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                if(answerInfo.getVote_value() > -1) {
+                if (answerInfo.getVote_value() > -1) {
                     voteValue = answerInfo.getVote_value();
                     votesTextView.setText(voteValue + "");
                 }
                 addTimeTextView.setVisibility(View.VISIBLE);
                 addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
 
-                if(answerInfo.getVote_value() == 1){
+                if (answerInfo.getVote_value() == 1) {
                     likeCheckBox.setChecked(true);
                     dislikeCheckBox.setEnabled(false);
-                }else if(answerInfo.getVote_value() == -1){
+                } else if (answerInfo.getVote_value() == -1) {
                     dislikeCheckBox.setChecked(true);
                     likeCheckBox.setEnabled(false);
                 }
@@ -229,4 +244,6 @@ public class QuestionAnswerActivity extends BaseActivity implements View.OnClick
 
         }
     }
+
+
 }

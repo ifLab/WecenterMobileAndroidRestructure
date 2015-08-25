@@ -70,7 +70,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     int question_id;
     int uid;
     int foucsNum;
-
+    public static Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,11 +94,15 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
 
     public static void openQuestionDetail(Context context, int uid, int question_id) {
-        Intent intent = new Intent();
+        if(intent == null){
+            intent = new Intent();
+        }
+        // intent.putExtra 最终用的事ArrayMap.put 此方法可覆盖值，setClass也可覆盖
         intent.putExtra("uid", uid);
         intent.putExtra("question_id", question_id);
         intent.setClass(context, QuestionDetailActivity.class);
         context.startActivity(intent);
+        intent.setClassName("","");//清空对上下文的引用
     }
 
 

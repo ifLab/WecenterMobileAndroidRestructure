@@ -1,71 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.iflab.wecentermobileandroidrestructure" >
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.iflab.wecentermobileandroidrestructure">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <application
-        android:name=".application.WecenterApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".activity.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:name=".application.WecenterApplication" android:theme="@style/AppTheme">
+        <activity android:label="@string/app_name" android:name=".activity.LoginActivity" android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.WencenterActivity"
-            android:theme="@style/homepage" />
-        <activity
-            android:name=".activity.PublishAnswerArticleActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".activity.PhotoPickActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".activity.PersonalCenterActivity"
-            android:theme="@style/homepage" />
-        <activity
-            android:name=".activity.PersonalCenterEditActivity"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity android:name=".activity.PublishPhotoDetailActivity" />
-        <activity
-            android:name=".activity.QuestionDetailActivity"
-            android:label="@string/title_activity_question_detail" >
+        <activity android:name=".activity.WencenterActivity" android:theme="@style/homepage"/>
+        <activity android:name=".activity.PublishAnswerArticleActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".activity.PhotoPickActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".activity.PersonalCenterActivity" android:theme="@style/homepage"/>
+        <activity android:name=".activity.PersonalCenterEditActivity" android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+        <activity android:name=".activity.PublishPhotoDetailActivity"/>
+        <activity android:label="@string/title_activity_question_detail" android:name=".activity.QuestionDetailActivity">
         </activity>
-        <activity
-            android:name=".activity.ArticleActivity"
-            android:label="@string/title_activity_article" >
+        <activity android:label="@string/title_activity_article" android:name=".activity.ArticleActivity">
         </activity>
-        <activity
-            android:name=".activity.TopicsActivity"
-            android:label="@string/title_activity_topics" >
+        <activity android:label="@string/title_activity_topics" android:name=".activity.TopicsActivity">
         </activity>
-        <activity
-            android:name=".activity.QuestionAnswerActivity"
-            android:label="@string/title_activity_question_answer" >
+        <activity android:label="@string/title_activity_question_answer" android:name=".activity.QuestionAnswerActivity">
         </activity>
-        <activity
-            android:name=".activity.AnswerCommentActivity"
-            android:label="@string/title_activity_answer_comment" >
+        <activity android:label="@string/title_activity_answer_comment" android:name=".activity.AnswerCommentActivity">
         </activity>
-        <activity
-            android:name=".activity.PersonalQuestionActivity"
-            android:label="@string/title_activity_personal_question" >
+        <activity android:label="@string/title_activity_personal_question" android:name=".activity.PersonalQuestionActivity">
         </activity>
-        <activity android:name=".activity.PersonalArticleActivity" >
+        <activity android:name=".activity.PersonalArticleActivity">
         </activity>
-        <activity
-            android:name=".activity.PersonalAnswerActivity"
-            android:label="@string/title_activity_personal_answer" >
+        <activity android:label="@string/title_activity_personal_answer" android:name=".activity.PersonalAnswerActivity">
         </activity>
         <activity android:name=".activity.PersonalTopicActivity">
 
@@ -73,6 +40,44 @@
         <activity android:name=".activity.PersonalFollowingActivity">
 
         </activity>
-    </application>
+    <meta-data android:name="UMENG_APPKEY" android:value="55d96f98e0f55a58c2004be1"/>
 
+<activity android:configChanges="orientation|keyboard"
+    android:launchMode="singleTask"
+    android:name="com.umeng.socialize.view.ShareActivity"
+    android:noHistory="true"
+    android:theme="@style/Theme.UMDialog"
+    android:windowSoftInputMode="stateVisible|adjustResize"/>
+
+        <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 100424468，如果你使用的公用账号，则不需要修改；否则修改成你在QQ开放平台申请的 APP ID-->
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:screenOrientation="portrait">
+        </activity>
+
+<activity android:configChanges="keyboardHidden|orientation|screenSize"
+    android:exported="true"
+    android:name=".wxapi.WXEntryActivity"
+    android:screenOrientation="portrait"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+</application>
+
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 </manifest>
