@@ -25,10 +25,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.AnswerAdapter;
+import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
@@ -325,4 +327,10 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         return params;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = WecenterApplication.getRefWatcher(getApplication());
+        refWatcher.watch(this);
+    }
 }

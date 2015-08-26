@@ -8,6 +8,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.orhanobut.hawk.Hawk;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.litepal.LitePalApplication;
 
@@ -16,6 +18,7 @@ import org.litepal.LitePalApplication;
  */
 public class WecenterApplication extends LitePalApplication {
     public static int sWidthPix;
+    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
@@ -23,6 +26,11 @@ public class WecenterApplication extends LitePalApplication {
         Hawk.init(getApplicationContext());
         sWidthPix = getResources().getDisplayMetrics().widthPixels;
         initImageLoader(getApplicationContext());
+        initRefWatcher();
+    }
+
+    private void initRefWatcher() {
+        refWatcher = LeakCanary.install(this);
     }
 
     public static void initImageLoader(Context context) {
@@ -39,5 +47,10 @@ public class WecenterApplication extends LitePalApplication {
                 .build();
 
         ImageLoader.getInstance().init(config);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        WecenterApplication application = (WecenterApplication) context.getApplicationContext();
+        return application.refWatcher;
     }
 }
