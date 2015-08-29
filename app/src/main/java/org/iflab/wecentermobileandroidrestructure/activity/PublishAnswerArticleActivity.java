@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,10 +39,21 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by hcjcch on 15/5/23.
  */
 public class PublishAnswerArticleActivity extends BaseActivity {
+
+    public static final String PUBLISH_QUESTION = "publih_question";
+    public static final String PUBLISH_ARTICLE = "publish_article";
+    public static final String PUBLISH_ANSWER = "publish_answer";
+
+    private String publishType;
+    public static final String PUBLISH_TYPE_INTENT = "publish_type";
+    public static final String QUESTION_ID_INTENT = "question_id";
     private AutoHeightGridView gridView;
     public static final int PHOTO_MAX_COUNT = 6;
     public static final int RESULT_REQUEST_PICK_PHOTO = 1;
@@ -62,17 +74,48 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     private Vector<String> attachIds = new Vector<>();
     private Toolbar toolbar;
     private Hashtable<String, String> hashtable = new Hashtable<>();
+    @Bind(R.id.rel_topic)
+    RelativeLayout rel_topic;
+
+    @Bind(R.id.rel_description)
+    RelativeLayout rel_description;
+
+    @Bind(R.id.txt_title)
+    TextView txt_title;
+
+    private String url;
+    private Intent intent;
+    private int questionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
+        ButterKnife.bind(this);
         photoOperate = new PhotoOperate(getApplicationContext());
-        Intent intent = getIntent();
-        publishId = "question";
+        intent = getIntent();
+        publishType = intent.getStringExtra(PUBLISH_TYPE_INTENT);
+        setPublishId();
         findViews();
         setViews();
         setToolBars();
+    }
+
+    private void setPublishId() {
+        switch (publishType) {
+            case PUBLISH_ANSWER:
+                publishId = "answer";
+                url = RelativeUrl.PUBLISH_ANSWER;
+                questionId = intent.getIntExtra(QUESTION_ID_INTENT, -1);
+                break;
+            case PUBLISH_ARTICLE:
+                publishId = "article";
+                break;
+            case PUBLISH_QUESTION:
+                publishId = "question";
+                url = RelativeUrl.UPLOAD_QUESTION;
+                break;
+        }
     }
 
     private void setToolBars() {
@@ -101,6 +144,11 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     private void setViews() {
         attachmentGridAdapter = new AttachmentGridAdapter(mData);
         gridView.setAdapter(attachmentGridAdapter);
+        if (publishType.equals(PUBLISH_ANSWER)) {
+            rel_topic.setVisibility(View.GONE);
+            rel_description.setVisibility(View.GONE);
+            txt_title.setText("描述");
+        }
         topicEditText.setText("");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -241,40 +289,60 @@ public class PublishAnswerArticleActivity extends BaseActivity {
 
     private void uploadWord() {
         RequestParams params = new RequestParams();
-        String title = titleEditText.getText().toString();
-        if (title.length() < 6) {
-            Toast.makeText(PublishAnswerArticleActivity.this, "标题不能小于6个字", Toast.LENGTH_SHORT).show();
-            titleEditText.requestFocus();
-            return;
-        }
-        params.put("question_content", title);
-        String description = descriptionEditText.getText().toString();
-        if (description.length() < 6) {
-            Toast.makeText(PublishAnswerArticleActivity.this, "描述不能小于6个字", Toast.LENGTH_SHORT).show();
-            descriptionEditText.requestFocus();
-            return;
-        }
-        for (String i : attachIds) {
-            description += "[attach]" + i + "[/attach]" + "\n";
-        }
-        params.put("question_detail", description);
-        params.put("attach_access_key", attach_access_key);
-        if (topics.size() != 0) {
-            String topicsUpload = "";
-            for (String topic : topics) {
-                topicsUpload = topicsUpload + topic + ",";
+        if (publishType.equals(PUBLISH_ANSWER)) {
+            String title = titleEditText.getText().toString();
+            if (title.length() < 6) {
+                Toast.makeText(PublishAnswerArticleActivity.this, "描述不能小于6个字", Toast.LENGTH_SHORT).show();
+                titleEditText.requestFocus();
+                return;
             }
-            topicsUpload = topicsUpload.substring(0, topicsUpload.length());
-            params.put("topics", topicsUpload);
+            for (String i : attachIds) {
+                title += "[attach]" + i + "[/attach]" + "\n";
+            }
+            params.put("answer_content", title);
+            params.put("attach_access_key", attach_access_key);
+            params.put("question_id", questionId);
+        } else {
+            String title = titleEditText.getText().toString();
+            if (title.length() < 6) {
+                Toast.makeText(PublishAnswerArticleActivity.this, "标题不能小于6个字", Toast.LENGTH_SHORT).show();
+                titleEditText.requestFocus();
+                return;
+            }
+            params.put("question_content", title);
+            String description = descriptionEditText.getText().toString();
+            if (description.length() < 6) {
+                Toast.makeText(PublishAnswerArticleActivity.this, "描述不能小于6个字", Toast.LENGTH_SHORT).show();
+                descriptionEditText.requestFocus();
+                return;
+            }
+            for (String i : attachIds) {
+                description += "[attach]" + i + "[/attach]" + "\n";
+            }
+            params.put("question_detail", description);
+            params.put("attach_access_key", attach_access_key);
+            if (topics.size() != 0) {
+                String topicsUpload = "";
+                for (String topic : topics) {
+                    topicsUpload = topicsUpload + topic + ",";
+                }
+                topicsUpload = topicsUpload.substring(0, topicsUpload.length());
+                params.put("topics", topicsUpload);
+            }
         }
-        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.UPLOAD_QUESTION, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 try {
-                    String question_id = response.getString("question_id");
+                    String question_id;
+                    if (publishType.equals(PUBLISH_ANSWER)) {
+                        question_id = response.getString("answer_id");
+                    } else {
+                        question_id = response.getString("question_id");
+                    }
                     if (question_id != null) {
                         Toast.makeText(PublishAnswerArticleActivity.this, "成功", Toast.LENGTH_SHORT).show();
-                        finish();
+                        PublishAnswerArticleActivity.this.finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

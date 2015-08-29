@@ -6,14 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,17 +21,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.AnswerAdapter;
-import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
-import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionInfo;
@@ -104,7 +97,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         intent.putExtra("question_id", question_id);
         intent.setClass(context, QuestionDetailActivity.class);
         context.startActivity(intent);
-        intent.setClassName("","");//清空对上下文的引用
+        intent.setClassName("", "");//清空对上下文的引用
     }
 
 
@@ -152,7 +145,10 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rel_add_answer:
-                //到发布
+                Intent intent1 = new Intent(QuestionDetailActivity.this,PublishAnswerArticleActivity.class);
+                intent1.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,PublishAnswerArticleActivity.PUBLISH_ANSWER);
+                intent1.putExtra(PublishAnswerArticleActivity.QUESTION_ID_INTENT,question_id);
+                startActivity(intent1);
                 break;
             case R.id.btn_foucs:
                 foucsQuestion();

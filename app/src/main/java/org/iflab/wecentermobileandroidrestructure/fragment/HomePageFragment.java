@@ -110,7 +110,10 @@ public class HomePageFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class));
+                Intent intent = new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class);
+                intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,PublishAnswerArticleActivity.PUBLISH_QUESTION);
+                startActivity(intent);
+
             }
         });
         endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {

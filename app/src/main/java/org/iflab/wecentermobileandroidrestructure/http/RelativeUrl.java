@@ -30,4 +30,5 @@ public class RelativeUrl {
     public static String ANSWER_COMMENT = "api/answer_comment.php";
     public static String ARTICLE_COMMENT = "?/api/article/comment/";
     public static String PUBLISH_ARTICLE = "?/api/publish/save_comment/";
+    public static String PUBLISH_ANSWER = "?/api/publish/save_answer/";//回答问题
 }
