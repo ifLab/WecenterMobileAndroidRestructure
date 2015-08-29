@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.RefWatcher;
+
+import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,4 +56,11 @@ public class BaseActivity extends AppCompatActivity {
     public void toastNo200() {
         Toast.makeText(getApplicationContext(), "与服务器连接错误", Toast.LENGTH_SHORT).show();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = WecenterApplication.getRefWatcher(getApplication());
+        refWatcher.watch(this);
+    }
+
 }

@@ -327,10 +327,5 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         return params;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = WecenterApplication.getRefWatcher(getApplication());
-        refWatcher.watch(this);
-    }
+
 }

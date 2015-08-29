@@ -33,6 +33,8 @@ import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Stack;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ArticleActivity extends ShareBaseActivity {
@@ -228,10 +230,5 @@ public class ArticleActivity extends ShareBaseActivity {
         return params;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = WecenterApplication.getRefWatcher(getApplication());
-        refWatcher.watch(this);
-    }
+
 }
