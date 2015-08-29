@@ -25,10 +25,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.adapter.AnswerAdapter;
+import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
@@ -70,7 +72,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     int question_id;
     int uid;
     int foucsNum;
-
+    public static Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,11 +96,15 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
 
     public static void openQuestionDetail(Context context, int uid, int question_id) {
-        Intent intent = new Intent();
+        if(intent == null){
+            intent = new Intent();
+        }
+        // intent.putExtra 最终用的事ArrayMap.put 此方法可覆盖值，setClass也可覆盖
         intent.putExtra("uid", uid);
         intent.putExtra("question_id", question_id);
         intent.setClass(context, QuestionDetailActivity.class);
         context.startActivity(intent);
+        intent.setClassName("","");//清空对上下文的引用
     }
 
 
@@ -316,5 +322,6 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         params.put("uid", uid);
         return params;
     }
+
 
 }

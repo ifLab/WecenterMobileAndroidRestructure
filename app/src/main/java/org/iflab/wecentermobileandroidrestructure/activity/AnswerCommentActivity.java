@@ -137,10 +137,10 @@ public class AnswerCommentActivity extends AppCompatActivity {
         AsyncHttpWecnter.loadData(AnswerCommentActivity.this, url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
-                Log.v("addAnswer",response.toString());
+                Log.v("addAnswer", response.toString());
                 commentEdt.setText("");
                 refreshData();
-                recyclerView.smoothScrollBy(0,recyclerView.getHeight());
+                recyclerView.smoothScrollBy(0, recyclerView.getHeight());
                 inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
@@ -171,10 +171,11 @@ public class AnswerCommentActivity extends AppCompatActivity {
                             @Override
                             public void clickItemCallBack(String userName,int userID) {
                                 atUid = userID;
-                                commentEdt.setText("@" + userName);
+                                commentEdt.setText("@" + userName + " ");
                                 commentEdt.setFocusable(true);
                                 commentEdt.setFocusableInTouchMode(true);
                                 commentEdt.requestFocus();
+                                commentEdt.setSelection(userName.length() + 2);
                                 inputManager.showSoftInput(commentEdt, 0);
                             }
                         });
@@ -222,10 +223,11 @@ public class AnswerCommentActivity extends AppCompatActivity {
                         @Override
                         public void clickItemCallBack(String userName,int userID) {
                             atUid = userID;
-                            commentEdt.setText("@" + userName);
+                            commentEdt.setText("@" + userName + " ");
                             commentEdt.setFocusable(true);
                             commentEdt.setFocusableInTouchMode(true);
                             commentEdt.requestFocus();
+                            commentEdt.setSelection(userName.length() + 2);
                             inputManager.showSoftInput(commentEdt, 0);
                         }
                     });

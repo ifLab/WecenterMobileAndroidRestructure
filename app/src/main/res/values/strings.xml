@@ -12,5 +12,6 @@
     <string name="title_activity_answer_comment">AnswerCommentActivity</string>
     <string name="title_activity_personal_question">PersonalQuestionActivity</string>
     <string name="title_activity_personal_answer">PersonalAnswerActivity</string>
+    <string name="title_activity_publish_question">PublishQuestionActivity</string>
 
 </resources>

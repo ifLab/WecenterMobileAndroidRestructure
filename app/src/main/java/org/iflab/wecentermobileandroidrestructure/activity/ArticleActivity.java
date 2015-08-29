@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,9 +18,11 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
@@ -30,9 +33,11 @@ import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Stack;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ArticleActivity extends BaseActivity {
+public class ArticleActivity extends ShareBaseActivity {
 
     Toolbar toolbar;
     SwipeRefreshLayout refreshLayout;
@@ -47,18 +52,21 @@ public class ArticleActivity extends BaseActivity {
     CheckBox dislikeCheckBox;
     int articleID;
     int voteValue;
+    public static Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
         articleID = getIntent().getIntExtra("article_id", 1);
+
         findViews();
         setViews();
         setToolBars();
         setListenter();
         loadData();
     }
+
 
 
     private void findViews() {
@@ -76,10 +84,14 @@ public class ArticleActivity extends BaseActivity {
     }
 
     public static void openArticle(Context context, int article_id) {
-        Intent intent = new Intent();
-        intent.putExtra("article_id",article_id);
+        if(intent == null){
+            intent = new Intent();
+        }
+        // intent.putExtra 最终用的事ArrayMap.put 此方法可覆盖值，setClass也可覆盖
+        intent.putExtra("article_id", article_id);
         intent.setClass(context, ArticleActivity.class);
         context.startActivity(intent);
+        intent.setClassName("","");//清空对上下文的引用
     }
 
     private void setViews() {
@@ -121,7 +133,7 @@ public class ArticleActivity extends BaseActivity {
             RequestParams params = new RequestParams();
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
                 likeCheckBox.setEnabled(!b);
 
                 params.put("answer_id", articleID);
@@ -145,12 +157,12 @@ public class ArticleActivity extends BaseActivity {
     }
 
     public void gotoShare(View view) {
-
+        mController.openShare(ArticleActivity.this, false);
     }
 
     public void gotoComment(View view) {
         Intent intent = new Intent(ArticleActivity.this,AnswerCommentActivity.class);
-        intent.putExtra("article_id",articleID);
+        intent.putExtra("article_id", articleID);
         startActivity(intent);
     }
 
@@ -186,15 +198,18 @@ public class ArticleActivity extends BaseActivity {
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
-                if(artleInfo.getVotes() > -1) {
+
+                setShareContent(artleInfo.getArticleTitle(),"http://iflab.org");
+
+                if (artleInfo.getVotes() > -1) {
                     voteValue = artleInfo.getVotes();
                     votesTextView.setText(voteValue + "");
                 }
 
-                if (artleInfo.getVote_value() == 1){
+                if (artleInfo.getVote_value() == 1) {
                     likeCheckBox.setChecked(true);
                     dislikeCheckBox.setEnabled(false);
-                }else if(artleInfo.getVote_value() == -1){
+                } else if (artleInfo.getVote_value() == -1) {
                     dislikeCheckBox.setChecked(true);
                     likeCheckBox.setEnabled(false);
                 }
