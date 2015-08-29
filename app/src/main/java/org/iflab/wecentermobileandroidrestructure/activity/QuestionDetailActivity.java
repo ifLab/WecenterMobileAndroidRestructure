@@ -221,7 +221,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
                     //answer
                     String answers = response.getString("answers");
-                    if(!answers.equals("[]")) {
+                    if (!answers.equals("[]")) {
                         JSONObject answersObj = new JSONObject(answers);
                         Iterator<String> iterator = answersObj.keys();
                         while (iterator.hasNext()) {
@@ -231,15 +231,13 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                             Log.v("answerInfo", answerInfo.toString());
                         }
                     }
-                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this,answersList,questionInfo.getQuestion_content());
+                    answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
                     listView.setAdapter(answerAdapter);
 
                     //QuestionTopics
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
                             }.getType());
-//                    Log.v("QuestionTopics",questionsList.toString());
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -271,7 +269,6 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
             public void parseJson(JSONObject response) {
                 UserPersonal user = new UserPersonal(response);
                 HawkControl.saveUserCount(user);
-
                 userNameTextView.setText(user.getUser_name());
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
             }

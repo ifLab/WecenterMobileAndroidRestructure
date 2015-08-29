@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity {
 
     private void login() {
         String usernameString = userName.getText().toString();
-//        User user = User.getLoginUser(getApplicationContext());
+        User user = User.getLoginUser(getApplicationContext());
 //        usernameString = user.getUserName();
         if (usernameString.equals("")) {
             toast("用户名不能为空");

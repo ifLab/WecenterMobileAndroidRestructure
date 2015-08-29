@@ -161,6 +161,13 @@ public class PersonalCenterEditActivity extends BaseActivity {
         toolbar.setTitle("信息修改");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersonalCenterEditActivity.this.setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
     }
 
     private void camera() {
@@ -328,9 +335,11 @@ public class PersonalCenterEditActivity extends BaseActivity {
                             public void run() {
                                 Toast.makeText(PersonalCenterEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                                 save.setProgress(100);
+                                PersonalCenterEditActivity.this.setResult(RESULT_OK);
                                 finish();
                             }
                         }, 1000);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -420,5 +429,11 @@ public class PersonalCenterEditActivity extends BaseActivity {
         birthDaySelect.setEnabled(true);
         RelMars.setVisibility(View.INVISIBLE);
         progress.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        super.onBackPressed();
     }
 }

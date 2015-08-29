@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,10 +23,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.fragment.FoundFrgment;
 import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
+import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.model.User;
+import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class WencenterActivity extends BaseActivity {
@@ -38,6 +45,9 @@ public class WencenterActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private RelativeLayout rel_nav;
     private RelativeLayout rel_header;
+    private CircleImageView profile_image;
+    private TextView user_name;
+    private TextView user_signature;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +117,9 @@ public class WencenterActivity extends BaseActivity {
         list_nav = (ListView) findViewById(R.id.list_nav);
         rel_nav = (RelativeLayout) findViewById(R.id.rel_drawer);
         rel_header = (RelativeLayout) findViewById(R.id.rel_nav_header);
+        profile_image = (CircleImageView) rel_header.findViewById(R.id.image_profile);
+        user_name = (TextView) rel_header.findViewById(R.id.txt_user_name);
+        user_signature = (TextView) rel_header.findViewById(R.id.txt_signature);
         rel_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,4 +196,25 @@ public class WencenterActivity extends BaseActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        User user = User.getLoginUser(this);
+        if (user != null) {
+            ImageLoader.getInstance().displayImage(user.getAvatarFile(), profile_image, ImageOptions.optionsImagePersonalDetailAvatar);
+            user_name.setText(user.getUserName());
+            if (!TextUtils.isEmpty(user.getSignNature())) {
+                user_signature.setText(user.getSignNature());
+            } else {
+                getUserData();
+            }
+        }
+
+    }
+
+    private void getUserData() {
+
+    }
+
 }

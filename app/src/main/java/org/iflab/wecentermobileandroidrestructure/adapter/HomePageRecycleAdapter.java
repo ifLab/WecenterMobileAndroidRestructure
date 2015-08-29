@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
+import org.iflab.wecentermobileandroidrestructure.activity.QuestionAnswerActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.QuestionDetailActivity;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.homepage.HomePage;
@@ -83,7 +84,11 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArticleActivity.openArticle(mContext, homePage.getAnswerInfo().getAnswerId());
+                    Intent intent = new Intent();
+                    intent.putExtra("answer_id", homePage.getAnswerInfo().getAnswerId());
+                    intent.putExtra("question_title", homePage.getQuestionInfo().getQuestionContent());
+                    intent.setClass(mContext, QuestionAnswerActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
             switch (userAction) {
@@ -105,7 +110,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             ((HomePageOneCellHolder) viewHolder).userProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PersonalCenterActivity.openPersonalCenter(mContext,homePage.getUid());
+                    PersonalCenterActivity.openPersonalCenter(mContext, homePage.getUid());
                 }
             });
             switch (userAction) {
@@ -117,7 +122,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            QuestionDetailActivity.openQuestionDetail(mContext,homePage.getUid(),homePage.getQuestionInfo().getQuestionId());
+                            QuestionDetailActivity.openQuestionDetail(mContext, homePage.getUid(), homePage.getQuestionInfo().getQuestionId());
                         }
                     });
                     break;
@@ -140,7 +145,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ArticleActivity.openArticle(mContext,homePage.getArticleInfo().getArticleId());
+                            ArticleActivity.openArticle(mContext, homePage.getArticleInfo().getArticleId());
                         }
                     });
                     ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);

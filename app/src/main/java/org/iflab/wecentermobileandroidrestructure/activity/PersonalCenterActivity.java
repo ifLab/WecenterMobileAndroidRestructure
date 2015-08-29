@@ -33,6 +33,7 @@ import org.json.JSONObject;
  */
 
 public class PersonalCenterActivity extends BaseActivity {
+    public static final int EDIT = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView txt_motto;
     private TextView txt_user_name;
@@ -82,6 +83,7 @@ public class PersonalCenterActivity extends BaseActivity {
         } else {
             //TODO 用户错误
         }
+
     }
 
     public static void openPersonalCenter(Context context, int uid) {
@@ -104,6 +106,12 @@ public class PersonalCenterActivity extends BaseActivity {
         toolbar.setTitle("个人中心");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void findViews() {
@@ -174,7 +182,7 @@ public class PersonalCenterActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PersonalCenterActivity.this, PersonalCenterEditActivity.class);
                 intent.putExtra("bundle", bundle);
-                startActivity(intent);
+                startActivityForResult(intent, EDIT);
             }
         });
         ask.setText("提问");
@@ -226,6 +234,11 @@ public class PersonalCenterActivity extends BaseActivity {
                     txt_user_name.setText(user.getUser_name());
                     HawkControl.saveUserCount(user);
                     setData(user);
+                    if (isOwner) {
+                        User userSharePre = User.getLoginUser(PersonalCenterActivity.this);
+                        userSharePre.setSignNature(user.getSignature());
+                        User.save(PersonalCenterActivity.this,userSharePre);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -255,8 +268,6 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        swipeRefreshLayout.setRefreshing(true);
-        loadData();
     }
 
     private void setData(UserPersonal user) {
@@ -322,6 +333,16 @@ public class PersonalCenterActivity extends BaseActivity {
                     intent.putExtra("type", PersonalFollowingActivity.FOLLOWER);
                     startActivity(intent);
                     break;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDIT) {
+            if (resultCode == RESULT_OK) {
+                swipeRefreshLayout.setRefreshing(true);
+                loadData();
             }
         }
     }

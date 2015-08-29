@@ -13,6 +13,15 @@ public class User {
     private int uid;
     private String userName;
     private String avatarFile;
+    private String signNature = "";
+
+    public String getSignNature() {
+        return signNature;
+    }
+
+    public void setSignNature(String signNature) {
+        this.signNature = signNature;
+    }
 
     public int getUid() {
         return uid;
@@ -59,6 +68,7 @@ public class User {
         editor.putInt("uid", user.getUid());
         editor.putString("userName", user.getUserName());
         editor.putString("avatarFile", user.getAvatarFile());
+        editor.putString("signNature", user.getSignNature());
         editor.apply();
     }
 
@@ -68,6 +78,7 @@ public class User {
         user.setUid(sharedPreferences.getInt("uid", -1));
         user.setAvatarFile(sharedPreferences.getString("avatarFile", null));
         user.setUserName(sharedPreferences.getString("userName", null));
+        user.setSignNature(sharedPreferences.getString("signNature", null));
         return user;
     }
 

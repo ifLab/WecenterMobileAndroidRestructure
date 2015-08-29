@@ -85,7 +85,7 @@ public class FoundChildFragment extends BaseFragment {
 
     private void setRecyclerView() {
         manager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        adapter = new FoundAdapter(getActivity().getApplicationContext(), foundDatas);
+        adapter = new FoundAdapter(getActivity(), foundDatas);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
     }

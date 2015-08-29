@@ -24,7 +24,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_profile"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
@@ -36,12 +36,12 @@
         android:id="@+id/txt_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignBottom="@+id/image_profile"
         android:layout_marginBottom="28dp"
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/image_profile"
+        android:layout_toRightOf="@+id/image_profile"
         android:text="hcjcch"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="青山依旧在，几度夕阳红!"
-        android:id="@+id/textView"
+        android:id="@+id/txt_signature"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
