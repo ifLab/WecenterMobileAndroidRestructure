@@ -3,9 +3,14 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,8 +38,10 @@ import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionTopics;
+import org.iflab.wecentermobileandroidrestructure.tools.FormHtmlAsyncTask;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
+import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +59,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     TextView contentTextView;
     TextView bookMarkTextView;
     TextView focusTextView;
-    WebView contentWebView;
+    TextView contentWebView;
     ImageView userImageView;
     Button foucsBtn;
     FlowLayout topicFlowLayout;
@@ -66,6 +73,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     int uid;
     int foucsNum;
     public static Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +97,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
 
     public static void openQuestionDetail(Context context, int uid, int question_id) {
-        if(intent == null){
+        if (intent == null) {
             intent = new Intent();
         }
         // intent.putExtra 最终用的事ArrayMap.put 此方法可覆盖值，setClass也可覆盖
@@ -106,7 +114,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         userNameTextView = (TextView) headerView.findViewById(R.id.txt_user_name);
         userImageView = (ImageView) headerView.findViewById(R.id.image_profile);
         contentTextView = (TextView) headerView.findViewById(R.id.txt_question_content);
-        contentWebView = (WebView) headerView.findViewById(R.id.webv_question_content);
+        contentWebView = (TextView) headerView.findViewById(R.id.webv_question_content);
         topicFlowLayout = (FlowLayout) headerView.findViewById(R.id.flow_question_topic);
         bookMarkTextView = (TextView) headerView.findViewById(R.id.txt_bookmark);
         focusTextView = (TextView) headerView.findViewById(R.id.txt_focus);
@@ -117,9 +125,9 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private void setViews() {
         refreshLayout.setEnabled(false);
-        contentWebView.getSettings().setUseWideViewPort(true);
-        contentWebView.getSettings().setLoadWithOverviewMode(true);
-        contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
+//        contentWebView.getSettings().setUseWideViewPort(true);
+//        contentWebView.getSettings().setLoadWithOverviewMode(true);
+//        contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
         listView.addHeaderView(headerView);
         foucsBtn.setOnClickListener(this);
         topicFlowLayout.setOnClickListener(this);
@@ -145,9 +153,9 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rel_add_answer:
-                Intent intent1 = new Intent(QuestionDetailActivity.this,PublishAnswerArticleActivity.class);
-                intent1.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,PublishAnswerArticleActivity.PUBLISH_ANSWER);
-                intent1.putExtra(PublishAnswerArticleActivity.QUESTION_ID_INTENT,question_id);
+                Intent intent1 = new Intent(QuestionDetailActivity.this, PublishAnswerArticleActivity.class);
+                intent1.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT, PublishAnswerArticleActivity.PUBLISH_ANSWER);
+                intent1.putExtra(PublishAnswerArticleActivity.QUESTION_ID_INTENT, question_id);
                 startActivity(intent1);
                 break;
             case R.id.btn_foucs:
@@ -244,17 +252,13 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-//                question_id = questionInfo.getQuestion_id();
                 updateFoucsBtnUI(questionInfo.getHas_focus());
-                contentWebView.loadDataWithBaseURL("about:blank", questionInfo.getQuestion_detail(), "text/html", "utf-8", null);
-                contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
+                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionDetailActivity.this).build()), contentWebView)).execute(questionInfo.getQuestion_detail());
                 contentTextView.setText(questionInfo.getQuestion_content());
                 bookMarkTextView.setText(questionInfo.getFocus_count() + "");
 
                 foucsNum = questionInfo.getHas_focus();
                 focusTextView.setText(foucsNum + "");
-
                 if (questionsList != null) {
                     for (QuestionTopics q : questionsList) {
                         addFlowTopics(q.getTopic_title());
@@ -318,6 +322,5 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         params.put("uid", uid);
         return params;
     }
-
 
 }

@@ -67,12 +67,12 @@
 
             </RelativeLayout>
 
-            <WebView
+            <TextView
                 android:id="@+id/webv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rel_top"
-                android:layout_margin="5dp" />
+                android:paddingLeft="10dp" />
 
             <TextView
                 android:id="@+id/txt_add_time"

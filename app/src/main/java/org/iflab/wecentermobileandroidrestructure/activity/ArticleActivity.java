@@ -28,8 +28,11 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
+import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
+import org.iflab.wecentermobileandroidrestructure.tools.FormHtmlAsyncTask;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
+import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +46,7 @@ public class ArticleActivity extends ShareBaseActivity {
     SwipeRefreshLayout refreshLayout;
     CircleImageView circleImageView;
     TextView userNameTextView;
-    WebView contentWebView;
+    TextView contentWebView;
     TextView votesTextView;
     TextView signatureTextView;
     ImageButton shareBtn;
@@ -74,7 +77,7 @@ public class ArticleActivity extends ShareBaseActivity {
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipyrefreshlayout);
         circleImageView = (CircleImageView) findViewById(R.id.image_profile);
         userNameTextView = (TextView) findViewById(R.id.txt_user_name);
-        contentWebView = (WebView) findViewById(R.id.webv_content);
+        contentWebView = (TextView) findViewById(R.id.webv_content);
         votesTextView = (TextView) findViewById(R.id.txt_votes);
         signatureTextView = (TextView) findViewById(R.id.txt_user_signature);
         shareBtn = (ImageButton) findViewById(R.id.btn_share);
@@ -96,10 +99,7 @@ public class ArticleActivity extends ShareBaseActivity {
 
     private void setViews() {
         refreshLayout.setEnabled(false);
-        contentWebView.setPadding(5,5,5,5);
-        contentWebView.getSettings().setUseWideViewPort(true);
-        contentWebView.getSettings().setLoadWithOverviewMode(true);
-        contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
+        contentWebView.setPadding(5, 5, 5, 5);
     }
 
     private void setListenter() {
@@ -193,7 +193,7 @@ public class ArticleActivity extends ShareBaseActivity {
                 }
 
                 userNameTextView.setText(artleInfo.getUser_name());
-                contentWebView.loadDataWithBaseURL("about:blank", artleInfo.getMessage(), "text/html", "utf-8", null);
+                (new FormHtmlAsyncTask(new WecenterImageGetter.Builder(ArticleActivity.this).padding(DisplayUtil.dip2px(ArticleActivity.this,20)).build(),contentWebView)).execute(artleInfo.getMessage());
                 signatureTextView.setText(artleInfo.getSignature());
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
