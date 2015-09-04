@@ -166,6 +166,13 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
         cursor.close();
         folderAdapter = new FolderAdapter(mFolderData);
         photoFolderlistView.setAdapter(folderAdapter);
+
+        mNames.clear();
+        mData.clear();
+        mFolderData.clear();
+        mNames = null;
+        mData = null;
+        mFolderData = null;
     }
 
     private void findViews() {
@@ -362,5 +369,12 @@ public class PhotoPickActivity extends BaseActivity implements LoaderManager.Loa
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPickData.clear();
+        mPickData = null;
     }
 }

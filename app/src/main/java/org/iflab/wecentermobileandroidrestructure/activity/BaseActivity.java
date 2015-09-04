@@ -2,8 +2,10 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
@@ -63,4 +65,13 @@ public class BaseActivity extends AppCompatActivity {
         refWatcher.watch(this);
     }
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if(level >=TRIM_MEMORY_MODERATE){
+            ImageLoader.getInstance().clearDiskCache();
+            ImageLoader.getInstance().clearMemoryCache();
+            Log.e("TRIM_MEMORY_MODERATE","clear ImageLoader Cache...");
+        }
+    }
 }
