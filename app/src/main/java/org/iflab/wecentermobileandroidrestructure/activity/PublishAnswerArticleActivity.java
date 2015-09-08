@@ -28,6 +28,7 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
+import org.iflab.wecentermobileandroidrestructure.tools.RecycleBitmapInLayout;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,7 +143,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     }
 
     private void setViews() {
-        attachmentGridAdapter = new AttachmentGridAdapter(mData);
+        attachmentGridAdapter = new AttachmentGridAdapter(mData,getApplicationContext());
         gridView.setAdapter(attachmentGridAdapter);
         if (publishType.equals(PUBLISH_ANSWER)) {
             rel_topic.setVisibility(View.GONE);
@@ -360,10 +361,8 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         topics.clear();
         mData.clear();
         attachIds.clear();
-        hashtable = null;
-        topics = null;
-        mData = null;
-        attachIds = null;
+
+        RecycleBitmapInLayout.getInstance(false).recycle(gridView);
     }
 
     @Override

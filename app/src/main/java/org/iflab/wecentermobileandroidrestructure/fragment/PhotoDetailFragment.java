@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.tools.RecycleBitmapInLayout;
 
 import uk.co.senab.photoview.PhotoView;
 
@@ -27,7 +28,7 @@ public class PhotoDetailFragment extends BaseFragment {
     private PhotoView photoView;
     private ImageView loadFailed;
     private String photoUri;
-
+    private FrameLayout rootLayout;
     public static PhotoDetailFragment getInstance(String photoUri) {
         Bundle bundle = new Bundle();
         bundle.putString("photoUri", photoUri);
@@ -63,7 +64,7 @@ public class PhotoDetailFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FrameLayout rootLayout = (FrameLayout) inflater.inflate(R.layout.fragment_photo_detail, container, false);
+        rootLayout = (FrameLayout) inflater.inflate(R.layout.fragment_photo_detail, container, false);
         photoView = (PhotoView) rootLayout.findViewById(R.id.photoview);
         loadFailed = (ImageView) rootLayout.findViewById(R.id.imageLoadFail);
         ImageLoader.getInstance().loadImage(photoUri, optionsImage, new SimpleImageLoadingListener() {
@@ -79,5 +80,11 @@ public class PhotoDetailFragment extends BaseFragment {
             }
         });
         return rootLayout;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RecycleBitmapInLayout.getInstance(true).recycle(rootLayout);
     }
 }

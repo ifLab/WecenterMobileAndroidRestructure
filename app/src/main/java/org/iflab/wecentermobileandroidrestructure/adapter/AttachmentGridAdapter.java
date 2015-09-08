@@ -1,5 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,10 @@ import java.util.ArrayList;
 public class AttachmentGridAdapter extends BaseAdapter {
 
     private ArrayList<PublishAnswerArticleActivity.PhotoData> datas;
+    Context context;
 
-    public AttachmentGridAdapter(ArrayList<PublishAnswerArticleActivity.PhotoData> datas) {
+    public AttachmentGridAdapter(ArrayList<PublishAnswerArticleActivity.PhotoData> datas,Context context) {
+        this.context =  context;
         this.datas = datas;
     }
 
@@ -50,7 +53,8 @@ public class AttachmentGridAdapter extends BaseAdapter {
                 image.setVisibility(View.GONE);
             } else {
                 image.setVisibility(View.VISIBLE);
-                image.setImageResource(R.mipmap.publish_answer_article);
+//                image.setImageResource();
+                image.setBackground(context.getResources().getDrawable(R.mipmap.publish_answer_article));
             }
         } else {
             image.setVisibility(View.VISIBLE);
