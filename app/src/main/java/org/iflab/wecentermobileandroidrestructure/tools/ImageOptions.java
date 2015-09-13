@@ -17,7 +17,7 @@ public class ImageOptions {
             .showImageForEmptyUri(R.mipmap.test_image_not_exist)
             .showImageOnFail(R.mipmap.test_image_not_exist)
             .cacheInMemory(true)
-            .cacheOnDisk(false)
+            .cacheOnDisk(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .imageScaleType(ImageScaleType.EXACTLY)

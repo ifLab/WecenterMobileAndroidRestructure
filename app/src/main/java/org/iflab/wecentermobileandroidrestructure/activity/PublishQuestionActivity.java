@@ -81,7 +81,7 @@ public class PublishQuestionActivity extends AppCompatActivity {
     }
 
     private void setView(){
-        attachmentGridAdapter = new AttachmentGridAdapter(mData);
+        attachmentGridAdapter = new AttachmentGridAdapter(mData,PublishQuestionActivity.this);
         gridView.setAdapter(attachmentGridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

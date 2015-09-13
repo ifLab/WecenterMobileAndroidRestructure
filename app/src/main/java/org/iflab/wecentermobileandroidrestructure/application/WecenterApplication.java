@@ -45,7 +45,6 @@ public class WecenterApplication extends LitePalApplication {
                         // .imageDownloader(new MyImageDownloader(context))
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .writeDebugLogs() // Remove for release app
-                .diskCacheExtraOptions(sWidthPix / 3, sWidthPix / 3, null)
                 .build();
         ImageLoader.getInstance().init(config);
     }

@@ -18,7 +18,8 @@
         >
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
         <RelativeLayout
             android:id="@+id/rel_user"
             android:layout_width="match_parent"
@@ -72,7 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rel_top"
-                android:paddingLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:paddingRight="-10dp"/>
 
             <TextView
                 android:id="@+id/txt_add_time"

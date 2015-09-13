@@ -45,6 +45,8 @@
         <activity
             android:name=".activity.QuestionDetailActivity"
             android:label="@string/title_activity_question_detail" >
+
+
         </activity>
         <activity
             android:name=".activity.ArticleActivity"

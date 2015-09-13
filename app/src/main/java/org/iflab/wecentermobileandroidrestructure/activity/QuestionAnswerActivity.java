@@ -184,7 +184,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 answerInfo = gson.fromJson(response.toString(), AnswerInfo.class);
                 signatureTextView.setText(answerInfo.getSignature());
                 usernameTextView.setText(answerInfo.getUser_name());
-                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionAnswerActivity.this).padding(DisplayUtil.dip2px(QuestionAnswerActivity.this, 40)).build()), contentWebView)).execute(answerInfo.getAnswer_content());
+                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionAnswerActivity.this).padding(DisplayUtil.dip2px(QuestionAnswerActivity.this, 10)).build()), contentWebView)).execute(answerInfo.getAnswer_content());
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 if (answerInfo.getVote_value() > -1) {
                     voteValue = answerInfo.getVote_value();

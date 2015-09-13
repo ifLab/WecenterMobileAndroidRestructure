@@ -28,6 +28,7 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
+import org.iflab.wecentermobileandroidrestructure.tools.RecycleBitmapInLayout;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,7 +143,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     }
 
     private void setViews() {
-        attachmentGridAdapter = new AttachmentGridAdapter(mData);
+        attachmentGridAdapter = new AttachmentGridAdapter(mData,getApplicationContext());
         gridView.setAdapter(attachmentGridAdapter);
         if (publishType.equals(PUBLISH_ANSWER)) {
             rel_topic.setVisibility(View.GONE);
@@ -176,7 +177,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                 } else {
                     TextView button = new TextView(PublishAnswerArticleActivity.this);
                     button.setText(topicString);
-                    topics.add(button.getText().toString());
+                    topics.add(topicString);
                     button.setBackground(getResources().getDrawable(R.drawable.public_topic));
                     button.setTextColor(Color.WHITE);
                     button.setPadding(10, 10, 10, 10);
@@ -268,12 +269,12 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     }
 
     private void uploadAttachment(final File attachment) throws FileNotFoundException {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.put("id", publishId);
         params.put("attach_access_key", attach_access_key);
         params.put("qqfile", attachment);
         System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
-        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 try {
@@ -330,7 +331,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                 params.put("topics", topicsUpload);
             }
         }
-        AsyncHttpWecnter.loadData(PublishAnswerArticleActivity.this, url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+        AsyncHttpWecnter.loadData(getApplicationContext(), url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 try {
@@ -349,6 +350,19 @@ public class PublishAnswerArticleActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AsyncHttpWecnter.cancelAllRequest();
+
+        hashtable.clear();
+        topics.clear();
+        mData.clear();
+        attachIds.clear();
+
+        RecycleBitmapInLayout.getInstance(false).recycle(gridView);
     }
 
     @Override
