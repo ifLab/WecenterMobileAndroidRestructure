@@ -22,7 +22,7 @@ import org.iflab.wecentermobileandroidrestructure.listener.ShareRegister;
 public class ShareBaseActivity extends BaseActivity implements ShareRegister {
 
     UMSocialService mController;
-    String shareUrl = "www.baidu.com";
+    String shareUrl = "www.wecenter.com";
     String title;
     String header = "来自wecenter的分享 : ";
     @Override

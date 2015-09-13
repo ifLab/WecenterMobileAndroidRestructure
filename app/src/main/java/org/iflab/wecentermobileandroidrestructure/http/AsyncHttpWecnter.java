@@ -108,7 +108,6 @@ public class AsyncHttpWecnter {
                 super.onFinish();
             }
         };
-
         switch (type) {
             case Get:
                 client.get(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
@@ -117,7 +116,6 @@ public class AsyncHttpWecnter {
                 client.post(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
                 break;
         }
-
     }
 
     /**
