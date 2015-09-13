@@ -26,7 +26,7 @@ import org.json.JSONObject;
 public class AsyncHttpWecnter {
     public static final String BASE_URL = "http://we.bistu.edu.cn/";
     public static AsyncHttpClient client = new AsyncHttpClient();
-    public static JsonHttpResponseHandler jsonHttpResponseHandler;
+
 
     /**
      * get方式
@@ -64,52 +64,49 @@ public class AsyncHttpWecnter {
      * @param netWork
      */
     public static void loadData(final Context context, String url, RequestParams params, Request type, final NetWork netWork) {
-        if(jsonHttpResponseHandler == null){
-            jsonHttpResponseHandler = new JsonHttpResponseHandler() {
-                @Override
-                public void onStart() {
-                    netWork.start();
-                    super.onStart();
-                }
+        JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                netWork.start();
+                super.onStart();
+            }
 
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    System.out.println("success  " + response);
-                    try {
-                        int error = response.getInt("errno");
-                        if (error == -1) {
-                            if (response.getString("err") != null) {
-                                String err = response.getString("err");
-                                Toast.makeText(context, err, Toast.LENGTH_SHORT).show();
-                            } else {
-                                //TODO error
-                                Toast.makeText(context, "未知错误", Toast.LENGTH_SHORT).show();
-                            }
-                            return;
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println("success  " + response);
+                try {
+                    int error = response.getInt("errno");
+                    if (error == -1) {
+                        if (response.getString("err") != null) {
+                            String err = response.getString("err");
+                            Toast.makeText(context, err, Toast.LENGTH_SHORT).show();
+                        } else {
+                            //TODO error
+                            Toast.makeText(context, "未知错误", Toast.LENGTH_SHORT).show();
                         }
-                        JSONObject rsm = response.getJSONObject("rsm");
-                        netWork.parseJson(rsm);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "数据错误", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    JSONObject rsm = response.getJSONObject("rsm");
+                    netWork.parseJson(rsm);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "数据错误", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    System.out.println("失败" + responseString);
-                    //TODO 访问失败
-                    netWork.failure();
-                }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                System.out.println("失败" + responseString);
+                //TODO 访问失败
+                netWork.failure();
+            }
 
-                @Override
-                public void onFinish() {
-                    netWork.finish();
-                    super.onFinish();
-                }
-            };
-        }
-
+            @Override
+            public void onFinish() {
+                netWork.finish();
+                super.onFinish();
+            }
+        };
         switch (type) {
             case Get:
                 client.get(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
@@ -118,7 +115,6 @@ public class AsyncHttpWecnter {
                 client.post(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
                 break;
         }
-
     }
 
     /**
