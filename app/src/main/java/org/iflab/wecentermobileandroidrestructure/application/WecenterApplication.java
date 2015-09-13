@@ -18,6 +18,7 @@ import org.litepal.LitePalApplication;
  */
 public class WecenterApplication extends LitePalApplication {
     public static int sWidthPix;
+    public static int sHeightPix;
     private RefWatcher refWatcher;
 
     @Override
@@ -25,6 +26,7 @@ public class WecenterApplication extends LitePalApplication {
         super.onCreate();
         Hawk.init(getApplicationContext());
         sWidthPix = getResources().getDisplayMetrics().widthPixels;
+        sHeightPix = getResources().getDisplayMetrics().heightPixels;
         initImageLoader(getApplicationContext());
         initRefWatcher();
     }
@@ -42,10 +44,9 @@ public class WecenterApplication extends LitePalApplication {
                 .diskCacheFileCount(300)
                         // .imageDownloader(new MyImageDownloader(context))
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-//                .writeDebugLogs() // Remove for release app
+                .writeDebugLogs() // Remove for release app
                 .diskCacheExtraOptions(sWidthPix / 3, sWidthPix / 3, null)
                 .build();
-
         ImageLoader.getInstance().init(config);
     }
 

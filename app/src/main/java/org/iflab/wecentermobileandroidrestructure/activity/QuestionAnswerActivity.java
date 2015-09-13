@@ -1,17 +1,11 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -22,15 +16,6 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.controller.UMServiceFactory;
-import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.sso.QZoneSsoHandler;
-import com.umeng.socialize.sso.SinaSsoHandler;
-import com.umeng.socialize.sso.UMQQSsoHandler;
-import com.umeng.socialize.sso.UMSsoHandler;
-import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
@@ -38,11 +23,12 @@ import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
-import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
+import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
+import org.iflab.wecentermobileandroidrestructure.tools.FormHtmlAsyncTask;
 import org.iflab.wecentermobileandroidrestructure.tools.Global;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
-import org.json.JSONException;
+import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,7 +39,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
     SwipeRefreshLayout refreshLayout;
     CircleImageView circleImageView;
     TextView usernameTextView;
-    WebView contentWebView;
+    TextView contentWebView;
     TextView votesTextView;
     TextView signatureTextView;
     TextView addTimeTextView;
@@ -90,7 +76,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipyrefreshlayout);
         circleImageView = (CircleImageView)findViewById(R.id.image_profile);
         usernameTextView = (TextView)findViewById(R.id.txt_user_name);
-        contentWebView = (WebView)findViewById(R.id.webv_content);
+        contentWebView = (TextView)findViewById(R.id.webv_content);
         votesTextView = (TextView)findViewById(R.id.txt_votes);
         signatureTextView = (TextView)findViewById(R.id.txt_user_signature);
         addTimeTextView = (TextView)findViewById(R.id.txt_add_time);
@@ -198,8 +184,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 answerInfo = gson.fromJson(response.toString(), AnswerInfo.class);
                 signatureTextView.setText(answerInfo.getSignature());
                 usernameTextView.setText(answerInfo.getUser_name());
-                contentWebView.loadDataWithBaseURL("about:blank", answerInfo.getAnswer_content(), "text/html", "utf-8", null);
-                contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
+                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionAnswerActivity.this).padding(DisplayUtil.dip2px(QuestionAnswerActivity.this, 40)).build()), contentWebView)).execute(answerInfo.getAnswer_content());
                 ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 if (answerInfo.getVote_value() > -1) {
                     voteValue = answerInfo.getVote_value();
