@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/line_layout_selector"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_margin="10dp"
+    android:id="@+id/rl_topics"
+    >
+
+    <TextView
+        android:id="@+id/text_topic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="话题"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:background="@drawable/line_grey_bg"
+        android:textColor="@color/line"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/image_topic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:border_color="#50000000"
+        app:border_width="0.5dp"
+        android:src="@mipmap/topic_defaultimage"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/text_topic"/>
+
+    <TextView
+        android:id="@+id/txt_topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/text_color_black"
+        android:layout_toRightOf="@+id/image_topic"
+        android:layout_alignBottom="@+id/image_topic"
+        android:layout_alignTop="@+id/image_topic"
+        />
+</RelativeLayout>

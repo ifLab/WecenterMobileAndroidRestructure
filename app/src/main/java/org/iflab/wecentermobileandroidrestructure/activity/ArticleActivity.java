@@ -199,7 +199,7 @@ public class ArticleActivity extends ShareBaseActivity {
                 ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
 
-                setShareContent(artleInfo.getArticleTitle(),"http://iflab.org");
+//                setShareContent(artleInfo.getArticleTitle(),"http://iflab.org");
 
                 if (artleInfo.getVotes() > -1) {
                     voteValue = artleInfo.getVotes();

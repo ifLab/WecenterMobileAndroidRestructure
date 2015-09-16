@@ -28,6 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.fragment.FoundFrgment;
 import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
+import org.iflab.wecentermobileandroidrestructure.fragment.SearchFragment;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
@@ -37,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WencenterActivity extends BaseActivity {
 
-    private final String[] navStrings = {"主页", "发现"};
+    private final String[] navStrings = {"主页", "发现","搜索"};
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
@@ -137,11 +138,18 @@ public class WencenterActivity extends BaseActivity {
                 Fragment fragment;
                 switch (id) {
                     case 0:
+                        toolbar.setVisibility(View.VISIBLE);
                         fragment = HomePageFragment.newInstances();
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
                     case 1:
+                        toolbar.setVisibility(View.VISIBLE);
                         fragment = FoundFrgment.newInstances();
+                        fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
+                        break;
+                    case 2:
+                        toolbar.setVisibility(View.GONE);
+                        fragment = SearchFragment.newInstance();
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
                 }
@@ -178,6 +186,10 @@ public class WencenterActivity extends BaseActivity {
                     break;
                 case 1:
                     imageView.setImageResource(R.mipmap.test_ic_event);
+                    textView.setText(navStrings[position]);
+                    break;
+                case 2:
+                    imageView.setImageResource(R.mipmap.test_ic_search);
                     textView.setText(navStrings[position]);
                     break;
             }
@@ -217,4 +229,9 @@ public class WencenterActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ImageLoader.getInstance().clearMemoryCache();
+    }
 }

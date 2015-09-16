@@ -36,7 +36,7 @@ public class WecenterImageGetter implements Html.ImageGetter {
             int height = bitmap.getHeight();
             int requestWidth;
             int requestHeight;
-            int textViewWidth = WecenterApplication.sWidthPix - DisplayUtil.dip2px(context, 40);
+            int textViewWidth = WecenterApplication.sWidthPix - DisplayUtil.dip2px(context, padding);
             if (width > textViewWidth) {
                 requestWidth = textViewWidth;
                 requestHeight = (int) (height * (textViewWidth / (width * 1.0)));

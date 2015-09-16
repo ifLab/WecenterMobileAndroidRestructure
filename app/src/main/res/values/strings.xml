@@ -13,5 +13,9 @@
     <string name="title_activity_personal_question">PersonalQuestionActivity</string>
     <string name="title_activity_personal_answer">PersonalAnswerActivity</string>
     <string name="title_activity_publish_question">PublishQuestionActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

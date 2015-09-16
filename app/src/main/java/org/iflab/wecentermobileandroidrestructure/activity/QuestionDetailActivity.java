@@ -125,9 +125,6 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
 
     private void setViews() {
         refreshLayout.setEnabled(false);
-//        contentWebView.getSettings().setUseWideViewPort(true);
-//        contentWebView.getSettings().setLoadWithOverviewMode(true);
-//        contentWebView.getSettings().setDefaultFontSize(getResources().getDimensionPixelSize(R.dimen.webview_font_size));
         listView.addHeaderView(headerView);
         foucsBtn.setOnClickListener(this);
         topicFlowLayout.setOnClickListener(this);

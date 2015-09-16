@@ -25,6 +25,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".activity.WencenterActivity"
@@ -45,8 +46,6 @@
         <activity
             android:name=".activity.QuestionDetailActivity"
             android:label="@string/title_activity_question_detail" >
-
-
         </activity>
         <activity
             android:name=".activity.ArticleActivity"
@@ -119,6 +118,11 @@
         <activity
             android:name=".activity.PublishQuestionActivity"
             android:label="@string/title_activity_publish_question" >
+        </activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:label="@string/title_activity_search" >
+
         </activity>
     </application>
 

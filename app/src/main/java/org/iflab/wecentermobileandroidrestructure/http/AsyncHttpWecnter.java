@@ -5,6 +5,7 @@ package org.iflab.wecentermobileandroidrestructure.http;
  */
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -24,9 +25,9 @@ import org.json.JSONObject;
  */
 
 public class AsyncHttpWecnter {
+    public static final String TAG = "AsyncHttpWecnter";
     public static final String BASE_URL = "http://we.bistu.edu.cn/";
     public static AsyncHttpClient client = new AsyncHttpClient();
-
 
     /**
      * get方式
@@ -63,7 +64,7 @@ public class AsyncHttpWecnter {
      * @param type
      * @param netWork
      */
-    public static void loadData(final Context context, String url, RequestParams params, Request type, final NetWork netWork) {
+    public static void loadData(final Context context, final String url, RequestParams params, Request type, final NetWork netWork) {
         JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -73,7 +74,7 @@ public class AsyncHttpWecnter {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                System.out.println("success  " + response);
+                Log.d(TAG, "success   [url:" + url + "]" + response);
                 try {
                     int error = response.getInt("errno");
                     if (error == -1) {
@@ -96,7 +97,7 @@ public class AsyncHttpWecnter {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                System.out.println("失败" + responseString);
+                Log.d(TAG, "失败   [url:\" + url + \"]" + responseString);
                 //TODO 访问失败
                 netWork.failure();
             }
@@ -131,7 +132,7 @@ public class AsyncHttpWecnter {
         client.setCookieStore(cookieStore);
     }
 
-    public static void cancelAllRequest(){
+    public static void cancelAllRequest() {
         client.cancelAllRequests(true);
     }
 }
