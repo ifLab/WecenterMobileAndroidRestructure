@@ -117,7 +117,7 @@ public class SearchAdapter extends RecyclerView.Adapter{
             final SearchUsers searchUsers = (SearchUsers)searchBase;
             ((UsersCellHolder)holder).txtUserName.setText(searchUsers.getName());
             ((UsersCellHolder)holder).txtSignature.setText(searchUsers.getDetail().getSignature());
-            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + searchUsers.getDetail().getAvatar_file(),((UsersCellHolder)holder).imageUser);
+            ImageLoader.getInstance().displayImage(searchUsers.getDetail().getAvatar_file(),((UsersCellHolder)holder).imageUser);
                     ((UsersCellHolder) holder).rlUsers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

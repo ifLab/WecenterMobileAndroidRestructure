@@ -152,8 +152,9 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
                     JSONObject responseObj = new JSONObject(response);
                     String rsm = responseObj.getString("rsm");
 
-                    if (loadMore)
+                    if (loadMore) {
                         page++;
+                    }
                     if (rsm.equals("false")) {
                         loadMore = false;
                         Toast.makeText(getActivity(), "只有这么多了", Toast.LENGTH_SHORT).show();
