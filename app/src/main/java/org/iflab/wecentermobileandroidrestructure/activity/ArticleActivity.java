@@ -196,7 +196,7 @@ public class ArticleActivity extends ShareBaseActivity {
                 (new FormHtmlAsyncTask(new WecenterImageGetter.Builder(ArticleActivity.this).padding(DisplayUtil.dip2px(ArticleActivity.this,20)).build(),contentWebView)).execute(artleInfo.getMessage());
                 signatureTextView.setText(artleInfo.getSignature());
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
-                ImageLoader.getInstance().displayImage(artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
+                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getArticleTitle());
 
 //                setShareContent(artleInfo.getArticleTitle(),"http://iflab.org");
