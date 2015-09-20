@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -11,10 +15,34 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file("wecenter.jks")
+            keyAlias "wecenter"
+            storePassword "wecenter2015"
+            keyPassword "wecenter2015"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "ISRELEASE", "true"
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk') && !outputFile.name.contains('channeltest') && !outputFile.name.contains('__debug') && !outputFile.name.contains('app-keep-release')) {
+                        def fileName = outputFile.name.replace(".apk", "-v_${releaseTime()}_${defaultConfig.versionName}.apk")
+                        fileName = fileName.replace("app", "wecenter")
+                        println "[FileName]: ${fileName}"
+                        if (variant.buildType.name.equals('release')) {
+                            output.outputFile = file("${outputFile.parent}/release/${fileName}")
+                        }
+                    }
+                }
+            }
         }
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/res/assets'] } }
