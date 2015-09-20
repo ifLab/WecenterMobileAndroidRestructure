@@ -184,6 +184,7 @@ public class QuestionDetailActivity extends BaseActivity implements View.OnClick
         }
     }
 
+
     private void foucsQuestion() {
         AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_FOUCS, setFoucsParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override

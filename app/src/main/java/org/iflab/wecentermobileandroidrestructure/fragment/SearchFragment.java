@@ -155,6 +155,10 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
                     if (loadMore) {
                         page++;
                     }
+                    if(rsm.equals("null")){
+                        Toast.makeText(getActivity(), "没有相关内容", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if (rsm.equals("false")) {
                         loadMore = false;
                         Toast.makeText(getActivity(), "只有这么多了", Toast.LENGTH_SHORT).show();

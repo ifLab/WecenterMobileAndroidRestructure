@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -274,18 +276,32 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         params.put("attach_access_key", attach_access_key);
         params.put("qqfile", attachment);
         System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
-        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
-            @Override
-            public void parseJson(JSONObject response) {
+        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds,hashtable,attachment));
+    }
+
+    private static class UploadNetWork extends NetWork{
+        private  final WeakReference<Vector<String>> attachIds ;
+        private  final WeakReference<Hashtable<String, String>> hashtable;
+        private  final WeakReference<File> attachment ;
+
+        public UploadNetWork(Vector<String> attachIds,Hashtable<String, String> hashtable,File attachment){
+            this.attachIds = new WeakReference<>(attachIds);
+            this.hashtable = new WeakReference<>(hashtable);
+            this.attachment = new WeakReference<>(attachment);
+        }
+
+        @Override
+        public void parseJson(JSONObject response) {
+            if(attachIds.get() != null && hashtable.get() != null && attachment.get() != null) {
                 try {
                     String attachid = response.getString("attach_id");
-                    attachIds.add(attachid);
-                    hashtable.put(Uri.fromFile(attachment).toString(), attachid);
+                    attachIds.get().add(attachid);
+                    hashtable.get().put(Uri.fromFile(attachment.get()).toString(), attachid);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }
     }
 
     private void uploadWord() {

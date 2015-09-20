@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -168,17 +169,34 @@ public class PublishQuestionActivity extends AppCompatActivity {
         params.put("attach_access_key", attach_access_key);
         params.put("qqfile", attachment);
         System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
-        AsyncHttpWecnter.loadData(PublishQuestionActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new NetWork() {
-            @Override
-            public void parseJson(JSONObject response) {
+
+        AsyncHttpWecnter.loadData(PublishQuestionActivity.this, RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post,new UploadNetWork(attachIds,hashtable,attachment));
+    }
+
+
+    private static class UploadNetWork extends NetWork{
+        private  final WeakReference<ArrayList<String>> attachIds ;
+        private  final WeakReference<ArrayMap<String, String>> hashtable;
+        private  final WeakReference<File> attachment ;
+
+        public UploadNetWork(ArrayList<String> attachIds,ArrayMap<String, String> hashtable,File attachment){
+            this.attachIds = new WeakReference<>(attachIds);
+            this.hashtable = new WeakReference<>(hashtable);
+            this.attachment = new WeakReference<>(attachment);
+        }
+
+
+        @Override
+        public void parseJson(JSONObject response) {
+            if(attachIds.get() != null && hashtable.get() != null && attachment.get() != null) {
                 try {
                     String attachid = response.getString("attach_id");
-                    attachIds.add(attachid);
-                    hashtable.put(Uri.fromFile(attachment).toString(), attachid);
+                    attachIds.get().add(attachid);
+                    hashtable.get().put(Uri.fromFile(attachment.get()).toString(), attachid);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }
     }
 }
