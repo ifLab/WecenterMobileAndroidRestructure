@@ -38,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WencenterActivity extends BaseActivity {
 
-    private final String[] navStrings = {"主页", "发现","搜索"};
+    private final String[] navStrings = {"主页", "发现", "搜索"};
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
