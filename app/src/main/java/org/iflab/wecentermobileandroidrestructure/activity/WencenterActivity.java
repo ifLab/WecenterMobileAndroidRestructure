@@ -238,7 +238,7 @@ public class WencenterActivity extends BaseActivity {
                 mExitTime = System.currentTimeMillis();
 
             } else {
-                android.os.Process.killProcess(android.os.Process.myPid());
+                finish();
             }
             return true;
         }
