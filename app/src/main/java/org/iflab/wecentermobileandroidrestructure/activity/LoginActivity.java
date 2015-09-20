@@ -75,15 +75,14 @@ public class LoginActivity extends BaseActivity {
         String usernameString = userName.getText().toString();
         User user = User.getLoginUser(getApplicationContext());
 //        usernameString = user.getUserName();
-        usernameString = "hc";
+//        usernameString = "hc";
 
         if (usernameString.equals("")) {
             toast("用户名不能为空");
             return;
         }
         String passWordString = passWord.getText().toString();
-        passWordString = "huahua";
-//        passWordString = "935600f12";
+//        passWordString = "huahua";
         if (passWordString.equals("")) {
             toast("密码不能为空");
             return;
@@ -106,6 +105,7 @@ public class LoginActivity extends BaseActivity {
                     User.save(getApplicationContext(), user);
                     startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
 //                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
+                    finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
