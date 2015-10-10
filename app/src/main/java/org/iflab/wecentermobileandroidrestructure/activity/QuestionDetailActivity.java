@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class QuestionDetailActivity extends BaseActivity implements View.OnClickListener {
+public class QuestionDetailActivity extends SwipeBackBaseActivity implements View.OnClickListener {
 
 
     private Toolbar toolbar;

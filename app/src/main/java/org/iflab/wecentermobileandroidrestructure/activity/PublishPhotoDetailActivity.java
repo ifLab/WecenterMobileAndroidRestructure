@@ -22,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Created by hcjcch on 15/6/20.
  */
-public class PublishPhotoDetailActivity extends BaseActivity {
+public class PublishPhotoDetailActivity extends SwipeBackBaseActivity {
     private PhotoViewPager pager;
     private ArrayList<String> arrUri;
     private int position;

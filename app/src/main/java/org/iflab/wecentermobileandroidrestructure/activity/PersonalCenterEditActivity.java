@@ -50,7 +50,7 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
  * Created by hcjcch on 15/6/6.
  */
 
-public class PersonalCenterEditActivity extends BaseActivity {
+public class PersonalCenterEditActivity extends SwipeBackBaseActivity {
 
     private Uri fileUri;
     private final int RESULT_REQUEST_PHOTO = 1005;

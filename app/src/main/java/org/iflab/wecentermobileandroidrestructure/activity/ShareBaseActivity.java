@@ -19,7 +19,7 @@ import org.iflab.wecentermobileandroidrestructure.listener.ShareRegister;
 /**
  * Created by Lyn on 15/8/23.
  */
-public class ShareBaseActivity extends BaseActivity implements ShareRegister {
+public class ShareBaseActivity extends SwipeBackBaseActivity implements ShareRegister {
 
     UMSocialService mController;
     String shareUrl = "www.wecenter.com";

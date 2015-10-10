@@ -1,9 +1,12 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,14 +37,18 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleComment;
 import org.iflab.wecentermobileandroidrestructure.model.question.CommentInfo;
+import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnswerCommentActivity extends AppCompatActivity {
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
+public class AnswerCommentActivity extends BaseActivity {
+    public static final String ARG_DRAWING_START_LOCATION = "arg_drawing_start_location";
     Toolbar toolbar;
     SwipeRefreshLayout refreshLayout;
     RecyclerView recyclerView;
@@ -51,17 +63,39 @@ public class AnswerCommentActivity extends AppCompatActivity {
     InputMethodManager inputManager;
     boolean isArticle;
     int atUid = -1;
+    int drawingStartLocation;
+
+    @Bind(R.id.contentRoot)
+    FrameLayout contentRoot;
+
+    @Bind(R.id.llAddComment)
+    LinearLayout llAddComment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_comment);
 
+        ButterKnife.bind(this);
+        overridePendingTransition(0, 0);
         answerID = getIntent().getIntExtra("answer_id", -1);
         articleID = getIntent().getIntExtra("article_id",1);
 
         findViews();
         setViews();
         setToolBars();
+
+        drawingStartLocation = getIntent().getIntExtra(ARG_DRAWING_START_LOCATION, 0);
+        if (savedInstanceState == null) {
+            contentRoot.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    contentRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+                    startIntroAnimation();
+                    return true;
+                }
+            });
+        }
 
         if(answerID != -1){
             commentsList = new ArrayList<>();
@@ -73,6 +107,33 @@ public class AnswerCommentActivity extends AppCompatActivity {
             isArticle = true;
         }
 
+    }
+
+    private void startIntroAnimation() {
+        ViewCompat.setElevation(toolbar, 0);
+        contentRoot.setScaleY(0.1f);
+        contentRoot.setPivotY(drawingStartLocation);
+        llAddComment.setTranslationY(200);
+
+        contentRoot.animate()
+                .scaleY(1)
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        ViewCompat.setElevation(toolbar, DisplayUtil.dip2px(getApplicationContext(),8));
+                        animateContent();
+                    }
+                })
+                .start();
+    }
+
+    private void animateContent() {
+        llAddComment.animate().translationY(0)
+                .setInterpolator(new DecelerateInterpolator())
+                .setDuration(200)
+                .start();
     }
 
 
@@ -221,7 +282,7 @@ public class AnswerCommentActivity extends AppCompatActivity {
                             }.getType());
                     commentsAdapter = new CommentsAdapter(AnswerCommentActivity.this, commentsList, new OnClickItemCallBack() {
                         @Override
-                        public void clickItemCallBack(String userName,int userID) {
+                        public void clickItemCallBack(String userName, int userID) {
                             atUid = userID;
                             commentEdt.setText("@" + userName + " ");
                             commentEdt.setFocusable(true);
@@ -246,6 +307,21 @@ public class AnswerCommentActivity extends AppCompatActivity {
                 refreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        ViewCompat.setElevation(toolbar, 0);
+        contentRoot.animate()
+                .translationY(DisplayUtil.getScreenHeight(this))
+                .setDuration(200)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        AnswerCommentActivity.super.onBackPressed();
+                    }
+                })
+                .start();
     }
 
     private void showNoComment(){

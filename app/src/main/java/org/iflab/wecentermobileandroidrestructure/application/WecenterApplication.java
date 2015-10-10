@@ -29,7 +29,7 @@ public class WecenterApplication extends LitePalApplication {
         sWidthPix = getResources().getDisplayMetrics().widthPixels;
         sHeightPix = getResources().getDisplayMetrics().heightPixels;
         initImageLoader(getApplicationContext());
-        initRefWatcher();
+//        initRefWatcher();
     }
 
     private void initRefWatcher() {

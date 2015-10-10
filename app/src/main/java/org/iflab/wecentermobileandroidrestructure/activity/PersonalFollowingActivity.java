@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalFollowingActivity extends AppCompatActivity {
+public class PersonalFollowingActivity extends SwipeBackBaseActivity {
 
 
     public static final String FOLLOWING = "following";

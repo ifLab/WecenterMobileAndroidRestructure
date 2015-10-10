@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalAnswerActivity extends AppCompatActivity {
+public class PersonalAnswerActivity extends SwipeBackBaseActivity {
 
     private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
     private RecyclerView recyclerView;

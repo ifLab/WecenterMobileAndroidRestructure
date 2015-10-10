@@ -14,15 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/linearLayout2">
+        android:layout_above="@+id/llAddComment">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_answer_comment"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:id="@+id/contentRoot"
+            android:background="@color/white">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_answer_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/shadow_top" />
+
+
+        </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -33,7 +46,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/rectangle"
         android:padding="0.5dp"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/llAddComment">
 
         <EditText
             android:id="@+id/edt_comment"

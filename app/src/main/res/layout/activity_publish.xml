@@ -3,16 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <org.iflab.wecentermobileandroidrestructure.ui.RevealBackgroundView
+        android:id="@+id/vRevealBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:id="@+id/sv_root"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"

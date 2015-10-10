@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalQuestionActivity extends AppCompatActivity {
+public class PersonalQuestionActivity extends SwipeBackBaseActivity {
 
 
     private RecyclerView recyclerView;

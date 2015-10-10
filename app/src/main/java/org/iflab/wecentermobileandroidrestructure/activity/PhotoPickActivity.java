@@ -43,7 +43,7 @@ import java.util.LinkedHashMap;
  * Created by hcjcch on 15/5/22.
  */
 
-public class PhotoPickActivity extends BaseActivity implements LoaderManager.LoaderCallbacks {
+public class PhotoPickActivity extends SwipeBackBaseActivity implements LoaderManager.LoaderCallbacks {
     final int RESULT_CAMERA = 21;
     private PhotoPickGridAdapter photoPickGridAdapter;
     private GridView photoGridview;

@@ -39,7 +39,7 @@ import java.util.Vector;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PublishQuestionActivity extends AppCompatActivity {
+public class PublishQuestionActivity extends SwipeBackBaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

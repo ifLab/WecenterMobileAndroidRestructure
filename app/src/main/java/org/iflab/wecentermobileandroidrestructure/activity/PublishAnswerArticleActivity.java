@@ -10,10 +10,12 @@ import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.tools.RecycleBitmapInLayout;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
+import org.iflab.wecentermobileandroidrestructure.ui.RevealBackgroundView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,12 +51,12 @@ import butterknife.ButterKnife;
 /**
  * Created by hcjcch on 15/5/23.
  */
-public class PublishAnswerArticleActivity extends BaseActivity {
+public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implements RevealBackgroundView.OnStateChangeListener{
 
     public static final String PUBLISH_QUESTION = "publih_question";
     public static final String PUBLISH_ARTICLE = "publish_article";
     public static final String PUBLISH_ANSWER = "publish_answer";
-
+    public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
     private String publishType;
     public static final String PUBLISH_TYPE_INTENT = "publish_type";
     public static final String QUESTION_ID_INTENT = "question_id";
@@ -86,6 +89,11 @@ public class PublishAnswerArticleActivity extends BaseActivity {
     @Bind(R.id.txt_title)
     TextView txt_title;
 
+    @Bind(R.id.vRevealBackground)
+    RevealBackgroundView vRevealBackground;
+
+    @Bind(R.id.sv_root)
+    ScrollView rel_root;
     private String url;
     private Intent intent;
     private int questionId;
@@ -95,6 +103,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
         ButterKnife.bind(this);
+        setupRevealBackground(savedInstanceState);
         photoOperate = new PhotoOperate(getApplicationContext());
         intent = getIntent();
         publishType = intent.getStringExtra(PUBLISH_TYPE_INTENT);
@@ -102,6 +111,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         findViews();
         setViews();
         setToolBars();
+
     }
 
     private void setPublishId() {
@@ -142,6 +152,24 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         titleEditText = (EditText) findViewById(R.id.edt_title);
         descriptionEditText = (EditText) findViewById(R.id.edt_description);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+    }
+
+    private void setupRevealBackground(Bundle savedInstanceState) {
+        vRevealBackground.setFillPaintColor(getResources().getColor(R.color.primary_pressed));
+        vRevealBackground.setOnStateChangeListener(this);
+        if (savedInstanceState == null) {
+            final int[] startingLocation = getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION);
+            vRevealBackground.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    vRevealBackground.getViewTreeObserver().removeOnPreDrawListener(this);
+                    vRevealBackground.startFromLocation(startingLocation);
+                    return true;
+                }
+            });
+        } else {
+            vRevealBackground.setToFinishedFrame();
+        }
     }
 
     private void setViews() {
@@ -237,6 +265,15 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         } else super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onStateChange(int state) {
+        if (RevealBackgroundView.STATE_FINISHED == state) {
+            vRevealBackground.setVisibility(View.GONE);
+            rel_root.setVisibility(View.VISIBLE);
+            titleEditText.requestFocus();
+        }
+    }
+
     public static class PhotoData {
         Uri uri = Uri.parse("");
         String serviceUri = "";
@@ -276,7 +313,7 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         params.put("attach_access_key", attach_access_key);
         params.put("qqfile", attachment);
         System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
-        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds,hashtable,attachment));
+        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
     }
 
     private static class UploadNetWork extends NetWork{
@@ -379,6 +416,8 @@ public class PublishAnswerArticleActivity extends BaseActivity {
         attachIds.clear();
 
         RecycleBitmapInLayout.getInstance(false).recycle(gridView);
+        mData.clear();
+        attachmentGridAdapter.notifyDataSetChanged();
     }
 
     @Override

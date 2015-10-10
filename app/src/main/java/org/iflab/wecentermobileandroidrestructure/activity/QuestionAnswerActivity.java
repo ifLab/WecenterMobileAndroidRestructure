@@ -157,6 +157,9 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
     public void gotoComment(View view){
         Intent intent = new Intent(QuestionAnswerActivity.this,AnswerCommentActivity.class);
         intent.putExtra("answer_id", answerID);
+        int[] startingLocation = new int[2];
+        view.getLocationOnScreen(startingLocation);
+        intent.putExtra(AnswerCommentActivity.ARG_DRAWING_START_LOCATION,startingLocation[1]);
         startActivity(intent);
     }
 

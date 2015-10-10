@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import org.iflab.wecentermobileandroidrestructure.fragment.FoundFrgment;
 import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
 import org.iflab.wecentermobileandroidrestructure.fragment.SearchFragment;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
+import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
@@ -56,8 +58,10 @@ public class WencenterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avtivity_wencenter);
+
         findViews();
         setToolbar();
+        getUserData();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.hello_world, R.string.hello_world) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -214,21 +218,20 @@ public class WencenterActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        User user = User.getLoginUser(this);
-        if (user != null) {
-            ImageLoader.getInstance().displayImage(user.getAvatarFile(), profile_image, ImageOptions.optionsImagePersonalDetailAvatar);
-            user_name.setText(user.getUserName());
-            if (!TextUtils.isEmpty(user.getSignNature())) {
-                user_signature.setText(user.getSignNature());
-            } else {
-                getUserData();
-            }
-        }
+
 
     }
 
     private void getUserData() {
-
+        User user = User.getLoginUser(this);
+        if (user != null) {
+            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatarFile(), profile_image, ImageOptions.optionsImagePersonalDetailAvatar);
+//            Log.v("avatar",RelativeUrl.AVATAR + user.getAvatarFile());
+            user_name.setText(user.getUserName());
+            if (!TextUtils.isEmpty(user.getSignNature())) {
+                user_signature.setText(user.getSignNature());
+            }
+        }
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -250,4 +253,5 @@ public class WencenterActivity extends BaseActivity {
         super.onDestroy();
         ImageLoader.getInstance().clearMemoryCache();
     }
+
 }

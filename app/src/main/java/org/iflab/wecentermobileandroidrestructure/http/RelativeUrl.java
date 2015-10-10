@@ -4,7 +4,8 @@ package org.iflab.wecentermobileandroidrestructure.http;
  * Created by hcjcch on 15/5/17.
  */
 public class RelativeUrl {
-    public static String AVATAR = "http://we.bistu.edu.cn/uploads/avatar/";//头像文件夹
+//    public static String AVATAR = "http://we.bistu.edu.cn/uploads/avatar/";//头像文件夹
+    public static String AVATAR = "http://we.edustack.org/uploads/avatar/";
     public static String USER_LOGIN = "?/api/account/login_process/"; //登录
     public static String HOME_PAGE = "?/api/home/"; //首页
     public static String USER_INFO = "?/api/account/get_userinfo/";//用户信息

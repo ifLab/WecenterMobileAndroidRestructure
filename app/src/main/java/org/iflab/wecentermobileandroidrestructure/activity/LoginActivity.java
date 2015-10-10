@@ -40,10 +40,17 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(User.getLoginUser(getApplicationContext()).getUid() != -1){
+            startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
+            finish();
+        }
+
         setContentView(R.layout.activity_login);
         findViews();
         setViews();
         setListeners();
+
     }
 
     protected void findViews() {
@@ -73,16 +80,15 @@ public class LoginActivity extends BaseActivity {
 
     private void login() {
         String usernameString = userName.getText().toString();
-        User user = User.getLoginUser(getApplicationContext());
 //        usernameString = user.getUserName();
-//        usernameString = "hc";
+        usernameString = "Lyn";
 
         if (usernameString.equals("")) {
             toast("用户名不能为空");
             return;
         }
         String passWordString = passWord.getText().toString();
-//        passWordString = "huahua";
+        passWordString = "935600f12";
         if (passWordString.equals("")) {
             toast("密码不能为空");
             return;

@@ -31,7 +31,7 @@ import java.util.List;
  * @time 15/8/15 17:33
  */
 
-public class PersonalArticleActivity extends BaseActivity{
+public class PersonalArticleActivity extends SwipeBackBaseActivity{
     private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;

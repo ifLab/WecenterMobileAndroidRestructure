@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,10 +111,15 @@ public class HomePageFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int[] startingLocation = new int[2];
+                v.getLocationOnScreen(startingLocation);
+                startingLocation[0] += v.getWidth() / 2;
                 Intent intent = new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class);
                 intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,PublishAnswerArticleActivity.PUBLISH_QUESTION);
+                intent.putExtra(PublishAnswerArticleActivity.ARG_REVEAL_START_LOCATION, startingLocation);
                 startActivity(intent);
-
+                getActivity().overridePendingTransition(0, 0);
             }
         });
         endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {
@@ -250,5 +256,11 @@ public class HomePageFragment extends BaseFragment {
         refresh = true;
         loadMore = true;
         endlessRecyclerOnScrollListener.reset();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        homePages.clear();
     }
 }
