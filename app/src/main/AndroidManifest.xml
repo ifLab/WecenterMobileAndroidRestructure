@@ -57,7 +57,8 @@
         </activity>
         <activity
             android:name=".activity.QuestionAnswerActivity"
-            android:label="@string/title_activity_question_answer" >
+            android:label="@string/title_activity_question_answer"
+            android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".activity.AnswerCommentActivity"

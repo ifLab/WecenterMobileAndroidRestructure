@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,9 @@ import com.loopj.android.http.RequestParams;
 import net.qiujuer.genius.app.BlurKit;
 
 import org.apache.http.Header;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.SyncBasicHttpContext;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
@@ -35,17 +39,20 @@ public class LoginActivity extends BaseActivity {
     private Button btnLogin;
     private EditText userName;
     private EditText passWord;
-
+    PersistentCookieStore myCookieStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(User.getLoginUser(getApplicationContext()).getUid() != -1){
-            startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
-            finish();
-        }
-
+        myCookieStore = new PersistentCookieStore(getApplicationContext());
+//        if(myCookieStore != null) {
+            Log.v("cookie", myCookieStore.getCookies().size() + "");
+            if (myCookieStore.getCookies().size() > 0) {
+                AsyncHttpWecnter.setCookieStore(myCookieStore);
+                startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
+                finish();
+            }
+//        }
         setContentView(R.layout.activity_login);
         findViews();
         setViews();
@@ -98,6 +105,10 @@ public class LoginActivity extends BaseActivity {
         RequestParams params = new RequestParams();
         params.put("user_name", usernameString);
         params.put("password", passWordString);
+
+        PersistentCookieStore cookieStore = new PersistentCookieStore(getApplicationContext());
+        AsyncHttpWecnter.setCookieStore(cookieStore);
+
         AsyncHttpWecnter.post(RelativeUrl.USER_LOGIN, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -111,6 +122,8 @@ public class LoginActivity extends BaseActivity {
                     User.save(getApplicationContext(), user);
                     startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
 //                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
+
+
                     finish();
                 } catch (JSONException e) {
                     e.printStackTrace();

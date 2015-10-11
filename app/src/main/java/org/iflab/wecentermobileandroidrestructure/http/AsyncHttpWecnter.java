@@ -15,6 +15,9 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.SyncBasicHttpContext;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,8 @@ public class AsyncHttpWecnter {
 public static final String BASE_URL = "http://we.edustack.org/";
     public static AsyncHttpClient client = new AsyncHttpClient();
 
+
+    public static HttpContext httpContext = client.getHttpContext();
     /**
      * get方式
      *
@@ -101,20 +106,7 @@ public static final String BASE_URL = "http://we.edustack.org/";
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d(TAG, "失败   [url:" + url +" ]" + responseString);
                 //TODO 访问失败
-                Toast.makeText(context.getApplicationContext(),"失败接口:  "+url+"   信息:"+responseString.toString(),Toast.LENGTH_LONG).show();
                 netWork.failure();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(context.getApplicationContext(),"失败接口:  "+url+"   信息:"+errorResponse.toString(),Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(context.getApplicationContext(),"失败接口:  "+url+"   信息:"+errorResponse.toString(),Toast.LENGTH_LONG).show();
             }
 
             @Override
