@@ -39,20 +39,18 @@ public class LoginActivity extends BaseActivity {
     private Button btnLogin;
     private EditText userName;
     private EditText passWord;
-    PersistentCookieStore myCookieStore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myCookieStore = new PersistentCookieStore(getApplicationContext());
-//        if(myCookieStore != null) {
-            Log.v("cookie", myCookieStore.getCookies().size() + "");
-            if (myCookieStore.getCookies().size() > 0) {
-                AsyncHttpWecnter.setCookieStore(myCookieStore);
-                startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
-                finish();
-            }
-//        }
+        PersistentCookieStore myCookieStore = new PersistentCookieStore(getApplicationContext());
+        Log.v("cookie", myCookieStore.getCookies().size() + "");
+        if (myCookieStore.getCookies().size() > 0) {
+            AsyncHttpWecnter.setCookieStore(myCookieStore);
+            startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
+            finish();
+        }
         setContentView(R.layout.activity_login);
         findViews();
         setViews();

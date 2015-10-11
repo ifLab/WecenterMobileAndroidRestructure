@@ -31,11 +31,9 @@ import org.json.JSONObject;
 public class AsyncHttpWecnter {
     public static final String TAG = "AsyncHttpWecnter";
 //    public static final String BASE_URL = "http://we.bistu.edu.cn/";
-public static final String BASE_URL = "http://we.edustack.org/";
+    public static final String BASE_URL = "http://we.edustack.org/";
     public static AsyncHttpClient client = new AsyncHttpClient();
 
-
-    public static HttpContext httpContext = client.getHttpContext();
     /**
      * get方式
      *
