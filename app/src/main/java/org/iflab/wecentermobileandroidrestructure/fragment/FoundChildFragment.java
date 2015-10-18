@@ -135,19 +135,18 @@ public class FoundChildFragment extends BaseFragment {
                                     QuestionInfo questionInfo = new QuestionInfo();
                                     questionInfo.setQuestionId(row.getInt("question_id"));
                                     questionInfo.setQuestionContent(row.getString("question_content"));
-//                                    questionInfo.setQuestionDetail(row.getString("question_detail"));
-                                    questionInfo.setQuestionDetail("no question_detail...");
+                                    questionInfo.setQuestionDetail(row.getString("question_detail"));
                                     questionInfo.setUpdateTime(row.getString("update_time"));
                                     questionInfo.setType(post_type);
                                     int answerCount = row.getInt("answer_count");
-//                                    if (answerCount != 0) {
-//                                        JSONObject answerObject = row.getJSONObject("answer");
-//                                        JSONObject userInfoObject = answerObject.getJSONObject("user_info");
-//                                        questionInfo.setAnswerUid(userInfoObject.getInt("uid"));
-//                                        questionInfo.setAnswerUserName(userInfoObject.getString("user_name"));
-//                                        questionInfo.setAnswerAvatarFile(userInfoObject.getString("avatar_file"));
-//                                        questionInfo.setAnswerContent(answerObject.getString("answer_content"));
-//                                    }
+                                    if (answerCount != 0) {
+                                        JSONObject answerObject = row.getJSONObject("answer");
+                                        JSONObject userInfoObject = answerObject.getJSONObject("user_info");
+                                        questionInfo.setAnswerUid(userInfoObject.getInt("uid"));
+                                        questionInfo.setAnswerUserName(userInfoObject.getString("user_name"));
+                                        questionInfo.setAnswerAvatarFile(userInfoObject.getString("avatar_file"));
+                                        questionInfo.setAnswerContent(answerObject.getString("answer_content"));
+                                    }
                                     JSONObject userInfoObject = row.getJSONObject("user_info");
                                     questionInfo.setPublishUid(userInfoObject.getInt("uid"));
                                     questionInfo.setPublishUserName(userInfoObject.getString("user_name"));

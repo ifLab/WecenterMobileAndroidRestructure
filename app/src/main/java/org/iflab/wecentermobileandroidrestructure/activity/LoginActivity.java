@@ -86,14 +86,14 @@ public class LoginActivity extends BaseActivity {
     private void login() {
         String usernameString = userName.getText().toString();
 //        usernameString = user.getUserName();
-        usernameString = "Lyn";
+        usernameString = "lyn";
 
         if (usernameString.equals("")) {
             toast("用户名不能为空");
             return;
         }
         String passWordString = passWord.getText().toString();
-        passWordString = "935600f12";
+        passWordString = "123456";
         if (passWordString.equals("")) {
             toast("密码不能为空");
             return;
