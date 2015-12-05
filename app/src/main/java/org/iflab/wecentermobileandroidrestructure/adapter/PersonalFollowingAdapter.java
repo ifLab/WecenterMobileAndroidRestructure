@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalArticle;
@@ -54,16 +56,17 @@ public class PersonalFollowingAdapter extends RecyclerView.Adapter {
         final PersonalFollowing.RowsEntity rowsEntity = datas.get(position);
         ((PersonalFollowingHolder) holder).txt_user_name.setText(rowsEntity.getUser_name());
         ((PersonalFollowingHolder) holder).txt_signature.setText(rowsEntity.getSignature());
+        ImageLoader.getInstance().displayImage(rowsEntity.getAvatar_file(),((PersonalFollowingHolder) holder).avatar);
         ((PersonalFollowingHolder) holder).avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PersonalCenterActivity.openPersonalCenter(mContext, Integer.parseInt(rowsEntity.getUid()));
+                PersonalCenterActivity.openPersonalCenter(mContext, rowsEntity.getUid());
             }
         });
         ((PersonalFollowingHolder) holder).rel_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PersonalCenterActivity.openPersonalCenter(mContext, Integer.parseInt(rowsEntity.getUid()));
+                PersonalCenterActivity.openPersonalCenter(mContext, rowsEntity.getUid());
             }
         });
     }

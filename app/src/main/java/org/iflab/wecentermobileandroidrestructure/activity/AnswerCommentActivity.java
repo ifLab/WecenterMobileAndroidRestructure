@@ -38,6 +38,7 @@ import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleComment;
 import org.iflab.wecentermobileandroidrestructure.model.question.CommentInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,8 +56,7 @@ public class AnswerCommentActivity extends BaseActivity {
     int answerID;
     int articleID;
     EditText commentEdt;
-    List<CommentInfo> commentsList ;
-    List<ArticleComment> articleComments;
+    ArticleComment articleComment;
     CommentsAdapter commentsAdapter;
     ArticleCommentsAdapter articleCommentsAdapter;
     LinearLayoutManager linearLayoutManager;
@@ -98,11 +98,9 @@ public class AnswerCommentActivity extends BaseActivity {
         }
 
         if(answerID != -1){
-            commentsList = new ArrayList<>();
             loadData();
             isArticle = false;
         }else if(articleID != -1){
-            articleComments = new ArrayList<>();
             loadArticleData();
             isArticle = true;
         }
@@ -187,7 +185,8 @@ public class AnswerCommentActivity extends BaseActivity {
             params.put("article_id",articleID);
             url = RelativeUrl.PUBLISH_ARTICLE;
         }else {
-            url = RelativeUrl.UPLOAD_ANSWER + "?answer_id=" + answerID;
+            url = RelativeUrl.UPLOAD_ANSWER ;
+            params.put("answer_id",answerID);
         }
 
         if(atUid != -1){
@@ -195,7 +194,7 @@ public class AnswerCommentActivity extends BaseActivity {
         }
         params.put("message", message);
         Log.v("params", params.toString());
-        AsyncHttpWecnter.loadData(AnswerCommentActivity.this, url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+        AsyncHttpWecnter.loadData(getApplicationContext(), url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 Log.v("addAnswer", response.toString());
@@ -225,10 +224,8 @@ public class AnswerCommentActivity extends BaseActivity {
                         showNoComment();
                     }else {
                         Gson gson = new Gson();
-                        articleComments = gson.fromJson(response.getString("rows"),
-                                new TypeToken<ArrayList<ArticleComment>>() {
-                                }.getType());
-                        articleCommentsAdapter = new ArticleCommentsAdapter(AnswerCommentActivity.this, articleComments, new OnClickItemCallBack() {
+                        articleComment = gson.fromJson(response.toString(),ArticleComment.class);
+                        articleCommentsAdapter = new ArticleCommentsAdapter(AnswerCommentActivity.this, articleComment, new OnClickItemCallBack() {
                             @Override
                             public void clickItemCallBack(String userName,int userID) {
                                 atUid = userID;
@@ -260,27 +257,14 @@ public class AnswerCommentActivity extends BaseActivity {
     private void loadData() {
 
         AsyncHttpWecnter.get(RelativeUrl.ANSWER_COMMENT, setParams(), new AsyncHttpResponseHandler() {
-            String array;
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Gson gson = new Gson();
+                CommentInfo commentsList = gson.fromJson(new String(responseBody),CommentInfo.class);
 
-                try {
-                    JSONObject obj = new JSONObject(new String(responseBody));
-                    Log.v("pbj", obj.toString());
-                    array = obj.getString("rsm");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.v("array", array);
-                if (array.equals("{\"total_rows\":\"0\"}")) {
-                    showNoComment();
-                } else {
-                    commentsList = gson.fromJson(array,
-                            new TypeToken<ArrayList<CommentInfo>>() {
-                            }.getType());
-                    commentsAdapter = new CommentsAdapter(AnswerCommentActivity.this, commentsList, new OnClickItemCallBack() {
+                if (commentsList.getRsm() != null) {
+                    commentsAdapter = new CommentsAdapter(AnswerCommentActivity.this, commentsList.getRsm(), new OnClickItemCallBack() {
                         @Override
                         public void clickItemCallBack(String userName, int userID) {
                             atUid = userID;
@@ -293,8 +277,8 @@ public class AnswerCommentActivity extends BaseActivity {
                         }
                     });
                     recyclerView.setAdapter(commentsAdapter);
-                    Log.v("commentsList", commentsList.toString());
                 }
+
             }
 
             @Override
@@ -337,12 +321,13 @@ public class AnswerCommentActivity extends BaseActivity {
 
     private RequestParams setParams(){
         RequestParams params = new RequestParams();
-        params.put("id",answerID);
+        params.put("answer_id",answerID);
         return params;
     }
     private RequestParams setArticleParams(){
         RequestParams params = new RequestParams();
         params.put("id",articleID);
+        params.put("mobile_sign", MD5Transform.MD5("article"+AsyncHttpWecnter.SIGN));
         return params;
     }
 

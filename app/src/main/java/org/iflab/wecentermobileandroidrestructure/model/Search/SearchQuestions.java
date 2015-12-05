@@ -5,38 +5,29 @@ package org.iflab.wecentermobileandroidrestructure.model.Search;
  */
 public class SearchQuestions extends SearchBase{
 
+
     /**
-     * uid : null
-     * score : 1
      * type : questions
-     * url : http://we.bistu.edu.cn/?/question/17
-     * search_id : 17
-     * name : 我想发一个问题
-     * detail : {"best_answer":0,"answer_count":1,"comment_count":0,"focus_count":1,"agree_count":0}
+     * search_id : 146
+     * name : 降息对股市有什么影响？
+     * detail : {"best_answer":0,"answer_count":1,"comment_count":0,"focus_count":2,"agree_count":7}
      */
 
-    private int uid;
-    private int score;
     private String type;
-    private String url;
     private int search_id;
     private String name;
+    /**
+     * best_answer : 0
+     * answer_count : 1
+     * comment_count : 0
+     * focus_count : 2
+     * agree_count : 7
+     */
+
     private DetailEntity detail;
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public void setSearch_id(int search_id) {
@@ -51,20 +42,8 @@ public class SearchQuestions extends SearchBase{
         this.detail = detail;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public String getUrl() {
-        return url;
     }
 
     public int getSearch_id() {
@@ -80,14 +59,6 @@ public class SearchQuestions extends SearchBase{
     }
 
     public static class DetailEntity {
-        /**
-         * best_answer : 0
-         * answer_count : 1
-         * comment_count : 0
-         * focus_count : 1
-         * agree_count : 0
-         */
-
         private int best_answer;
         private int answer_count;
         private int comment_count;

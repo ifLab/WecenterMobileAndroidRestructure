@@ -5,38 +5,26 @@ package org.iflab.wecentermobileandroidrestructure.model.Search;
  */
 public class SearchArticles extends SearchBase{
 
+
     /**
-     * uid : 9
-     * score : 1
      * type : articles
-     * url : http://we.bistu.edu.cn/?/article/6
-     * search_id : 6
-     * name : 我决定粘贴一篇特别长的图文混排的文章
-     * detail : {"comments":0,"views":9}
+     * search_id : 21
+     * name : 想想当年经济大萧条，这次股市暴跌也是个警示
+     * detail : {"comments":0,"views":63}
      */
 
-    private int uid;
-    private int score;
     private String type;
-    private String url;
     private int search_id;
     private String name;
+    /**
+     * comments : 0
+     * views : 63
+     */
+
     private DetailEntity detail;
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public void setSearch_id(int search_id) {
@@ -51,20 +39,8 @@ public class SearchArticles extends SearchBase{
         this.detail = detail;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public String getUrl() {
-        return url;
     }
 
     public int getSearch_id() {
@@ -80,11 +56,6 @@ public class SearchArticles extends SearchBase{
     }
 
     public static class DetailEntity {
-        /**
-         * comments : 0
-         * views : 9
-         */
-
         private int comments;
         private int views;
 

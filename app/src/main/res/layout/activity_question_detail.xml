@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:dividerHeight="10dp"
         android:divider="@color/bg_color_grey"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:scrollbars="none"
         />
 

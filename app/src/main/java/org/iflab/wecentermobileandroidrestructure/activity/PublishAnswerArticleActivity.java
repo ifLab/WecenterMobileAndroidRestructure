@@ -107,9 +107,10 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
         photoOperate = new PhotoOperate(getApplicationContext());
         intent = getIntent();
         publishType = intent.getStringExtra(PUBLISH_TYPE_INTENT);
-        setPublishId();
+
         findViews();
         setViews();
+        setPublishId();
         setToolBars();
 
     }
@@ -120,19 +121,23 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
                 publishId = "answer";
                 url = RelativeUrl.PUBLISH_ANSWER;
                 questionId = intent.getIntExtra(QUESTION_ID_INTENT, -1);
+                toolbar.setTitle("发布回答");
                 break;
             case PUBLISH_ARTICLE:
                 publishId = "article";
+                url = RelativeUrl.PUBLISH_ARTICLE;
+                toolbar.setTitle("发布文章");
                 break;
             case PUBLISH_QUESTION:
                 publishId = "question";
                 url = RelativeUrl.UPLOAD_QUESTION;
+                toolbar.setTitle("发布问题");
                 break;
         }
     }
 
     private void setToolBars() {
-        toolbar.setTitle("发布");//设置Toolbar标题
+
         toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -309,11 +314,14 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
 
     private void uploadAttachment(final File attachment) throws FileNotFoundException {
         final RequestParams params = new RequestParams();
-        params.put("id", publishId);
-        params.put("attach_access_key", attach_access_key);
+//        params.put("id", publishId);
+//        params.put("attach_access_key", attach_access_key);
         params.put("qqfile", attachment);
-        System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
-        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD, params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
+//        System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
+        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD +
+                "&attach_access_key="+attach_access_key +
+                "&id=" + publishId
+                , params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
     }
 
     private static class UploadNetWork extends NetWork{
@@ -356,7 +364,35 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
             params.put("answer_content", title);
             params.put("attach_access_key", attach_access_key);
             params.put("question_id", questionId);
-        } else {
+        } else if(publishType.equals(PUBLISH_ARTICLE)){
+            String title = titleEditText.getText().toString();
+            if (title.length() < 6) {
+                Toast.makeText(PublishAnswerArticleActivity.this, "标题不能小于6个字", Toast.LENGTH_SHORT).show();
+                titleEditText.requestFocus();
+                return;
+            }
+            params.put("title", title);
+            String description = descriptionEditText.getText().toString();
+            if (description.length() < 6) {
+                Toast.makeText(PublishAnswerArticleActivity.this, "描述不能小于6个字", Toast.LENGTH_SHORT).show();
+                descriptionEditText.requestFocus();
+                return;
+            }
+            for (String i : attachIds) {
+                description += "[attach]" + i + "[/attach]" + "\n";
+            }
+            params.put("message", description);
+            params.put("attach_access_key", attach_access_key);
+            if (topics.size() != 0) {
+                String topicsUpload = "";
+                for (String topic : topics) {
+                    topicsUpload = topicsUpload + topic + ",";
+                }
+                topicsUpload = topicsUpload.substring(0, topicsUpload.length());
+                params.put("topics", topicsUpload);
+            }
+
+        }else {
             String title = titleEditText.getText().toString();
             if (title.length() < 6) {
                 Toast.makeText(PublishAnswerArticleActivity.this, "标题不能小于6个字", Toast.LENGTH_SHORT).show();
@@ -388,13 +424,15 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
             @Override
             public void parseJson(JSONObject response) {
                 try {
-                    String question_id;
+                    String id;
                     if (publishType.equals(PUBLISH_ANSWER)) {
-                        question_id = response.getString("answer_id");
-                    } else {
-                        question_id = response.getString("question_id");
+                        id = response.getString("answer_id");
+                    } else if(publishType.equals(PUBLISH_ARTICLE)){
+                        id = response.getString("article_id");
+                    }else{
+                        id = response.getString("question_id");
                     }
-                    if (question_id != null) {
+                    if (id != null) {
                         Toast.makeText(PublishAnswerArticleActivity.this, "成功", Toast.LENGTH_SHORT).show();
                         PublishAnswerArticleActivity.this.finish();
                     }

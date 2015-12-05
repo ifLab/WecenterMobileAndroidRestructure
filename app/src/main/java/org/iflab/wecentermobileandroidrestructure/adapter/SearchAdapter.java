@@ -101,7 +101,7 @@ public class SearchAdapter extends RecyclerView.Adapter{
             ((QuestionsCellHolder) holder).rlQuestion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    QuestionDetailActivity.openQuestionDetail(mContext,searchQuestions.getUid(),searchQuestions.getSearch_id());
+                    QuestionDetailActivity.openQuestionDetail(mContext,searchQuestions.getSearch_id(),searchQuestions.getSearch_id());
                 }
             });
         }else if(searchBase instanceof SearchTopics) {
@@ -121,7 +121,7 @@ public class SearchAdapter extends RecyclerView.Adapter{
                     ((UsersCellHolder) holder).rlUsers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PersonalCenterActivity.openPersonalCenter(mContext,searchUsers.getUid());
+                    PersonalCenterActivity.openPersonalCenter(mContext,searchUsers.getSearch_id());
                 }
             });
         }

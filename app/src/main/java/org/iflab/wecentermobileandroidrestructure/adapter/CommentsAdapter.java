@@ -1,8 +1,6 @@
 package org.iflab.wecentermobileandroidrestructure.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +14,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
 import org.iflab.wecentermobileandroidrestructure.common.OnClickItemCallBack;
-import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
-import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.question.CommentInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
@@ -28,12 +24,12 @@ import java.util.List;
  * Created by Lyn on 15/7/23.
  */
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentsViewHolder>{
-    List<CommentInfo> commentInfoList = new ArrayList<>();
+    List<CommentInfo.RsmEntity> commentInfoList = new ArrayList<>();
     Context context;
     LayoutInflater mLayoutInflater;
     OnClickItemCallBack onClickItemCallBack;
 
-    public CommentsAdapter(Context context,List<CommentInfo> commentInfoList,OnClickItemCallBack onClickItemCallBack){
+    public CommentsAdapter(Context context,List<CommentInfo.RsmEntity> commentInfoList,OnClickItemCallBack onClickItemCallBack){
         this.commentInfoList = commentInfoList;
         this.context = context;
         this.onClickItemCallBack = onClickItemCallBack;
@@ -46,10 +42,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
     @Override
     public void onBindViewHolder(CommentsAdapter.CommentsViewHolder holder, int position) {
-        final CommentInfo commentInfo = commentInfoList.get(position);
-        holder.commentTextView.setText(commentInfo.getContent());
-        holder.userNameTextView.setText(commentInfo.getUser_name());
-//        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + commentInfo.get(), holder.profileImageView, ImageOptions.optionsImage);
+        final CommentInfo.RsmEntity commentInfo = commentInfoList.get(position);
+        holder.commentTextView.setText(commentInfo.getMessage());
+        holder.userNameTextView.setText(commentInfo.getUser_info().getUser_name());
+        ImageLoader.getInstance().displayImage(commentInfo.getUser_info().getAvatar_file(), holder.profileImageView, ImageOptions.optionsImage);
         /**
          * http://we.bistu.edu.cn/api/answer_comment.php?id=7  没有头像地址！！
          */
@@ -57,7 +53,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         holder.answerRel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickItemCallBack.clickItemCallBack(commentInfo.getUser_name(),commentInfo.getUid());
+                onClickItemCallBack.clickItemCallBack(commentInfo.getUser_info().getUser_name(),commentInfo.getUid());
             }
         });
 

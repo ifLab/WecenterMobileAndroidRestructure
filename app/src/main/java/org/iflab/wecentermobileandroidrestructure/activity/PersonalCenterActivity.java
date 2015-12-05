@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,10 +23,13 @@ import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
+import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
+import org.iflab.wecentermobileandroidrestructure.model.personal.Person;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalFollowing;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +37,7 @@ import org.json.JSONObject;
  * Created by hcjcch on 15/5/21.
  */
 
-public class PersonalCenterActivity extends BaseActivity {
+public class PersonalCenterActivity extends BaseActivity implements View.OnClickListener{
     public static final int EDIT = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView txt_motto;
@@ -60,20 +65,18 @@ public class PersonalCenterActivity extends BaseActivity {
     private TextView hasFocusCount;
     private int uid;
     private TextView useredit;
-    private Bundle bundle;
     private boolean isOwner;
     private RelativeLayout rel_marz;
     private RelativeLayout relContainer;
     private RelativeLayout in_ask_count, in_answer_count, in_article_count, in_topic_count, in_attention_count, in_follower_count;
-    private UserPersonal user;
 
+    Person person;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_center);
         Intent intent = getIntent();
-        bundle = intent.getExtras();
-        uid = bundle.getInt("uid", -1);
+        uid = intent.getIntExtra("uid", -1);
         isOwner = isMe(uid, User.getLoginUser(getApplicationContext()).getUid());
         findViews();
         setViews();
@@ -88,9 +91,7 @@ public class PersonalCenterActivity extends BaseActivity {
 
     public static void openPersonalCenter(Context context, int uid) {
         Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putInt("uid", uid);
-        intent.putExtras(bundle);
+        intent.putExtra("uid",uid);
         intent.setClass(context, PersonalCenterActivity.class);
         context.startActivity(intent);
     }
@@ -115,36 +116,35 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     private void findViews() {
-        View.OnClickListener clickListener = new Click();
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swi_personal_center);
 
         in_ask_count = (RelativeLayout) findViewById(R.id.in_ask_count);
-        in_ask_count.setOnClickListener(clickListener);
+        in_ask_count.setOnClickListener(this);
         askCount = (TextView) in_ask_count.findViewById(R.id.txt_ask_count);
         ask = (TextView) in_ask_count.findViewById(R.id.txt_ask);
 
         in_answer_count = (RelativeLayout) findViewById(R.id.in_answer_count);
-        in_answer_count.setOnClickListener(clickListener);
+        in_answer_count.setOnClickListener(this);
         answer = (TextView) in_answer_count.findViewById(R.id.txt_ask);
         answerCount = (TextView) in_answer_count.findViewById(R.id.txt_ask_count);
 
         in_article_count = (RelativeLayout) findViewById(R.id.in_article_count);
-        in_article_count.setOnClickListener(clickListener);
+        in_article_count.setOnClickListener(this);
         article = (TextView) in_article_count.findViewById(R.id.txt_ask);
         articleCount = (TextView) in_article_count.findViewById(R.id.txt_ask_count);
 
         in_topic_count = (RelativeLayout) findViewById(R.id.in_topic_count);
-        in_topic_count.setOnClickListener(clickListener);
+        in_topic_count.setOnClickListener(this);
         topic = (TextView) in_topic_count.findViewById(R.id.txt_ask);
         topicCount = (TextView) in_topic_count.findViewById(R.id.txt_ask_count);
 
         in_attention_count = (RelativeLayout) findViewById(R.id.in_attention_count);
-        in_attention_count.setOnClickListener(clickListener);
+        in_attention_count.setOnClickListener(this);
         attention = (TextView) in_attention_count.findViewById(R.id.txt_ask);
         attentionCount = (TextView) in_attention_count.findViewById(R.id.txt_ask_count);
 
         in_follower_count = (RelativeLayout) findViewById(R.id.in_follower_count);
-        in_follower_count.setOnClickListener(clickListener);
+        in_follower_count.setOnClickListener(this);
         follower = (TextView) in_follower_count.findViewById(R.id.txt_ask);
         followerCount = (TextView) in_follower_count.findViewById(R.id.txt_ask_count);
 
@@ -177,26 +177,29 @@ public class PersonalCenterActivity extends BaseActivity {
                 loadData();
             }
         });
-        useredit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PersonalCenterActivity.this, PersonalCenterEditActivity.class);
-                intent.putExtra("bundle", bundle);
-                startActivityForResult(intent, EDIT);
-            }
-        });
+        if(isOwner){
+            useredit.setVisibility(View.GONE);
+            useredit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PersonalCenterActivity.this, PersonalCenterEditActivity.class);
+                    intent.putExtra("uid", uid);
+                    startActivityForResult(intent, EDIT);
+                }
+            });
+        }
         ask.setText("提问");
-        askCount.setText("4");
+        askCount.setText("0");
         answer.setText("回答");
         answerCount.setText("0");
         article.setText("文章");
-        articleCount.setText("5");
+        articleCount.setText("0");
         topic.setText("话题");
-        topicCount.setText("11");
+        topicCount.setText("0");
         attention.setText("关注中");
-        attentionCount.setText("4");
+        attentionCount.setText("0");
         follower.setText("追随者");
-        followerCount.setText("1");
+        followerCount.setText("0");
         answerFavorite.setImageDrawable(getResources().getDrawable(R.mipmap.love_icon));
         answerFavoriteCount.setText("0");
         agree.setImageDrawable(getResources().getDrawable(R.mipmap.like_icon));
@@ -214,7 +217,12 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     private void loadData() {
-        AsyncHttpWecnter.get(RelativeUrl.USER_INFO, getParams(), new AsyncHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("uid", uid);
+        params.put("mobile_sign", MD5Transform.MD5("account"+AsyncHttpWecnter.SIGN));
+
+        AsyncHttpWecnter.get(RelativeUrl.USER_INFO, params, new AsyncHttpResponseHandler() {
+            
             @Override
             public void onStart() {
                 relContainer.setEnabled(false);
@@ -223,25 +231,47 @@ public class PersonalCenterActivity extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String json = new String(responseBody);
-                boolean jsonProgress = jsonPreproccess(json);
-                if (jsonProgress) return;
-                try {
-                    JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    JSONObject rsm = jsonObject.getJSONObject("rsm");
-                    user = new UserPersonal(rsm);
-                    txt_motto.setText(user.getSignature());
-                    txt_user_name.setText(user.getUser_name());
-                    HawkControl.saveUserCount(user);
-                    setData(user);
-                    if (isOwner) {
-                        User userSharePre = User.getLoginUser(PersonalCenterActivity.this);
-                        userSharePre.setSignNature(user.getSignature());
-                        User.save(PersonalCenterActivity.this,userSharePre);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+//                String json = new String(responseBody);
+//                boolean jsonProgress = jsonPreproccess(json);
+//                if (jsonProgress) return;
+//                try {
+//                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+//                    JSONObject rsm = jsonObject.getJSONObject("rsm");
+//                    user = new UserPersonal(rsm);
+//                    txt_motto.setText(user.getSignature());
+//                    txt_user_name.setText(user.getUser_name());
+//                    HawkControl.saveUserCount(user);
+//                    setData(user);
+//                    if (isOwner) {
+//                        User userSharePre = User.getLoginUser(PersonalCenterActivity.this);
+//                        userSharePre.setSignNature(user.getSignature());
+//                        User.save(PersonalCenterActivity.this,userSharePre);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                Gson gson = new Gson();
+                person = gson.fromJson(new String(responseBody), Person.class);
+                if(person.getRsm()!= null){
+                    txt_motto.setText(person.getRsm().getSignature());
+                    txt_user_name.setText(person.getRsm().getUser_name());
+
+                    answerFavoriteCount.setText(person.getRsm().getAnswer_favorite_count() + "");
+                    agreeCount.setText(person.getRsm().getAgree_count() + "");
+                    thanksCount.setText(person.getRsm().getThanks_count() + "");
+                    hasFocusCount.setText(person.getRsm().getHas_focus() + "");
+                    askCount.setText(person.getRsm().getQuestion_count() + "");
+                    answerCount.setText(person.getRsm().getAnswer_count() + "");
+                    articleCount.setText(person.getRsm().getArticle_count() + "");
+                    topicCount.setText(person.getRsm().getTopic_focus_count() + "");
+                    attentionCount.setText(person.getRsm().getFriend_count() + "");
+                    followerCount.setText(person.getRsm().getFans_count() + "");
+                    ImageLoader.getInstance().displayImage(person.getRsm().getAvatar_file(), userImage, ImageOptions.optionsImagePersonalDetailAvatar);
+
+                }else{
+                    Log.e("personcenter",person.getErr().toString());
                 }
+
             }
 
             @Override
@@ -259,83 +289,63 @@ public class PersonalCenterActivity extends BaseActivity {
         });
     }
 
-    private RequestParams getParams() {
-        RequestParams params = new RequestParams();
-        params.put("uid", uid);
-        return params;
-    }
 
     @Override
     protected void onRestart() {
         super.onRestart();
     }
 
-    private void setData(UserPersonal user) {
-        answerFavoriteCount.setText(user.getAnswer_favorite_count() + "");
-        agreeCount.setText(user.getAgree_count() + "");
-        thanksCount.setText(user.getThanks_count() + "");
-        hasFocusCount.setText(user.getHas_focus() + "");
-        askCount.setText(user.getQuestion_count() + "");
-        answerCount.setText(user.getAnswer_count() + "");
-        articleCount.setText(user.getArticle_count() + "");
-        topicCount.setText(user.getTopic_focus_count() + "");
-        attentionCount.setText(user.getFriend_count() + "");
-        followerCount.setText(user.getFans_count() + "");
-        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImage, ImageOptions.optionsImagePersonalDetailAvatar);
-
-    }
-
-    class Click implements View.OnClickListener {
-
+    
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
             switch (v.getId()) {
                 case R.id.in_ask_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalQuestionActivity.class);
-                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("userName", person.getRsm().getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("avatar", user.getAvatar_file());
+                    intent.putExtra("avatar", person.getRsm().getAvatar_file());
                     startActivity(intent);
                     break;
                 case R.id.in_article_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalArticleActivity.class);
-                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("userName", person.getRsm().getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("avatar", user.getAvatar_file());
+                    intent.putExtra("avatar", person.getRsm().getAvatar_file());
                     startActivity(intent);
                     break;
                 case R.id.in_answer_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalAnswerActivity.class);
-                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("userName", person.getRsm().getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("avatar", user.getAvatar_file());
-                    intent.putExtra("sign", user.getSignature());
+                    intent.putExtra("avatar", person.getRsm().getAvatar_file());
+                    intent.putExtra("sign", person.getRsm().getSignature());
                     startActivity(intent);
                     break;
                 case R.id.in_topic_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalTopicActivity.class);
-                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("userName", person.getRsm().getUser_name());
                     intent.putExtra("uid", uid);
+                    intent.putExtra("avatar", person.getRsm().getAvatar_file());
                     startActivity(intent);
                     break;
                 case R.id.in_attention_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalFollowingActivity.class);
-                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("userName", person.getRsm().getUser_name());
                     intent.putExtra("uid", uid);
                     intent.putExtra("type", PersonalFollowingActivity.FOLLOWING);
                     startActivity(intent);
                     break;
                 case R.id.in_follower_count:
                     intent.setClass(PersonalCenterActivity.this, PersonalFollowingActivity.class);
-                    intent.putExtra("userName", user.getUser_name());
+                    intent.putExtra("userName", person.getRsm().getUser_name());
                     intent.putExtra("uid", uid);
-                    intent.putExtra("type", PersonalFollowingActivity.FOLLOWER);
+                    intent.putExtra("type", PersonalFollowingActivity.FAN);
                     startActivity(intent);
                     break;
             }
         }
-    }
+    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

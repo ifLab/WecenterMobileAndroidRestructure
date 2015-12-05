@@ -3,7 +3,6 @@ package org.iflab.wecentermobileandroidrestructure.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,41 +17,23 @@ import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.QuestionAnswerActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.QuestionDetailActivity;
-import org.iflab.wecentermobileandroidrestructure.model.User;
-import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalAnswer;
+import org.iflab.wecentermobileandroidrestructure.model.personal.TopicDetailAnswer;
 
 import java.util.List;
 
-
 /**
- * Description:
- *
- * @author huangchen
- * @version 1.0
- * @time 15/8/17 23:50
+ * Created by Lyn on 15/12/3.
  */
-
-public class PersonalAnswerAdapter extends RecyclerView.Adapter {
+public class TopicDetailAdapter extends RecyclerView.Adapter{
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
-    private List<PersonalAnswer.RowsEntity> datas;
-    private String userName;
-    private String signature;
-    private String uid;
-    String avatar;
+    private List<TopicDetailAnswer.RowsEntity> datas;
 
-    public PersonalAnswerAdapter(String signature, String userName,
-                                 List<PersonalAnswer.RowsEntity> datas,
-                                 Context mContext,
-                                 String uid,
-                                 String avatar) {
-        this.signature = signature;
-        this.userName = userName;
+    public TopicDetailAdapter(List<TopicDetailAnswer.RowsEntity> datas,
+                                 Context mContext) {
         this.datas = datas;
         this.mContext = mContext;
         this.mLayoutInflater = LayoutInflater.from(mContext);
-        this.avatar = avatar;
-        this.uid = uid;
     }
 
     @Override
@@ -60,30 +41,30 @@ public class PersonalAnswerAdapter extends RecyclerView.Adapter {
         return new PersonalAnswerHolder(mLayoutInflater.inflate(R.layout.item_personal_answer, parent, false));
     }
 
-    public void setData(List<PersonalAnswer.RowsEntity> datas) {
+    public void setData(List<TopicDetailAnswer.RowsEntity> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final PersonalAnswer.RowsEntity entity = datas.get(position);
+        final TopicDetailAnswer.RowsEntity entity = datas.get(position);
         ((PersonalAnswerHolder) holder).txt_question_title.setText(entity.getQuestion_info().getQuestion_content());
-        ((PersonalAnswerHolder) holder).txt_user_name.setText(userName);
+        ((PersonalAnswerHolder) holder).txt_user_name.setText(entity.getUser_info().getUser_name());
 //        ((PersonalAnswerHolder) holder).txt_signature.setText(signature);
         ((PersonalAnswerHolder) holder).txt_agree_count.setText(entity.getAnswer_info().getAgree_count()+"");
-        ImageLoader.getInstance().displayImage(avatar,((PersonalAnswerHolder) holder).img_user);
+        ImageLoader.getInstance().displayImage(entity.getUser_info().getAvatar_file(),((PersonalAnswerHolder) holder).img_user);
         ((PersonalAnswerHolder) holder).txt_answer_content.setText(entity.getAnswer_info().getAnswer_content());
         ((PersonalAnswerHolder) holder).rel_top.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QuestionDetailActivity.openQuestionDetail(mContext, Integer.parseInt(uid),entity.getQuestion_info().getQuestion_id());
+                QuestionDetailActivity.openQuestionDetail(mContext, entity.getUser_info().getUid(),entity.getQuestion_info().getQuestion_id());
             }
         });
         ((PersonalAnswerHolder) holder).rel_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PersonalCenterActivity.openPersonalCenter(mContext, Integer.parseInt(uid));
+                PersonalCenterActivity.openPersonalCenter(mContext, entity.getUser_info().getUid());
             }
         });
 
@@ -111,7 +92,7 @@ public class PersonalAnswerAdapter extends RecyclerView.Adapter {
         RelativeLayout rel_right;
         TextView txt_question_title;
         TextView txt_user_name;
-//        TextView txt_signature;
+        //        TextView txt_signature;
         TextView txt_answer_content;
         TextView txt_agree_count;
         ImageView img_user;
@@ -132,3 +113,4 @@ public class PersonalAnswerAdapter extends RecyclerView.Adapter {
         }
     }
 }
+

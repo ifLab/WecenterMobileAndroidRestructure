@@ -9,11 +9,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalArticle;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalQuestion;
+import org.iflab.wecentermobileandroidrestructure.tools.Global;
 
 import java.util.List;
 
@@ -56,8 +60,10 @@ public class PersonalArticleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((PersonalQuestionHolder) holder).txt_user_name.setText(userName);
-        ((PersonalQuestionHolder) holder).txt_question_title.setText(datas.get(position).getTitle());
-        ((PersonalQuestionHolder) holder).txt_question_content.setText(datas.get(position).getMessage());
+        ((PersonalQuestionHolder) holder).txt_question_title.setText(datas.get(position).getArticle_info().getTitle());
+        ((PersonalQuestionHolder) holder).txt_question_content.setText(datas.get(position).getArticle_info().getMessage());
+        ((PersonalQuestionHolder) holder).ask_time_txt.setText(Global.TimeStamp2Date(datas.get(position).getArticle_info().getAdd_time()+"","yyyy-MM-dd"));
+        ImageLoader.getInstance().displayImage(userAvatar,((PersonalQuestionHolder) holder).img_user);
         ((PersonalQuestionHolder) holder).relLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +73,7 @@ public class PersonalArticleAdapter extends RecyclerView.Adapter {
         ((PersonalQuestionHolder) holder).relRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArticleActivity.openArticle(mContext, Integer.parseInt(datas.get(position).getId()));
+                ArticleActivity.openArticle(mContext, datas.get(position).getArticle_info().getId());
             }
         });
     }

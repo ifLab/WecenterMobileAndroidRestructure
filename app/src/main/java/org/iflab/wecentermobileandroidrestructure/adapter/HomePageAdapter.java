@@ -121,12 +121,12 @@ public class HomePageAdapter extends BaseAdapter {
                     case 501:
                         viewHolderOneCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
                         viewHolderOneCell.userAction.setText("发布了文章");
-                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getArticleInfo().getArticleTitle());
+                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getArticleInfo().getTitle());
                         break;
                     case 502:
                         viewHolderOneCell.userName.setText(homePages.get(position).getUserInfo().getUserName());
                         viewHolderOneCell.userAction.setText("赞同了了文章");
-                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getArticleInfo().getArticleTitle());
+                        viewHolderOneCell.userActionContent.setText(homePages.get(position).getArticleInfo().getTitle());
                         break;
                 }
                 break;

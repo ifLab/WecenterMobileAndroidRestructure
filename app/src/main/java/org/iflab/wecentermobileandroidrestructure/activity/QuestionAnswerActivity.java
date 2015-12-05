@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -28,6 +29,7 @@ import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
 import org.iflab.wecentermobileandroidrestructure.tools.FormHtmlAsyncTask;
 import org.iflab.wecentermobileandroidrestructure.tools.Global;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
 import org.json.JSONObject;
 
@@ -67,8 +69,6 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
         setViews();
         setToolBars();
         loadData();
-        setListenter();
-
     }
 
     private void findViews() {
@@ -105,6 +105,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Log.v(" vote",new String(responseBody));
                         voteValue = b ? voteValue + 1:voteValue - 1;
                         votesTextView.setText(voteValue+"");
                     }
@@ -133,6 +134,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Log.v("dis vote",new String(responseBody));
                         voteValue = b ? voteValue - 1 : voteValue + 1;
                         votesTextView.setText(voteValue + "");
                     }
@@ -185,26 +187,29 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 Gson gson = new Gson();
 
                 answerInfo = gson.fromJson(response.toString(), AnswerInfo.class);
-                signatureTextView.setText(answerInfo.getSignature());
-                usernameTextView.setText(answerInfo.getUser_name());
-                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionAnswerActivity.this).padding(DisplayUtil.dip2px(QuestionAnswerActivity.this, 10)).build()), contentWebView)).execute(answerInfo.getAnswer_content());
-                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                if (answerInfo.getVote_value() > -1) {
-                    voteValue = answerInfo.getVote_value();
-                    votesTextView.setText(voteValue + "");
-                }
-                addTimeTextView.setVisibility(View.VISIBLE);
-                addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAdd_time(), "yyyy-MM-dd hh:mm:ss"));
+                signatureTextView.setText(answerInfo.getAnswer().getUser_info().getSignature());
+                usernameTextView.setText(answerInfo.getAnswer().getUser_info().getUser_name());
+                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionAnswerActivity.this).padding(DisplayUtil.dip2px(QuestionAnswerActivity.this, 10)).build()),
+                        contentWebView)).execute(answerInfo.getAnswer().getAnswer_content());
+                ImageLoader.getInstance().displayImage(answerInfo.getAnswer().getUser_info().getAvatar_file(), circleImageView, ImageOptions.optionsImage);
+                int voteCount = answerInfo.getAnswer().getUser_vote_status();
+                voteValue = answerInfo.getAnswer().getAgree_count() - answerInfo.getAnswer().getAgainst_count();
+                votesTextView.setText(voteValue + "");
 
-                if (answerInfo.getVote_value() == 1) {
+                addTimeTextView.setVisibility(View.VISIBLE);
+                addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAnswer().getAdd_time(), "yyyy-MM-dd"));
+
+                if (voteCount == 1) {
                     likeCheckBox.setChecked(true);
                     dislikeCheckBox.setEnabled(false);
-                } else if (answerInfo.getVote_value() == -1) {
+                } else if (voteCount == -1) {
                     dislikeCheckBox.setChecked(true);
                     likeCheckBox.setEnabled(false);
                 }
 
-                uid = answerInfo.getUid();
+                uid = answerInfo.getAnswer().getUid();
+
+                setListenter();
             }
         });
 
@@ -212,7 +217,8 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
 
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
-        params.put("id", answerID);
+        params.put("mobile_sign", MD5Transform.MD5("question"+AsyncHttpWecnter.SIGN));
+        params.put("answer_id", answerID);
         return params;
     }
 
@@ -221,12 +227,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
         switch (view.getId()) {
             case R.id.rel_top:
                 if(uid != -1) {
-                    Intent intent = new Intent(QuestionAnswerActivity.this, PersonalCenterActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("uid", uid);
-                    bundle.putBoolean("isOwner", User.getLoginUser(QuestionAnswerActivity.this).getUid() == uid);
-                    intent.putExtra("bundle", bundle);
-                    startActivity(intent);
+                    PersonalCenterActivity.openPersonalCenter(QuestionAnswerActivity.this,uid);
                 }
                 break;
 

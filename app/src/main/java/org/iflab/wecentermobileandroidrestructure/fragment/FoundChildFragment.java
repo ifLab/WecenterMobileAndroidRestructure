@@ -135,17 +135,18 @@ public class FoundChildFragment extends BaseFragment {
                                     QuestionInfo questionInfo = new QuestionInfo();
                                     questionInfo.setQuestionId(row.getInt("question_id"));
                                     questionInfo.setQuestionContent(row.getString("question_content"));
-                                    questionInfo.setQuestionDetail(row.getString("question_detail"));
-                                    questionInfo.setUpdateTime(row.getString("update_time"));
+                                    questionInfo.setQuestionDetail(row.getString("question_content"));
+                                    questionInfo.setUpdateTime(row.getString("add_time"));
                                     questionInfo.setType(post_type);
                                     int answerCount = row.getInt("answer_count");
                                     if (answerCount != 0) {
-                                        JSONObject answerObject = row.getJSONObject("answer");
-                                        JSONObject userInfoObject = answerObject.getJSONObject("user_info");
+                                        JSONArray array = row.getJSONArray("answer_users");
+                                        JSONObject userInfoObject = array.getJSONObject(0);
+//                                        JSONObject userInfoObject = answerObject.getJSONObject("user_info");
                                         questionInfo.setAnswerUid(userInfoObject.getInt("uid"));
                                         questionInfo.setAnswerUserName(userInfoObject.getString("user_name"));
                                         questionInfo.setAnswerAvatarFile(userInfoObject.getString("avatar_file"));
-                                        questionInfo.setAnswerContent(answerObject.getString("answer_content"));
+//                                        questionInfo.setAnswerContent(answerObject.getString("answer_content"));
                                     }
                                     JSONObject userInfoObject = row.getJSONObject("user_info");
                                     questionInfo.setPublishUid(userInfoObject.getInt("uid"));
@@ -154,7 +155,6 @@ public class FoundChildFragment extends BaseFragment {
                                     foundDatas.add(questionInfo);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(getActivity().getApplicationContext(),"失败接口:  "+RelativeUrl.FOUND+"   缺少question_detail字段",Toast.LENGTH_LONG).show();
                                 }
                             } else if (post_type.equalsIgnoreCase("article")) {
                                 try {

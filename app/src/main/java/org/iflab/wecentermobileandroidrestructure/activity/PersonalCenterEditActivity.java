@@ -61,7 +61,6 @@ public class PersonalCenterEditActivity extends SwipeBackBaseActivity {
     private TextView birthDaySelect;
     private Calendar calendar;
     private TextView txtMale;
-    private Bundle bundle;
     private Intent intent;
     private RadioGroup radioGroup;
     private RadioButton radioMale;
@@ -82,7 +81,6 @@ public class PersonalCenterEditActivity extends SwipeBackBaseActivity {
         setContentView(R.layout.activity_personal_center_edit);
         calendar = Calendar.getInstance();
         intent = getIntent();
-        bundle = intent.getBundleExtra("bundle");
         user = User.getLoginUser(getApplicationContext());
         setToolBar();
         findViews();
@@ -109,7 +107,7 @@ public class PersonalCenterEditActivity extends SwipeBackBaseActivity {
 
     private void setViews() {
         //设置用户头像
-        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatarFile(), imgUser);
+        ImageLoader.getInstance().displayImage(user.getAvatarFile(), imgUser);
         userImageSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,7 +213,7 @@ public class PersonalCenterEditActivity extends SwipeBackBaseActivity {
                     String filePath = Global.getPath(this, fileCropUri);
                     ImageLoader.getInstance().displayImage(ImageInfo.pathAddPreFix(filePath), imgUser, PhotoPickActivity.optionsImage);
                     if (filePath == null) {
-                        Toast.makeText(PersonalCenterEditActivity.this, "文件失剪裁败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PersonalCenterEditActivity.this, "文件剪裁失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     File file = new File(filePath);

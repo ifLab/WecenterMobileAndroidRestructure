@@ -19,6 +19,7 @@ import org.iflab.wecentermobileandroidrestructure.activity.QuestionAnswerActivit
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
+import org.iflab.wecentermobileandroidrestructure.model.question.QuestionDetailAnswers;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
 import java.util.ArrayList;
@@ -28,11 +29,11 @@ import java.util.List;
  * Created by lyn on 15/7/18.
  */
 public class AnswerAdapter extends BaseAdapter {
-    List<AnswerInfo> answerInfoList = new ArrayList<>();
+    List<QuestionDetailAnswers> answerInfoList = new ArrayList<>();
     Context context;
     String questionContent;
 
-    public  AnswerAdapter(Context context,List<AnswerInfo> answerInfoList,String questionContent){
+    public  AnswerAdapter(Context context,List<QuestionDetailAnswers> answerInfoList,String questionContent){
         this.answerInfoList = answerInfoList;
         this.context = context;
         this.questionContent = questionContent;
@@ -70,17 +71,17 @@ public class AnswerAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final AnswerInfo answerInfo = answerInfoList.get(position);
+        final QuestionDetailAnswers answerInfo = answerInfoList.get(position);
         
         holder.contentTextView.setText(answerInfo.getAnswer_content());
-        holder.userNameTextView.setText(answerInfo.getUser_name());
+        holder.userNameTextView.setText(answerInfo.getUser_info().getUser_name());
         holder.agreeTextView.setText(answerInfo.getAgree_count() + "");
-        ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + answerInfo.getAvatar_file(), holder.profileImageView, ImageOptions.optionsImage);
+        ImageLoader.getInstance().displayImage( answerInfo.getUser_info().getAvatar_file(), holder.profileImageView, ImageOptions.optionsImage);
         holder.profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                PersonalCenterActivity.openPersonalCenter(context,answerInfo.getUid());
+                PersonalCenterActivity.openPersonalCenter(context,answerInfo.getUser_info().getUid());
             }
         });
 

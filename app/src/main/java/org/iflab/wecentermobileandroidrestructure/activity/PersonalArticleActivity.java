@@ -18,6 +18,7 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScrollListener;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalArticle;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -74,6 +75,12 @@ public class PersonalArticleActivity extends SwipeBackBaseActivity{
             }
         };
         recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
     }
 
     private void loadMoreData() {
@@ -91,15 +98,16 @@ public class PersonalArticleActivity extends SwipeBackBaseActivity{
     }
 
     private void getData(int page) {
-        AsyncHttpWecnter.loadData(PersonalArticleActivity.this, RelativeUrl.PERSONAL_ARTICLE, generateParams(page), AsyncHttpWecnter.Request.Get, new NetWork() {
+        AsyncHttpWecnter.loadData(PersonalArticleActivity.this, RelativeUrl.USER_ACTION, generateParams(page), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 PersonalArticle personalArticle = (new Gson()).fromJson(response.toString(), PersonalArticle.class);
                 data.addAll(personalArticle.getRows());
                 articleAdapter.setData(data);
-                if (Integer.parseInt(personalArticle.getTotal_rows()) == data.size()) {
+                if (personalArticle.getTotal_rows() == 0) {
                     loadMore = false;
                 }
+                refreshLayout.setRefreshing(false);
             }
         });
     }
@@ -109,8 +117,11 @@ public class PersonalArticleActivity extends SwipeBackBaseActivity{
         params.put("uid", uid);
         params.put("page", page);
         params.put("per_page", perPage);
+        params.put("actions","501");
+        params.put("mobile_sign", MD5Transform.MD5("people"+AsyncHttpWecnter.SIGN));
         return params;
     }
+
     private void setToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));

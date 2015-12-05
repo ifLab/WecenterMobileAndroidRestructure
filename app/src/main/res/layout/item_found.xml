@@ -102,6 +102,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rel_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

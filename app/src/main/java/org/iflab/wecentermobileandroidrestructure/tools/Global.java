@@ -179,14 +179,13 @@ public class Global {
 
     //日期转化
     public static String TimeStamp2Date(String timestampString, String formats) {
+
         Long timestamp = Long.parseLong(timestampString);
-        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
-        return date;
+        return new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp * 1000));
     }
 
     public static String TimeStamp2Date(Long timestampString, String formats) {
-        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestampString));
-        return date;
+        return new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestampString * 1000));
     }
 
     //日期转化
@@ -199,7 +198,6 @@ public class Global {
         }
         return time;
     }
-
 
 
 }

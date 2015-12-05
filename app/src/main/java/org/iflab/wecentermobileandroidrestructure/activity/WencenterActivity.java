@@ -225,7 +225,7 @@ public class WencenterActivity extends BaseActivity {
     private void getUserData() {
         User user = User.getLoginUser(this);
         if (user != null) {
-            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatarFile(), profile_image, ImageOptions.optionsImagePersonalDetailAvatar);
+            ImageLoader.getInstance().displayImage(user.getAvatarFile(), profile_image, ImageOptions.optionsImagePersonalDetailAvatar);
 //            Log.v("avatar",RelativeUrl.AVATAR + user.getAvatarFile());
             user_name.setText(user.getUserName());
             if (!TextUtils.isEmpty(user.getSignNature())) {

@@ -23,6 +23,7 @@ import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScro
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalAnswer;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalArticle;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalQuestion;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class PersonalAnswerActivity extends SwipeBackBaseActivity {
         userName = intent.getStringExtra("userName");
         uid = intent.getIntExtra("uid", 4);
         sign = intent.getStringExtra("sign");
+        avatar = intent.getStringExtra("avatar");
         findViews();
         setToolBar();
         setViews();
@@ -59,7 +61,7 @@ public class PersonalAnswerActivity extends SwipeBackBaseActivity {
     }
 
     private void setViews() {
-        answerAdapter = new PersonalAnswerAdapter(sign, userName, data, this, uid+"");
+        answerAdapter = new PersonalAnswerAdapter(sign, userName, data, this, uid+"",avatar);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(answerAdapter);
@@ -70,6 +72,12 @@ public class PersonalAnswerActivity extends SwipeBackBaseActivity {
             }
         };
         recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
     }
 
     private void refreshData() {
@@ -87,15 +95,16 @@ public class PersonalAnswerActivity extends SwipeBackBaseActivity {
     }
 
     private void getData(int page) {
-        AsyncHttpWecnter.loadData(this, RelativeUrl.PERSONAL_ANSWER, generateParams(page), AsyncHttpWecnter.Request.Get, new NetWork() {
+        AsyncHttpWecnter.loadData(this, RelativeUrl.USER_ACTION, generateParams(page), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 PersonalAnswer personalAnswer = (new Gson()).fromJson(response.toString(), PersonalAnswer.class);
                 data.addAll(personalAnswer.getRows());
                 answerAdapter.setData(data);
-                if (Integer.parseInt(personalAnswer.getTotal_rows()) == data.size()) {
+                if (personalAnswer.getTotal_rows() == 0) {
                     loadMore = false;
                 }
+
             }
         });
     }
@@ -105,6 +114,8 @@ public class PersonalAnswerActivity extends SwipeBackBaseActivity {
         params.put("uid", uid);
         params.put("page", page);
         params.put("per_page", perPage);
+        params.put("actions","201");
+        params.put("mobile_sign", MD5Transform.MD5("people"+AsyncHttpWecnter.SIGN));
         return params;
     }
 

@@ -1,5 +1,7 @@
 package org.iflab.wecentermobileandroidrestructure.tools;
 
+import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
+
 /**
  * Created by hcjcch on 15/6/16.
  */
@@ -16,5 +18,9 @@ public class MD5Transform {
         } catch (java.security.NoSuchAlgorithmException e) {
         }
         return null;
+    }
+
+    public static String getSign(String url){
+        return "?mobile_sign="+MD5(url+ AsyncHttpWecnter.SIGN);
     }
 }

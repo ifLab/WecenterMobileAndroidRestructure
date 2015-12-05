@@ -12,14 +12,24 @@ import java.util.List;
 
 public class PersonalAnswer {
 
+
     /**
-     * total_rows : 5
-     * rows : [{"agree_count":"0","answer_content":"不陪","avatar_file":"000/00/00/04_avatar_max.jpg","question_title":"你吓到我了，赔钱！","answer_id":"27","question_id":"14"},{"agree_count":"1","answer_content":"huida\n[attach]273[/attach]","avatar_file":"000/00/00/04_avatar_max.jpg","question_title":"huaweic8801","answer_id":"17","question_id":"29"},{"agree_count":"1","answer_content":"当然是**java**好了\n- {{{\nSystem.out.println(&quot;I'm good&quot;)\n}}}","avatar_file":"000/00/00/04_avatar_max.jpg","question_title":"大四专业课.java与.net选哪个好呢","answer_id":"11","question_id":"8"},{"agree_count":"0","answer_content":"ddsdsdsd\n[attach]53[/attach]\n[attach]52[/attach]\n[attach]54[/attach]\n[attach]58[/attach]\n[attach]55[/attach]\n[attach]56[/attach]\n[attach]59[/attach]\n[attach]60[/attach]\n[attach]57[/attach]\n[attach]62[/attach]\n[attach]63[/attach]\n[attach]61[/attach]\n[attach]66[/attach]\n[attach]67[/attach]\n[attach]68[/attach]\n[attach]64[/attach]\n[attach]65[/attach]","avatar_file":"000/00/00/04_avatar_max.jpg","question_title":"北京信息科技大学最美的时刻","answer_id":"8","question_id":"5"},{"agree_count":"1","answer_content":" 哈哈哈哈哈哈哈哈","avatar_file":"000/00/00/04_avatar_max.jpg","question_title":"我是热门用户","answer_id":"4","question_id":"2"}]
+     * total_rows : 1
+     * rows : [{"history_id":4358,"associate_action":201,"add_time":1448781963,"answer_info":{"answer_id":311,"answer_content":"哈哈哈 测试测试\r\n \r\n \r\n\r\n[attach]47[/attach]\r\n ","add_time":1448781963,"against_count":0,"agree_count":0},"question_info":{"question_id":167,"question_content":"全国房地产开发商前五十名有哪些？","add_time":1444038484,"update_time":1448781963,"answer_count":7,"agree_count":2}}]
      */
-    private String total_rows;
+
+    private int total_rows;
+    /**
+     * history_id : 4358
+     * associate_action : 201
+     * add_time : 1448781963
+     * answer_info : {"answer_id":311,"answer_content":"哈哈哈 测试测试\r\n \r\n \r\n\r\n[attach]47[/attach]\r\n ","add_time":1448781963,"against_count":0,"agree_count":0}
+     * question_info : {"question_id":167,"question_content":"全国房地产开发商前五十名有哪些？","add_time":1444038484,"update_time":1448781963,"answer_count":7,"agree_count":2}
+     */
+
     private List<RowsEntity> rows;
 
-    public void setTotal_rows(String total_rows) {
+    public void setTotal_rows(int total_rows) {
         this.total_rows = total_rows;
     }
 
@@ -27,7 +37,7 @@ public class PersonalAnswer {
         this.rows = rows;
     }
 
-    public String getTotal_rows() {
+    public int getTotal_rows() {
         return total_rows;
     }
 
@@ -36,67 +46,177 @@ public class PersonalAnswer {
     }
 
     public static class RowsEntity {
+        private int history_id;
+        private int associate_action;
+        private long add_time;
         /**
+         * answer_id : 311
+         * answer_content : 哈哈哈 测试测试
+          
+          
+
+         [attach]47[/attach]
+          
+         * add_time : 1448781963
+         * against_count : 0
          * agree_count : 0
-         * answer_content : 不陪
-         * avatar_file : 000/00/00/04_avatar_max.jpg
-         * question_title : 你吓到我了，赔钱！
-         * answer_id : 27
-         * question_id : 14
          */
-        private String agree_count;
-        private String answer_content;
-        private String avatar_file;
-        private String question_title;
-        private String answer_id;
-        private String question_id;
 
-        public void setAgree_count(String agree_count) {
-            this.agree_count = agree_count;
+        private AnswerInfoEntity answer_info;
+        /**
+         * question_id : 167
+         * question_content : 全国房地产开发商前五十名有哪些？
+         * add_time : 1444038484
+         * update_time : 1448781963
+         * answer_count : 7
+         * agree_count : 2
+         */
+
+        private QuestionInfoEntity question_info;
+
+        public void setHistory_id(int history_id) {
+            this.history_id = history_id;
         }
 
-        public void setAnswer_content(String answer_content) {
-            this.answer_content = answer_content;
+        public void setAssociate_action(int associate_action) {
+            this.associate_action = associate_action;
         }
 
-        public void setAvatar_file(String avatar_file) {
-            this.avatar_file = avatar_file;
+        public void setAdd_time(long add_time) {
+            this.add_time = add_time;
         }
 
-        public void setQuestion_title(String question_title) {
-            this.question_title = question_title;
+        public void setAnswer_info(AnswerInfoEntity answer_info) {
+            this.answer_info = answer_info;
         }
 
-        public void setAnswer_id(String answer_id) {
-            this.answer_id = answer_id;
+        public void setQuestion_info(QuestionInfoEntity question_info) {
+            this.question_info = question_info;
         }
 
-        public void setQuestion_id(String question_id) {
-            this.question_id = question_id;
+        public int getHistory_id() {
+            return history_id;
         }
 
-        public String getAgree_count() {
-            return agree_count;
+        public int getAssociate_action() {
+            return associate_action;
         }
 
-        public String getAnswer_content() {
-            return answer_content;
+        public long getAdd_time() {
+            return add_time;
         }
 
-        public String getAvatar_file() {
-            return avatar_file;
+        public AnswerInfoEntity getAnswer_info() {
+            return answer_info;
         }
 
-        public String getQuestion_title() {
-            return question_title;
+        public QuestionInfoEntity getQuestion_info() {
+            return question_info;
         }
 
-        public String getAnswer_id() {
-            return answer_id;
+        public static class AnswerInfoEntity {
+            private int answer_id;
+            private String answer_content;
+            private long add_time;
+            private int against_count;
+            private int agree_count;
+
+            public void setAnswer_id(int answer_id) {
+                this.answer_id = answer_id;
+            }
+
+            public void setAnswer_content(String answer_content) {
+                this.answer_content = answer_content;
+            }
+
+            public void setAdd_time(long add_time) {
+                this.add_time = add_time;
+            }
+
+            public void setAgainst_count(int against_count) {
+                this.against_count = against_count;
+            }
+
+            public void setAgree_count(int agree_count) {
+                this.agree_count = agree_count;
+            }
+
+            public int getAnswer_id() {
+                return answer_id;
+            }
+
+            public String getAnswer_content() {
+                return answer_content;
+            }
+
+            public long getAdd_time() {
+                return add_time;
+            }
+
+            public int getAgainst_count() {
+                return against_count;
+            }
+
+            public int getAgree_count() {
+                return agree_count;
+            }
         }
 
-        public String getQuestion_id() {
-            return question_id;
+        public static class QuestionInfoEntity {
+            private int question_id;
+            private String question_content;
+            private long add_time;
+            private int update_time;
+            private int answer_count;
+            private int agree_count;
+
+            public void setQuestion_id(int question_id) {
+                this.question_id = question_id;
+            }
+
+            public void setQuestion_content(String question_content) {
+                this.question_content = question_content;
+            }
+
+            public void setAdd_time(long add_time) {
+                this.add_time = add_time;
+            }
+
+            public void setUpdate_time(int update_time) {
+                this.update_time = update_time;
+            }
+
+            public void setAnswer_count(int answer_count) {
+                this.answer_count = answer_count;
+            }
+
+            public void setAgree_count(int agree_count) {
+                this.agree_count = agree_count;
+            }
+
+            public int getQuestion_id() {
+                return question_id;
+            }
+
+            public String getQuestion_content() {
+                return question_content;
+            }
+
+            public long getAdd_time() {
+                return add_time;
+            }
+
+            public int getUpdate_time() {
+                return update_time;
+            }
+
+            public int getAnswer_count() {
+                return answer_count;
+            }
+
+            public int getAgree_count() {
+                return agree_count;
+            }
         }
     }
 }

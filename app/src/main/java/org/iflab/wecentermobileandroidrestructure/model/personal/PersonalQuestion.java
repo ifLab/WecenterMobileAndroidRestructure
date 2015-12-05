@@ -12,14 +12,23 @@ import java.util.List;
 
 public class PersonalQuestion {
 
+
     /**
-     * total_rows : 18
-     * rows : [{"id":"30","detail":"testhuaweiphoto[attach]267[/attach] [attach]268[/attach] [attach]269[/attach] [attach]270[/attach] [attach]271[/attach] [attach]272[/attach] ","title":"testhuaweiphoto","add_time":"1434893174"},{"id":"29","detail":"huaweic8801","title":"huaweic8801","add_time":"1434892468"},{"id":"28","detail":"删除图片删除图片[attach]265[/attach] [attach]266[/attach] ","title":"删除图片删除图片","add_time":"1434854734"},{"id":"27","detail":"poiuyp[attach]234[/attach] [attach]235[/attach] ","title":"poiuytp","add_time":"1434798314"},{"id":"26","detail":"qwrtuioo[attach]233[/attach] ","title":"qwrtuio","add_time":"1434797638"},{"id":"25","detail":"hhhhmmfmkf","title":"jcjfkkglg","add_time":"1434796709"},{"id":"24","detail":"fjfjjfjfnfnfn","title":"teteyegdhdh","add_time":"1434796346"},{"id":"23","detail":"手机发布手机发布[attach]151[/attach] [attach]152[/attach] [attach]153[/attach] [attach]154[/attach] [attach]155[/attach] [attach]156[/attach] ","title":"手机发布手机发布","add_time":"1434723315"},{"id":"22","detail":"testtest[attach]151[/attach] [attach]152[/attach] ","title":"testtest","add_time":"1434722836"},{"id":"21","detail":"tetstest","title":"testtest","add_time":"1434722315"}]
+     * total_rows : 1
+     * rows : [{"history_id":3032,"associate_action":101,"add_time":1441436907,"question_info":{"question_id":126,"question_content":"谁有中概股公司最新的私有化进程信息和当前溢价统计表？","add_time":1441436907,"update_time":1441437126,"answer_count":1,"agree_count":7}}]
      */
-    private String total_rows;
+
+    private int total_rows;
+    /**
+     * history_id : 3032
+     * associate_action : 101
+     * add_time : 1441436907
+     * question_info : {"question_id":126,"question_content":"谁有中概股公司最新的私有化进程信息和当前溢价统计表？","add_time":1441436907,"update_time":1441437126,"answer_count":1,"agree_count":7}
+     */
+
     private List<RowsEntity> rows;
 
-    public void setTotal_rows(String total_rows) {
+    public void setTotal_rows(int total_rows) {
         this.total_rows = total_rows;
     }
 
@@ -27,7 +36,7 @@ public class PersonalQuestion {
         this.rows = rows;
     }
 
-    public String getTotal_rows() {
+    public int getTotal_rows() {
         return total_rows;
     }
 
@@ -36,47 +45,107 @@ public class PersonalQuestion {
     }
 
     public static class RowsEntity {
+        private int history_id;
+        private int associate_action;
+        private long add_time;
         /**
-         * id : 30
-         * detail : testhuaweiphoto[attach]267[/attach] [attach]268[/attach] [attach]269[/attach] [attach]270[/attach] [attach]271[/attach] [attach]272[/attach]
-         * title : testhuaweiphoto
-         * add_time : 1434893174
+         * question_id : 126
+         * question_content : 谁有中概股公司最新的私有化进程信息和当前溢价统计表？
+         * add_time : 1441436907
+         * update_time : 1441437126
+         * answer_count : 1
+         * agree_count : 7
          */
-        private String id;
-        private String detail;
-        private String title;
-        private String add_time;
 
-        public void setId(String id) {
-            this.id = id;
+        private QuestionInfoEntity question_info;
+
+        public void setHistory_id(int history_id) {
+            this.history_id = history_id;
         }
 
-        public void setDetail(String detail) {
-            this.detail = detail;
+        public void setAssociate_action(int associate_action) {
+            this.associate_action = associate_action;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public void setAdd_time(String add_time) {
+        public void setAdd_time(long add_time) {
             this.add_time = add_time;
         }
 
-        public String getId() {
-            return id;
+        public void setQuestion_info(QuestionInfoEntity question_info) {
+            this.question_info = question_info;
         }
 
-        public String getDetail() {
-            return detail;
+        public int getHistory_id() {
+            return history_id;
         }
 
-        public String getTitle() {
-            return title;
+        public int getAssociate_action() {
+            return associate_action;
         }
 
-        public String getAdd_time() {
+        public long getAdd_time() {
             return add_time;
+        }
+
+        public QuestionInfoEntity getQuestion_info() {
+            return question_info;
+        }
+
+        public static class QuestionInfoEntity {
+            private int question_id;
+            private String question_content;
+            private long add_time;
+            private int update_time;
+            private int answer_count;
+            private int agree_count;
+
+            public void setQuestion_id(int question_id) {
+                this.question_id = question_id;
+            }
+
+            public void setQuestion_content(String question_content) {
+                this.question_content = question_content;
+            }
+
+            public void setAdd_time(long add_time) {
+                this.add_time = add_time;
+            }
+
+            public void setUpdate_time(int update_time) {
+                this.update_time = update_time;
+            }
+
+            public void setAnswer_count(int answer_count) {
+                this.answer_count = answer_count;
+            }
+
+            public void setAgree_count(int agree_count) {
+                this.agree_count = agree_count;
+            }
+
+            public int getQuestion_id() {
+                return question_id;
+            }
+
+            public String getQuestion_content() {
+                return question_content;
+            }
+
+            public long getAdd_time() {
+                return add_time;
+            }
+
+            public int getUpdate_time() {
+                return update_time;
+            }
+
+            public int getAnswer_count() {
+                return answer_count;
+            }
+
+            public int getAgree_count() {
+                return agree_count;
+            }
         }
     }
 }

@@ -20,7 +20,6 @@ import org.iflab.wecentermobileandroidrestructure.common.OnClickItemCallBack;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleComment;
-import org.iflab.wecentermobileandroidrestructure.model.article.ArticleComment.UserInfo;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 
 import java.util.ArrayList;
@@ -30,13 +29,13 @@ import java.util.List;
  * Created by Lyn on 15/8/1.
  */
 public class ArticleCommentsAdapter extends RecyclerView.Adapter<ArticleCommentsAdapter.CommentsViewHolder>{
-    List<ArticleComment> ArticleCommentList = new ArrayList<>();
+    List<ArticleComment.RowsEntity> comment = new ArrayList<>();
     Context context;
     LayoutInflater mLayoutInflater;
     OnClickItemCallBack callBack;
 
-    public ArticleCommentsAdapter(Context context,List<ArticleComment> ArticleCommentList,OnClickItemCallBack callBack){
-        this.ArticleCommentList = ArticleCommentList;
+    public ArticleCommentsAdapter(Context context,ArticleComment articleComment,OnClickItemCallBack callBack){
+        this.comment = articleComment.getRows();
         this.context = context;
         this.callBack = callBack;
         mLayoutInflater = LayoutInflater.from(context);
@@ -48,14 +47,14 @@ public class ArticleCommentsAdapter extends RecyclerView.Adapter<ArticleComments
 
     @Override
     public void onBindViewHolder(ArticleCommentsAdapter.CommentsViewHolder holder, int position) {
-        ArticleComment articleComment = ArticleCommentList.get(position);
+        ArticleComment.RowsEntity articleComment = comment.get(position);
         holder.commentTextView.setText(articleComment.getMessage());
 
-        final UserInfo userinfo = articleComment.getUser_info();
+        final ArticleComment.RowsEntity.UserInfoEntity userinfo = articleComment.getUser_info();
 
         if(userinfo != null) {
             holder.userNameTextView.setText(userinfo.getUser_name());
-            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + userinfo.getAvatar_file(), holder.profileImageView, ImageOptions.optionsImagePersonalDetailAvatar);
+            ImageLoader.getInstance().displayImage( userinfo.getAvatar_file(), holder.profileImageView, ImageOptions.optionsImagePersonalDetailAvatar);
 
             holder.profileImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,7 +76,7 @@ public class ArticleCommentsAdapter extends RecyclerView.Adapter<ArticleComments
 
     @Override
     public int getItemCount() {
-        return ArticleCommentList.size();
+        return comment.size();
     }
 
     @Override

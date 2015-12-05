@@ -12,14 +12,23 @@ import java.util.List;
 
 public class PersonalArticle {
 
+
     /**
      * total_rows : 1
-     * rows : [{"id":"5","title":"文章文章文章文章文章文章文章文章文章文章文章文章文章文章文章","message":"文章文章文章文章文章文章文章文章文章文章文章文章文章文章文章","add_time":"1434897495"}]
+     * rows : [{"history_id":16,"associate_action":501,"add_time":1434706630,"article_info":{"id":3,"title":"读懂ETF，你不再是新韭菜","message":"为什么会发明ETF这样的产品：交易成本低（和买卖股票一样）、有效跟踪指数（不象封闭式基金有很大的折价）、流动性好（有做市商机制和套利盘），而且非常透明（严格复制指数）。","comments":0,"views":36,"add_time":1434706630}}]
      */
-    private String total_rows;
+
+    private int total_rows;
+    /**
+     * history_id : 16
+     * associate_action : 501
+     * add_time : 1434706630
+     * article_info : {"id":3,"title":"读懂ETF，你不再是新韭菜","message":"为什么会发明ETF这样的产品：交易成本低（和买卖股票一样）、有效跟踪指数（不象封闭式基金有很大的折价）、流动性好（有做市商机制和套利盘），而且非常透明（严格复制指数）。","comments":0,"views":36,"add_time":1434706630}
+     */
+
     private List<RowsEntity> rows;
 
-    public void setTotal_rows(String total_rows) {
+    public void setTotal_rows(int total_rows) {
         this.total_rows = total_rows;
     }
 
@@ -27,7 +36,7 @@ public class PersonalArticle {
         this.rows = rows;
     }
 
-    public String getTotal_rows() {
+    public int getTotal_rows() {
         return total_rows;
     }
 
@@ -36,47 +45,107 @@ public class PersonalArticle {
     }
 
     public static class RowsEntity {
+        private int history_id;
+        private int associate_action;
+        private long add_time;
         /**
-         * id : 5
-         * title : 文章文章文章文章文章文章文章文章文章文章文章文章文章文章文章
-         * message : 文章文章文章文章文章文章文章文章文章文章文章文章文章文章文章
-         * add_time : 1434897495
+         * id : 3
+         * title : 读懂ETF，你不再是新韭菜
+         * message : 为什么会发明ETF这样的产品：交易成本低（和买卖股票一样）、有效跟踪指数（不象封闭式基金有很大的折价）、流动性好（有做市商机制和套利盘），而且非常透明（严格复制指数）。
+         * comments : 0
+         * views : 36
+         * add_time : 1434706630
          */
-        private String id;
-        private String title;
-        private String message;
-        private String add_time;
 
-        public void setId(String id) {
-            this.id = id;
+        private ArticleInfoEntity article_info;
+
+        public void setHistory_id(int history_id) {
+            this.history_id = history_id;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
+        public void setAssociate_action(int associate_action) {
+            this.associate_action = associate_action;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public void setAdd_time(String add_time) {
+        public void setAdd_time(long add_time) {
             this.add_time = add_time;
         }
 
-        public String getId() {
-            return id;
+        public void setArticle_info(ArticleInfoEntity article_info) {
+            this.article_info = article_info;
         }
 
-        public String getTitle() {
-            return title;
+        public int getHistory_id() {
+            return history_id;
         }
 
-        public String getMessage() {
-            return message;
+        public int getAssociate_action() {
+            return associate_action;
         }
 
-        public String getAdd_time() {
+        public long getAdd_time() {
             return add_time;
+        }
+
+        public ArticleInfoEntity getArticle_info() {
+            return article_info;
+        }
+
+        public static class ArticleInfoEntity {
+            private int id;
+            private String title;
+            private String message;
+            private int comments;
+            private int views;
+            private long add_time;
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public void setMessage(String message) {
+                this.message = message;
+            }
+
+            public void setComments(int comments) {
+                this.comments = comments;
+            }
+
+            public void setViews(int views) {
+                this.views = views;
+            }
+
+            public void setAdd_time(long add_time) {
+                this.add_time = add_time;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public String getMessage() {
+                return message;
+            }
+
+            public int getComments() {
+                return comments;
+            }
+
+            public int getViews() {
+                return views;
+            }
+
+            public long getAdd_time() {
+                return add_time;
+            }
         }
     }
 }

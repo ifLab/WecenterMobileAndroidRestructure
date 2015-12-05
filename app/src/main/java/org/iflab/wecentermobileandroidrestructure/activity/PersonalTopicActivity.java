@@ -29,6 +29,7 @@ import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScrollListener;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalTopic;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -43,9 +44,10 @@ public class PersonalTopicActivity extends SwipeBackBaseActivity {
     private List<PersonalTopic.RowsEntity> data = new ArrayList<>();
     private boolean loadMore = true;
     private String userName;
+    String avatar;
     private int uid;
     private int page;
-    private int perPage = 10;
+    public static int TYPE = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +56,20 @@ public class PersonalTopicActivity extends SwipeBackBaseActivity {
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
         uid = intent.getIntExtra("uid", 4);
+        avatar = intent.getStringExtra("avatar");
         findViews();
         setToolBar();
         setViews();
-        refreshData();
+        if(getIntent().getIntExtra("multiple_topics",0)== TYPE){
+            getMultipleTopics();
+        }else {
+            refreshData();
+        }
+
     }
 
     private void setViews() {
-        answerAdapter = new PersonalTopicAdapter(this, data, userName);
+        answerAdapter = new PersonalTopicAdapter(this, data, userName,avatar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(answerAdapter);
@@ -72,6 +80,12 @@ public class PersonalTopicActivity extends SwipeBackBaseActivity {
             }
         };
         recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
     }
 
     private void refreshData() {
@@ -95,9 +109,10 @@ public class PersonalTopicActivity extends SwipeBackBaseActivity {
                 PersonalTopic personalTopic = (new Gson()).fromJson(response.toString(), PersonalTopic.class);
                 data.addAll(personalTopic.getRows());
                 answerAdapter.setData(data);
-                if (Integer.parseInt(personalTopic.getTotal_rows()) == data.size()) {
+                if (personalTopic.getTotal_rows() == 0) {
                     loadMore = false;
                 }
+                refreshLayout.setRefreshing(false);
             }
         });
     }
@@ -106,14 +121,14 @@ public class PersonalTopicActivity extends SwipeBackBaseActivity {
         RequestParams params = new RequestParams();
         params.put("uid", uid);
         params.put("page", page);
-        params.put("per_page", perPage);
+        params.put("mobile_sign", MD5Transform.MD5("people"+AsyncHttpWecnter.SIGN));
         return params;
     }
 
     private void setToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.setTitle(userName + "的回答");
+        toolbar.setTitle(userName + "的话题");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -130,25 +145,23 @@ public class PersonalTopicActivity extends SwipeBackBaseActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_personal_answer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void getMultipleTopics() {
+        ArrayList<String> list = getIntent().getStringArrayListExtra("topics");
+        String topicParams = "";
+        for(String item:list){
+            topicParams += item +',';
         }
+        RequestParams params = new RequestParams();
+        params.put("topics", topicParams);
 
-        return super.onOptionsItemSelected(item);
+        AsyncHttpWecnter.loadData(this, RelativeUrl.TOPICS,params,AsyncHttpWecnter.Request.Post, new NetWork() {
+            @Override
+            public void parseJson(JSONObject response) {
+                PersonalTopic personalTopic = (new Gson()).fromJson(response.toString(), PersonalTopic.class);
+                data.addAll(personalTopic.getRows());
+                answerAdapter.setData(data);
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 }

@@ -7,37 +7,28 @@ public class SearchUsers extends SearchBase{
 
 
     /**
-     * uid : 4
-     * score : null
-     * type : users
-     * url : http://we.bistu.edu.cn/?/people/hc
-     * search_id : 4
-     * name : hc
-     * detail : {"avatar_file":"http://we.bistu.edu.cn/uploads/avatar/000/00/00/04_avatar_mid.jpg","signature":"青山依旧在，几度夕阳红！","reputation":0,"agree_count":2,"thanks_count":0}
+     * type : articles
+     * search_id : 21
+     * name : 想想当年经济大萧条，这次股市暴跌也是个警示
+     * detail : {"avatar_file":"","reputation":63,"agree_count":1,"thanks_count":1,"fans_count":1,"signature":""}
      */
 
-    private int uid;
-    private int score;
     private String type;
-    private String url;
     private int search_id;
     private String name;
+    /**
+     * avatar_file :
+     * reputation : 63
+     * agree_count : 1
+     * thanks_count : 1
+     * fans_count : 1
+     * signature :
+     */
+
     private DetailEntity detail;
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public void setSearch_id(int search_id) {
@@ -52,20 +43,8 @@ public class SearchUsers extends SearchBase{
         this.detail = detail;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public String getUrl() {
-        return url;
     }
 
     public int getSearch_id() {
@@ -81,26 +60,15 @@ public class SearchUsers extends SearchBase{
     }
 
     public static class DetailEntity {
-        /**
-         * avatar_file : http://we.bistu.edu.cn/uploads/avatar/000/00/00/04_avatar_mid.jpg
-         * signature : 青山依旧在，几度夕阳红！
-         * reputation : 0
-         * agree_count : 2
-         * thanks_count : 0
-         */
-
         private String avatar_file;
-        private String signature;
         private int reputation;
         private int agree_count;
         private int thanks_count;
+        private int fans_count;
+        private String signature;
 
         public void setAvatar_file(String avatar_file) {
             this.avatar_file = avatar_file;
-        }
-
-        public void setSignature(String signature) {
-            this.signature = signature;
         }
 
         public void setReputation(int reputation) {
@@ -115,12 +83,16 @@ public class SearchUsers extends SearchBase{
             this.thanks_count = thanks_count;
         }
 
-        public String getAvatar_file() {
-            return avatar_file;
+        public void setFans_count(int fans_count) {
+            this.fans_count = fans_count;
         }
 
-        public String getSignature() {
-            return signature;
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
+
+        public String getAvatar_file() {
+            return avatar_file;
         }
 
         public int getReputation() {
@@ -133,6 +105,14 @@ public class SearchUsers extends SearchBase{
 
         public int getThanks_count() {
             return thanks_count;
+        }
+
+        public int getFans_count() {
+            return fans_count;
+        }
+
+        public String getSignature() {
+            return signature;
         }
     }
 }

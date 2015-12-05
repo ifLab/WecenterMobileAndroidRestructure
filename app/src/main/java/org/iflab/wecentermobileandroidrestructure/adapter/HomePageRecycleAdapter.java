@@ -69,10 +69,11 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
         final HomePage homePage = homePages.get(i);
         if (viewHolder instanceof HomePageTwoCellHolder) {
             ((HomePageTwoCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
+            ((HomePageTwoCellHolder) viewHolder).userAgreeCount.setText(homePage.getAnswerInfo().getAgreeCount()+"");
             ((HomePageTwoCellHolder) viewHolder).rel_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PersonalCenterActivity.openPersonalCenter(mContext, homePage.getUid());
+                    PersonalCenterActivity.openPersonalCenter(mContext, homePage.getUserInfo().getUid());
                 }
             });
             ((HomePageTwoCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
@@ -96,13 +97,13 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageTwoCellHolder) viewHolder).userAction.setText("回答了问题");
                     ((HomePageTwoCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
                     ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setText(homePage.getAnswerInfo().getAnswerContent());
-                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageTwoCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ImageLoader.getInstance().displayImage( homePage.getUserInfo().getUserAvatar(), ((HomePageTwoCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
                 case 204:
                     ((HomePageTwoCellHolder) viewHolder).userAction.setText("赞同了回答");
                     ((HomePageTwoCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
                     ((HomePageTwoCellHolder) viewHolder).userAnswerContent.setText(homePage.getAnswerInfo().getAnswerContent());
-                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageTwoCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ImageLoader.getInstance().displayImage( homePage.getUserInfo().getUserAvatar(), ((HomePageTwoCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
             }
         } else {
@@ -110,7 +111,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
             ((HomePageOneCellHolder) viewHolder).userProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PersonalCenterActivity.openPersonalCenter(mContext, homePage.getUid());
+                    PersonalCenterActivity.openPersonalCenter(mContext, homePage.getUserInfo().getUid());
                 }
             });
             switch (userAction) {
@@ -118,7 +119,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("发布了问题");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
-                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ImageLoader.getInstance().displayImage( homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -130,7 +131,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("关注了问题");
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getQuestionInfo().getQuestionContent());
-                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ImageLoader.getInstance().displayImage( homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -141,24 +142,24 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter {
                 case 501:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("发布了文章");
-                    ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getArticleTitle());
+                    ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getTitle());
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ArticleActivity.openArticle(mContext, homePage.getArticleInfo().getArticleId());
+                            ArticleActivity.openArticle(mContext, homePage.getArticleInfo().getId());
                         }
                     });
-                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ImageLoader.getInstance().displayImage( homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     break;
                 case 502:
                     ((HomePageOneCellHolder) viewHolder).userName.setText(homePage.getUserInfo().getUserName());
                     ((HomePageOneCellHolder) viewHolder).userAction.setText("赞同了了文章");
-                    ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getArticleTitle());
-                    ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
+                    ((HomePageOneCellHolder) viewHolder).userActionContent.setText(homePage.getArticleInfo().getTitle());
+                    ImageLoader.getInstance().displayImage( homePage.getUserInfo().getUserAvatar(), ((HomePageOneCellHolder) viewHolder).userProfile, ImageOptions.optionsImage);
                     ((HomePageOneCellHolder) viewHolder).userActionContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ArticleActivity.openArticle(mContext, homePage.getArticleInfo().getArticleId());
+                            ArticleActivity.openArticle(mContext, homePage.getArticleInfo().getId());
                         }
                     });
                     break;

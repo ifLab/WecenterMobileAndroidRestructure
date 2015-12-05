@@ -3,19 +3,12 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,20 +26,17 @@ import org.iflab.wecentermobileandroidrestructure.adapter.AnswerAdapter;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
-import org.iflab.wecentermobileandroidrestructure.model.User;
-import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
-import org.iflab.wecentermobileandroidrestructure.model.question.AnswerInfo;
+import org.iflab.wecentermobileandroidrestructure.model.question.QuestionDetailAnswers;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionInfo;
 import org.iflab.wecentermobileandroidrestructure.model.question.QuestionTopics;
 import org.iflab.wecentermobileandroidrestructure.tools.FormHtmlAsyncTask;
-import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class QuestionDetailActivity extends SwipeBackBaseActivity implements View.OnClickListener {
@@ -66,7 +56,7 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
     RelativeLayout addAnswerRel;
     RelativeLayout topRel;
     SwipeRefreshLayout refreshLayout;
-    List<AnswerInfo> answersList = new ArrayList();
+    List<QuestionDetailAnswers> answersList = new ArrayList();
     List<QuestionTopics> questionsList;
     AnswerAdapter answerAdapter;
     int question_id;
@@ -79,7 +69,7 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
-        uid = getIntent().getIntExtra("uid", 22);
+        uid = getIntent().getIntExtra("uid", -1);
         question_id = getIntent().getIntExtra("question_id", 2);
         findViews();
         findHeaderView();
@@ -148,12 +138,18 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.rel_add_answer:
-                Intent intent1 = new Intent(QuestionDetailActivity.this, PublishAnswerArticleActivity.class);
-                intent1.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT, PublishAnswerArticleActivity.PUBLISH_ANSWER);
-                intent1.putExtra(PublishAnswerArticleActivity.QUESTION_ID_INTENT, question_id);
-                startActivity(intent1);
+                int[] startingLocation = new int[2];
+                view.getLocationOnScreen(startingLocation);
+                startingLocation[0] += view.getWidth() / 2;
+                intent = new Intent(QuestionDetailActivity.this, PublishAnswerArticleActivity.class);
+                intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT, PublishAnswerArticleActivity.PUBLISH_ANSWER);
+                intent.putExtra(PublishAnswerArticleActivity.QUESTION_ID_INTENT, question_id);
+                intent.putExtra(PublishAnswerArticleActivity.ARG_REVEAL_START_LOCATION, startingLocation);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 break;
             case R.id.btn_foucs:
                 foucsQuestion();
@@ -161,23 +157,19 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
             case R.id.rel_top:
                 //到个人中心
                 if (uid != -1) {
-                    Intent intent = new Intent(QuestionDetailActivity.this, PersonalCenterActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("uid", uid);
-                    bundle.putBoolean("isOwner", User.getLoginUser(QuestionDetailActivity.this).getUid() == uid);
-                    intent.putExtra("bundle", bundle);
-                    startActivity(intent);
+                    PersonalCenterActivity.openPersonalCenter(QuestionDetailActivity.this,uid);
                 }
                 break;
 
             case R.id.flow_question_topic:
-//                Intent intent = new Intent(QuestionDetailActivity.this,TopicsActivity.class);
-//                ArrayList<String> topicsList = new ArrayList<>();
-//                for(QuestionTopics t:questionsList){
-//                    topicsList.add(t.getTopic_id()+"");
-//                }
-//                intent.putExtra("topics",topicsList);
-//                startActivity(intent);
+                intent = new Intent(QuestionDetailActivity.this,PersonalTopicActivity.class);
+                ArrayList<String> topicsList = new ArrayList<>();
+                for(QuestionTopics t:questionsList){
+                    topicsList.add(t.getTopic_id()+"");
+                }
+                intent.putExtra("multiple_topics",PersonalTopicActivity.TYPE);
+                intent.putExtra("topics",topicsList);
+                startActivity(intent);
                 break;
 
 
@@ -186,7 +178,7 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
 
 
     private void foucsQuestion() {
-        AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_FOUCS, setFoucsParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
+        AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_FOUCS, setFoucsParams(), AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
                 // update button UI
@@ -199,15 +191,15 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
 
                 switch (type) {
                     case "add":
-                        focusTextView.setText((foucsNum + 1) + "");
+                        focusTextView.setText(++foucsNum + "");
                         updateFoucsBtnUI(1);
                         break;
                     case "remove":
-                        focusTextView.setText((foucsNum - 1) + "");
+                        focusTextView.setText(--foucsNum + "");
                         updateFoucsBtnUI(0);
                         break;
                 }
-                Log.v("foucsQuestion", response.toString());
+//                Log.v("foucsQuestion", response.toString());
 
             }
         });
@@ -217,7 +209,7 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
     private void loadData() {
         AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_INFO, setParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
             QuestionInfo questionInfo;
-            AnswerInfo answerInfo;
+            QuestionDetailAnswers answerInfo;
 
             @Override
             public void parseJson(JSONObject response) {
@@ -225,18 +217,17 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
                 try {
                     //questionInfo
                     questionInfo = gson.fromJson(response.getString("question_info"), QuestionInfo.class);
-                    Log.v("questionInfo", questionInfo.toString());
+//                    Log.v("questionInfo", questionInfo.toString());
 
                     //answer
-                    String answers = response.getString("answers");
-                    if (!answers.equals("[]")) {
-                        JSONObject answersObj = new JSONObject(answers);
-                        Iterator<String> iterator = answersObj.keys();
-                        while (iterator.hasNext()) {
-                            answerInfo = new AnswerInfo();
-                            answerInfo = gson.fromJson(answersObj.getString(iterator.next()), AnswerInfo.class);
+                    JSONArray answerArray = response.getJSONArray("answers");
+                    int length = answerArray.length();
+                    if (length != 0) {
+                        for(int i=0;i<length;i++){
+                            answerInfo = new QuestionDetailAnswers();
+                            answerInfo = gson.fromJson(answerArray.getString(i), QuestionDetailAnswers.class);
                             answersList.add(answerInfo);
-                            Log.v("answerInfo", answerInfo.toString());
+//                            Log.v("answerInfo", answerInfo.toString());
                         }
                     }
                     answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
@@ -250,12 +241,16 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                updateFoucsBtnUI(questionInfo.getHas_focus());
-                (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionDetailActivity.this).build()), contentWebView)).execute(questionInfo.getQuestion_detail());
+                updateFoucsBtnUI(questionInfo.getUser_question_focus());
+                if(questionInfo.getQuestion_detail().length() != 0) {
+                    (new FormHtmlAsyncTask((new WecenterImageGetter.Builder(QuestionDetailActivity.this).build()), contentWebView)).execute(questionInfo.getQuestion_detail());
+                }else{
+                    contentWebView.setVisibility(View.GONE);
+                }
                 contentTextView.setText(questionInfo.getQuestion_content());
                 bookMarkTextView.setText(questionInfo.getFocus_count() + "");
 
-                foucsNum = questionInfo.getHas_focus();
+                foucsNum = questionInfo.getFocus_count();
                 focusTextView.setText(foucsNum + "");
                 if (questionsList != null) {
                     for (QuestionTopics q : questionsList) {
@@ -263,20 +258,13 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
                     }
 
                 }
+                uid = questionInfo.getUser_info().getUid();
+                userNameTextView.setText(questionInfo.getUser_info().getUser_name());
+                ImageLoader.getInstance().displayImage(questionInfo.getUser_info().getAvatar_file(), userImageView, ImageOptions.optionsImage);
 
             }
         });
 
-        // load user data
-        AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.USER_INFO, setUserParams(), AsyncHttpWecnter.Request.Get, new NetWork() {
-            @Override
-            public void parseJson(JSONObject response) {
-                UserPersonal user = new UserPersonal(response);
-                HawkControl.saveUserCount(user);
-                userNameTextView.setText(user.getUser_name());
-                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + user.getAvatar_file(), userImageView, ImageOptions.optionsImage);
-            }
-        });
     }
 
     private void updateFoucsBtnUI(int hasFoucs) {
@@ -315,10 +303,5 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
         return params;
     }
 
-    private RequestParams setUserParams() {
-        RequestParams params = new RequestParams();
-        params.put("uid", uid);
-        return params;
-    }
 
 }

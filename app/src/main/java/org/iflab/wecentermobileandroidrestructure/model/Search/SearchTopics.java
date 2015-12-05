@@ -7,37 +7,27 @@ public class SearchTopics extends SearchBase{
 
 
     /**
-     * uid : 9
-     * score : 1
-     * type : articles
-     * url : http://we.bistu.edu.cn/?/article/6
-     * search_id : 6
-     * name : 我决定粘贴一篇特别长的图文混排的文章
-     * detail : {"topic_pic":"http://we.bistu.edu.cn/static/common/topic-mid-img.png","topic_id":14,"focus_count":1,"discuss_count":3,"topic_description":""}
+     * type : topics
+     * search_id : 60
+     * name : 股市
+     * detail : {"topic_pic":"http://wecenter.dev.hihwei.com/static/common/topic-mid-img.png","topic_id":60,"focus_count":2,"discuss_count":34,"topic_description":""}
      */
 
-    private int uid;
-    private int score;
     private String type;
-    private String url;
     private int search_id;
     private String name;
+    /**
+     * topic_pic : http://wecenter.dev.hihwei.com/static/common/topic-mid-img.png
+     * topic_id : 60
+     * focus_count : 2
+     * discuss_count : 34
+     * topic_description :
+     */
+
     private DetailEntity detail;
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public void setSearch_id(int search_id) {
@@ -52,20 +42,8 @@ public class SearchTopics extends SearchBase{
         this.detail = detail;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public String getUrl() {
-        return url;
     }
 
     public int getSearch_id() {
@@ -81,14 +59,6 @@ public class SearchTopics extends SearchBase{
     }
 
     public static class DetailEntity {
-        /**
-         * topic_pic : http://we.bistu.edu.cn/static/common/topic-mid-img.png
-         * topic_id : 14
-         * focus_count : 1
-         * discuss_count : 3
-         * topic_description :
-         */
-
         private String topic_pic;
         private int topic_id;
         private int focus_count;

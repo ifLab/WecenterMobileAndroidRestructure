@@ -1,10 +1,12 @@
 package org.iflab.wecentermobileandroidrestructure.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,6 +43,7 @@ import java.util.List;
  * Created by hcjcch on 15/5/28.
  */
 public class HomePageFragment extends BaseFragment {
+    private static int REFRESH = 11;
     private RecyclerView listHomepage;
     private FloatingActionButton fab;
     private SwipeRefreshLayout refreshLayout;
@@ -110,16 +113,34 @@ public class HomePageFragment extends BaseFragment {
         });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
-                int[] startingLocation = new int[2];
-                v.getLocationOnScreen(startingLocation);
-                startingLocation[0] += v.getWidth() / 2;
-                Intent intent = new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class);
-                intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,PublishAnswerArticleActivity.PUBLISH_QUESTION);
-                intent.putExtra(PublishAnswerArticleActivity.ARG_REVEAL_START_LOCATION, startingLocation);
-                startActivity(intent);
-                getActivity().overridePendingTransition(0, 0);
+                AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                        .setItems(new String[]{"发布文章", "发布问题"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getActivity().getApplicationContext(), PublishAnswerArticleActivity.class);
+                                switch (which){
+                                    case 0:
+                                        intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,
+                                                PublishAnswerArticleActivity.PUBLISH_ARTICLE);
+                                        break;
+                                    case 1:
+                                        intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT,
+                                                PublishAnswerArticleActivity.PUBLISH_QUESTION);
+
+                                        break;
+                                }
+                                int[] startingLocation = new int[2];
+                                v.getLocationOnScreen(startingLocation);
+                                startingLocation[0] += v.getWidth() / 2;
+                                intent.putExtra(PublishAnswerArticleActivity.ARG_REVEAL_START_LOCATION, startingLocation);
+                                startActivityForResult(intent,REFRESH);
+                                getActivity().overridePendingTransition(0, 0);
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             }
         });
         endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {
@@ -160,12 +181,12 @@ public class HomePageFragment extends BaseFragment {
                             JSONObject row = rows.getJSONObject(i);
                             int history_id = row.getInt("history_id");
                             homePage.setHistoryId(history_id);
-                            int uid = row.getInt("uid");
-                            homePage.setUid(uid);
+//                            int uid = row.getInt("uid");
+//                            homePage.setUid(uid);
                             int associate_action = row.getInt("associate_action");
                             homePage.setAssociateAction(associate_action);
-                            int associate_id = row.getInt("associate_id");
-                            homePage.setAssociateId(associate_id);
+//                            int associate_id = row.getInt("associate_id");
+//                            homePage.setAssociateId(associate_id);
                             int add_time = row.getInt("add_time");
                             homePage.setAddTime(add_time);
                             JSONObject userInfoJsonObject = row.getJSONObject("user_info");
@@ -187,13 +208,13 @@ public class HomePageFragment extends BaseFragment {
                                 questionInfo.setQuestionContent(questionInfoContent);
                                 homePage.setQuestionInfo(questionInfo);
 //                                questionInfo.save();
-                            } else if (associate_action == 501 || associate_action == 502) {
+                            } else if (associate_action == 501 || associate_action == 502 ||associate_action == 503) {
                                 JSONObject articleInfoJsonObject = row.getJSONObject("article_info");
                                 ArticleInfo articleInfo = new ArticleInfo();
                                 int articleInfoId = articleInfoJsonObject.getInt("id");
                                 String articleinfoTitle = articleInfoJsonObject.getString("title");
-                                articleInfo.setArticleId(articleInfoId);
-                                articleInfo.setArticleTitle(articleinfoTitle);
+                                articleInfo.setId(articleInfoId);
+                                articleInfo.setTitle(articleinfoTitle);
                                 homePage.setArticleInfo(articleInfo);
 //                                articleInfo.save();
                             } else {
@@ -208,16 +229,18 @@ public class HomePageFragment extends BaseFragment {
 
                                 JSONObject answerInfoJsonObject = row.getJSONObject("answer_info");
                                 int answerId = answerInfoJsonObject.getInt("answer_id");
-                                int questionId = answerInfoJsonObject.getInt("question_id");
-                                String answerContent = answerInfoJsonObject.getString("answer_content");
+//                                int questionId = answerInfoJsonObject.getInt("question_id");
+//                                String answerContent = answerInfoJsonObject.getString("answer_content");
+                                String answerContent = "";
                                 int agreeCount = answerInfoJsonObject.getInt("agree_count");
-                                int agree_status = answerInfoJsonObject.getInt("agree_status");
+//                                int agree_status = answerInfoJsonObject.getInt("agree_status");
+                                int against_count = answerInfoJsonObject.getInt("against_count");
                                 AnswerInfo answerInfo = new AnswerInfo();
                                 answerInfo.setAnswerId(answerId);
-                                answerInfo.setQuestionId(questionId);
+                                answerInfo.setQuestionId(questionInfoId);
                                 answerInfo.setAnswerContent(answerContent);
                                 answerInfo.setAgreeCount(agreeCount);
-                                answerInfo.setAgreestatus(agree_status);
+                                answerInfo.setAgreestatus(against_count);
                                 homePage.setAnswerInfo(answerInfo);
 //                                answerInfo.save();
                             }
@@ -256,6 +279,14 @@ public class HomePageFragment extends BaseFragment {
         refresh = true;
         loadMore = true;
         endlessRecyclerOnScrollListener.reset();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REFRESH){
+            loadData();
+        }else
+            super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

@@ -134,7 +134,6 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
 
         RequestParams params = new RequestParams();
         params.put("page",page);
-        params.put("search_type","all");
         params.put("q",searchText);
 
         AsyncHttpWecnter.get(RelativeUrl.SEARCH, params, new AsyncHttpResponseHandler() {
@@ -150,31 +149,26 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
                 String response = new String(responseBody);
                 try {
                     JSONObject responseObj = new JSONObject(response);
-                    String rsm = responseObj.getString("rsm");
+                    JSONObject rsmObj =  new JSONObject(responseObj.getString("rsm"));
 
                     if (loadMore) {
                         page++;
                     }
-                    if(rsm.equals("null")){
+                    JSONArray array = rsmObj.getJSONArray("rows");
+                    if(array.length() == 0){
                         Toast.makeText(getActivity(), "没有相关内容", Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
                         return;
                     }
-                    if (rsm.equals("false")) {
+                    if (rsmObj.getInt("total_rows") == 0) {
                         loadMore = false;
                         Toast.makeText(getActivity(), "只有这么多了", Toast.LENGTH_SHORT).show();
                     } else {
-                        JSONArray array = new JSONArray(rsm);
+
                         int len = array.length();
                         for (int i = 0; i < len; i++) {
                             JSONObject obj = array.getJSONObject(i);
-                            // 接口居然会给null !!
-//                            if(obj.getString("uid").equals("null")){
-//                                obj.put("uid",4);
-//                            }
-//                            if(obj.getString("score").equals("null")){
-//                                obj.put("score",1);
-//                            }
-                            Log.v("type", obj.getString("type"));
+
                             if (obj.getString("type").equals(ARTICLES)) {
                                 searchArticles = gson.fromJson(array.getString(i), SearchArticles.class);
                                 searchList.add(searchArticles);

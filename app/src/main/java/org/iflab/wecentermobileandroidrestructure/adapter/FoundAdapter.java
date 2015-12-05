@@ -50,10 +50,10 @@ public class FoundAdapter extends RecyclerView.Adapter {
         if (datas.get(position).getType().equalsIgnoreCase("article")) {
             final ArticleInfo articleInfo = (ArticleInfo) datas.get(position);
             ((FoundHolder) holder).txt_user_name.setText(articleInfo.getUserName());
-            ((FoundHolder) holder).rel_bottom.setVisibility(View.GONE);
+//            ((FoundHolder) holder).rel_bottom.setVisibility(View.GONE);
             ((FoundHolder) holder).txt_user_action_content.setText(articleInfo.getArticleMessage());
             ((FoundHolder) holder).txt_cell_type_question_or_article.setText("文章");
-            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + articleInfo.getAvatarFile(), ((FoundHolder) holder).profile_image, ImageOptions.optionsImage);
+            ImageLoader.getInstance().displayImage(articleInfo.getAvatarFile(), ((FoundHolder) holder).profile_image, ImageOptions.optionsImage);
             ((FoundHolder) holder).profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -71,7 +71,7 @@ public class FoundAdapter extends RecyclerView.Adapter {
             ((FoundHolder) holder).txt_user_name.setText(questionInfo.getPublishUserName());
             ((FoundHolder) holder).txt_user_action_content.setText(questionInfo.getQuestionContent());
             ((FoundHolder) holder).txt_cell_type_question_or_article.setText("问题");
-            ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + questionInfo.getPublishAvatarFile(), ((FoundHolder) holder).profile_image, ImageOptions.optionsImage);
+            ImageLoader.getInstance().displayImage(questionInfo.getPublishAvatarFile(), ((FoundHolder) holder).profile_image, ImageOptions.optionsImage);
             ((FoundHolder) holder).profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,17 +84,17 @@ public class FoundAdapter extends RecyclerView.Adapter {
                     QuestionDetailActivity.openQuestionDetail(mContext, questionInfo.getPublishUid(), questionInfo.getQuestionId());
                 }
             });
-            if (questionInfo.getAnswerUserName() != null) {
-                ((FoundHolder) holder).rel_bottom.setVisibility(View.VISIBLE);
-                ((FoundHolder) holder).txt_answer_user_name.setText(questionInfo.getAnswerUserName());
-                ((FoundHolder) holder).txt_answer.setText(questionInfo.getAnswerContent());
-                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + questionInfo.getAnswerAvatarFile(), ((FoundHolder) holder).profile_image_answer, ImageOptions.optionsImage);
-                ((FoundHolder) holder).profile_image_answer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        PersonalCenterActivity.openPersonalCenter(mContext, questionInfo.getAnswerUid());
-                    }
-                });
+//            if (questionInfo.getAnswerUserName() != null) {
+//                ((FoundHolder) holder).rel_bottom.setVisibility(View.VISIBLE);
+//                ((FoundHolder) holder).txt_answer_user_name.setText(questionInfo.getAnswerUserName());
+//                ((FoundHolder) holder).txt_answer.setText(questionInfo.getAnswerContent());
+//                ImageLoader.getInstance().displayImage(questionInfo.getAnswerAvatarFile(), ((FoundHolder) holder).profile_image_answer, ImageOptions.optionsImage);
+//                ((FoundHolder) holder).profile_image_answer.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        PersonalCenterActivity.openPersonalCenter(mContext, questionInfo.getAnswerUid());
+//                    }
+//                });
                 ((FoundHolder) holder).rel_1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -105,9 +105,9 @@ public class FoundAdapter extends RecyclerView.Adapter {
 //                        mContext.startActivity(intent);
                     }
                 });
-            } else {
-                ((FoundHolder) holder).rel_bottom.setVisibility(View.GONE);
-            }
+//            } else {
+//                ((FoundHolder) holder).rel_bottom.setVisibility(View.GONE);
+//            }
         }
     }
 
@@ -122,11 +122,11 @@ public class FoundAdapter extends RecyclerView.Adapter {
         TextView txt_user_name;
         TextView txt_user_action_content;
         TextView txt_cell_type_question_or_article;
-        TextView txt_cell_type_answer;
-        TextView txt_answer_user_name;
-        ImageView profile_image_answer;
-        TextView txt_answer;
-        RelativeLayout rel_bottom;
+//        TextView txt_cell_type_answer;
+//        TextView txt_answer_user_name;
+//        ImageView profile_image_answer;
+//        TextView txt_answer;
+//        RelativeLayout rel_bottom;
         RelativeLayout rel;
         RelativeLayout rel_1;
 
@@ -136,11 +136,11 @@ public class FoundAdapter extends RecyclerView.Adapter {
             txt_user_name = (TextView) itemView.findViewById(R.id.txt_user_name);
             txt_user_action_content = (TextView) itemView.findViewById(R.id.txt_user_action_content);
             txt_cell_type_question_or_article = (TextView) itemView.findViewById(R.id.txt_cell_type_question_or_article);
-            txt_cell_type_answer = (TextView) itemView.findViewById(R.id.txt_answer_user_name);
-            txt_answer_user_name = (TextView) itemView.findViewById(R.id.txt_answer_user_name);
-            profile_image_answer = (ImageView) itemView.findViewById(R.id.profile_image_answer);
-            txt_answer = (TextView) itemView.findViewById(R.id.txt_answer);
-            rel_bottom = (RelativeLayout) itemView.findViewById(R.id.rel_bottom);
+//            txt_cell_type_answer = (TextView) itemView.findViewById(R.id.txt_answer_user_name);
+//            txt_answer_user_name = (TextView) itemView.findViewById(R.id.txt_answer_user_name);
+//            profile_image_answer = (ImageView) itemView.findViewById(R.id.profile_image_answer);
+//            txt_answer = (TextView) itemView.findViewById(R.id.txt_answer);
+//            rel_bottom = (RelativeLayout) itemView.findViewById(R.id.rel_bottom);
             rel = (RelativeLayout) itemView.findViewById(R.id.rel);
             rel_1 = (RelativeLayout) itemView.findViewById(R.id.rel_1);
         }

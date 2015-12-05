@@ -27,6 +27,7 @@ import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONException;
 import org.json.JSONObject;
 

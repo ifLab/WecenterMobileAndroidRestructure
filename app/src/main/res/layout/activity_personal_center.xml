@@ -79,7 +79,6 @@
                         android:layout_marginTop="@dimen/home_page_margin_medium"
                         android:layout_toEndOf="@+id/img_user"
                         android:layout_toRightOf="@+id/img_user"
-                        android:text="hcjcch"
                         android:textColor="#fff" />
 
                     <TextView
@@ -92,8 +91,8 @@
                         android:layout_marginTop="@dimen/home_page_margin_medium"
                         android:layout_toEndOf="@+id/img_user"
                         android:layout_toRightOf="@+id/img_user"
+                        android:layout_below="@+id/txt_user_name"
                         android:maxLines="2"
-                        android:text="青山依旧在，几度夕阳红！"
                         android:textColor="#fff" />
                 </RelativeLayout>
 
@@ -162,6 +161,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/txt_user_edit"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"

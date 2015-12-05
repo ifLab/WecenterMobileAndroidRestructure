@@ -23,6 +23,7 @@ import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScrollListener;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalFollowing;
 import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalQuestion;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class PersonalFollowingActivity extends SwipeBackBaseActivity {
 
 
     public static final String FOLLOWING = "following";
-    public static final String FOLLOWER = "follower";
+    public static final String FAN = "follower";
 
     private String type;
     private RecyclerView recyclerView;
@@ -76,22 +77,18 @@ public class PersonalFollowingActivity extends SwipeBackBaseActivity {
         getData(1);
     }
 
-    private String getUrl() {
-        if (type.equals(FOLLOWING)) {
-            return RelativeUrl.FOLLOWING;
-        } else return RelativeUrl.FOLLOWER;
-    }
 
     private void getData(int page) {
-        AsyncHttpWecnter.loadData(PersonalFollowingActivity.this, getUrl(), generateParams(page), AsyncHttpWecnter.Request.Get, new NetWork() {
+        AsyncHttpWecnter.loadData(PersonalFollowingActivity.this, RelativeUrl.FOLLOWER, generateParams(page), AsyncHttpWecnter.Request.Get, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
-                PersonalFollowing personalFollowing = (new Gson()).fromJson(response.toString(), PersonalFollowing.class);
+                PersonalFollowing personalFollowing = new Gson().fromJson(response.toString(), PersonalFollowing.class);
                 data.addAll(personalFollowing.getRows());
                 adapter.setData(data);
-                if (Integer.parseInt(personalFollowing.getTotal_rows()) == data.size()) {
+                if (personalFollowing.getTotal_rows() == 0) {
                     loadMore = false;
                 }
+                refreshLayout.setRefreshing(false);
             }
         });
     }
@@ -101,6 +98,8 @@ public class PersonalFollowingActivity extends SwipeBackBaseActivity {
         params.put("uid", uid);
         params.put("page", page);
         params.put("per_page", perPage);
+        params.put("type",type.equals(FOLLOWING) ? "follows": "fans");
+        params.put("mobile_sign", MD5Transform.MD5("people"+AsyncHttpWecnter.SIGN));
         return params;
     }
 
@@ -121,6 +120,12 @@ public class PersonalFollowingActivity extends SwipeBackBaseActivity {
             }
         };
         recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
     }
 
     private void setToolBar() {

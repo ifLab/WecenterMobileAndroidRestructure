@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -32,6 +33,7 @@ import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
 import org.iflab.wecentermobileandroidrestructure.tools.FormHtmlAsyncTask;
 import org.iflab.wecentermobileandroidrestructure.tools.HawkControl;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +47,7 @@ public class ArticleActivity extends ShareBaseActivity {
     Toolbar toolbar;
     SwipeRefreshLayout refreshLayout;
     CircleImageView circleImageView;
+    RelativeLayout rel_top;
     TextView userNameTextView;
     TextView contentWebView;
     TextView votesTextView;
@@ -66,7 +69,6 @@ public class ArticleActivity extends ShareBaseActivity {
         findViews();
         setViews();
         setToolBars();
-        setListenter();
         loadData();
     }
 
@@ -84,6 +86,7 @@ public class ArticleActivity extends ShareBaseActivity {
         commentBtn = (ImageButton) findViewById(R.id.btn_comment);
         likeCheckBox = (CheckBox) findViewById(R.id.check_like);
         dislikeCheckBox = (CheckBox) findViewById(R.id.check_dislike);
+        rel_top = (RelativeLayout)findViewById(R.id.rel_top);
     }
 
     public static void openArticle(Context context, int article_id) {
@@ -102,7 +105,7 @@ public class ArticleActivity extends ShareBaseActivity {
         contentWebView.setPadding(5, 5, 5, 5);
     }
 
-    private void setListenter() {
+    private void setListenter(final int uid) {
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             RequestParams params = new RequestParams();
 
@@ -110,10 +113,11 @@ public class ArticleActivity extends ShareBaseActivity {
             public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
                 dislikeCheckBox.setEnabled(!b);
 
-                params.put("answer_id", articleID);
-                params.put("value", 1);
+                params.put("item_id", articleID);
+                params.put("type","article");
+                params.put("rating", b ? 1:0);
 
-                AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
+                AsyncHttpWecnter.post(RelativeUrl.ARTICLE_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         voteValue = b ? voteValue + 1 : voteValue - 1;
@@ -136,10 +140,11 @@ public class ArticleActivity extends ShareBaseActivity {
             public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
                 likeCheckBox.setEnabled(!b);
 
-                params.put("answer_id", articleID);
-                params.put("value", -1);
+                params.put("item_id", articleID);
+                params.put("type","article");
+                params.put("rating", b ? -1:0);
 
-                AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
+                AsyncHttpWecnter.post(RelativeUrl.ARTICLE_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         voteValue = b ? voteValue - 1 : voteValue + 1;
@@ -152,6 +157,13 @@ public class ArticleActivity extends ShareBaseActivity {
                     }
                 });
 
+            }
+        });
+
+        rel_top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersonalCenterActivity.openPersonalCenter(ArticleActivity.this,uid);
             }
         });
     }
@@ -192,12 +204,12 @@ public class ArticleActivity extends ShareBaseActivity {
                     e.printStackTrace();
                 }
 
-                userNameTextView.setText(artleInfo.getUser_name());
+                userNameTextView.setText(artleInfo.getUser_info().getUser_name());
                 (new FormHtmlAsyncTask(new WecenterImageGetter.Builder(ArticleActivity.this).padding(DisplayUtil.dip2px(ArticleActivity.this,20)).build(),contentWebView)).execute(artleInfo.getMessage());
-                signatureTextView.setText(artleInfo.getSignature());
+                signatureTextView.setText(artleInfo.getUser_info().getSignature());
                 contentWebView.setBackgroundColor(getResources().getColor(R.color.bg_color_grey));
-                ImageLoader.getInstance().displayImage(RelativeUrl.AVATAR + artleInfo.getAvatar_file(), circleImageView, ImageOptions.optionsImage);
-                toolbar.setTitle(artleInfo.getArticleTitle());
+                ImageLoader.getInstance().displayImage(artleInfo.getUser_info().getAvatar_file(), circleImageView, ImageOptions.optionsImage);
+                toolbar.setTitle(artleInfo.getTitle());
 
 //                setShareContent(artleInfo.getArticleTitle(),"http://iflab.org");
 
@@ -206,13 +218,17 @@ public class ArticleActivity extends ShareBaseActivity {
                     votesTextView.setText(voteValue + "");
                 }
 
-                if (artleInfo.getVote_value() == 1) {
-                    likeCheckBox.setChecked(true);
-                    dislikeCheckBox.setEnabled(false);
-                } else if (artleInfo.getVote_value() == -1) {
-                    dislikeCheckBox.setChecked(true);
-                    likeCheckBox.setEnabled(false);
+                if(artleInfo.getVote_info() != null){
+                    if (artleInfo.getVote_info().getRating() == 1) {
+                        likeCheckBox.setChecked(true);
+                        dislikeCheckBox.setEnabled(false);
+                    } else if (artleInfo.getVote_info().getRating() == -1) {
+                        dislikeCheckBox.setChecked(true);
+                        likeCheckBox.setEnabled(false);
+                    }
                 }
+                setListenter(artleInfo.getUser_info().getUid());
+
             }
 
             @Override
@@ -227,6 +243,7 @@ public class ArticleActivity extends ShareBaseActivity {
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
         params.put("id",articleID);
+        params.put("mobile_sign", MD5Transform.MD5("article"+AsyncHttpWecnter.SIGN));
         return params;
     }
 
