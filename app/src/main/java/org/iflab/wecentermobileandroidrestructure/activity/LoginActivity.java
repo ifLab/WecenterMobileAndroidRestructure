@@ -6,11 +6,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -31,22 +35,29 @@ import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * Created by hcjcch on 15/5/15.
  */
 public class LoginActivity extends BaseActivity {
-    private RelativeLayout imageView;
+
+    public static int REGISTERCODE = 9;
     private ShimmerFrameLayout container;
     private Button btnLogin;
     private EditText userName;
     private EditText passWord;
+    private Button btnRegister;
 
-
+    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PersistentCookieStore myCookieStore = new PersistentCookieStore(getApplicationContext());
-        Log.v("cookie", myCookieStore.getCookies().size() + "");
+//        Log.v("cookie", myCookieStore.getCookies().size() + "");
         if (myCookieStore.getCookies().size() > 0) {
             AsyncHttpWecnter.setCookieStore(myCookieStore);
             startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
@@ -60,18 +71,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     protected void findViews() {
-        imageView = (RelativeLayout) findViewById(R.id.image_blur_jni_bitmap);
         container = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         btnLogin = (Button) findViewById(R.id.btn_login);
         userName = (EditText) findViewById(R.id.edt_user_name);
         passWord = (EditText) findViewById(R.id.edt_passwd);
+        btnRegister = (Button)findViewById(R.id.btn_register);
     }
 
+
     protected void setViews() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.login_background);
-        bitmap = BlurKit.blurNatively(bitmap, 100, false);
-        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-        imageView.setBackground(drawable);
         container.startShimmerAnimation();
     }
 
@@ -82,25 +90,30 @@ public class LoginActivity extends BaseActivity {
                 login();
             }
         });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivityForResult(intent,REGISTERCODE);
+            }
+        });
     }
 
     private void login() {
         String usernameString = userName.getText().toString();
-//        usernameString = user.getUserName();
-        usernameString = "lyn";
 
         if (usernameString.equals("")) {
             toast("用户名不能为空");
             return;
         }
         String passWordString = passWord.getText().toString();
-        passWordString = "123456";
         if (passWordString.equals("")) {
             toast("密码不能为空");
             return;
         }
-        userName.setText(usernameString);
-        passWord.setText(passWordString);
+//        userName.setText(usernameString);
+//        passWord.setText(passWordString);
         RequestParams params = new RequestParams();
         params.put("user_name", usernameString);
         params.put("password", passWordString);
@@ -135,5 +148,24 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REGISTERCODE){
+            if(data != null)
+                userName.setText(data.getStringExtra("user_name"));
+        }else
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(bitmap != null){
+            if(!bitmap.isRecycled()){
+                bitmap.recycle();
+            }
+        }
+        super.onDestroy();
     }
 }

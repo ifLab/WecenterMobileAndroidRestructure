@@ -82,4 +82,18 @@ public class User {
         return user;
     }
 
+    public static void clear(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginUser", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static void setOwnerSign(Context context,String sign){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginUser", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("signNature", sign);
+        editor.apply();
+    }
+
 }

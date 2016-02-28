@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -31,6 +32,7 @@ import org.iflab.wecentermobileandroidrestructure.tools.Global;
 import org.iflab.wecentermobileandroidrestructure.tools.ImageOptions;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.tools.WecenterImageGetter;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,6 +57,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
     int uid = -1;
     int voteValue;
     String shareUrl;
+    boolean isOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +98,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
         likeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             RequestParams params = new RequestParams();
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
                 dislikeCheckBox.setEnabled(!b);
 
                 if(!params.has("answer_id")) {
@@ -105,7 +108,23 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Log.v(" vote",new String(responseBody));
+//                        Log.v(" vote",new String(responseBody));
+                        if(isOwner){
+                            compoundButton.setChecked(false);
+                            Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        try {
+                            JSONObject obj = new JSONObject(new String(responseBody));
+                            if(!obj.getString("err").equals("null")){
+                                Toast.makeText(getApplicationContext(),obj.getString("err"),Toast.LENGTH_SHORT).show();
+                                compoundButton.setChecked(false);
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         voteValue = b ? voteValue + 1:voteValue - 1;
                         votesTextView.setText(voteValue+"");
                     }
@@ -123,7 +142,12 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
             RequestParams params = new RequestParams();
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+            public void onCheckedChanged( final CompoundButton compoundButton, final boolean b) {
+                if(isOwner){
+                    compoundButton.setChecked(false);
+                    Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 likeCheckBox.setEnabled(!b);
 
                 if (!params.has("answer_id")) {
@@ -134,7 +158,21 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
                 AsyncHttpWecnter.post(RelativeUrl.ANSWER_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Log.v("dis vote",new String(responseBody));
+//                        Log.v("dis vote",new String(responseBody));
+                        if(isOwner){
+                            compoundButton.setChecked(false);
+                            Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
+                        }
+                        try {
+                            JSONObject obj = new JSONObject(new String(responseBody));
+                            if(!obj.getString("err").equals("null")){
+                                Toast.makeText(getApplicationContext(),obj.getString("err"),Toast.LENGTH_SHORT).show();
+                                compoundButton.setChecked(false);
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         voteValue = b ? voteValue - 1 : voteValue + 1;
                         votesTextView.setText(voteValue + "");
                     }
@@ -152,8 +190,8 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
     }
 
     public void gotoShare(View view){
+        setShareContent(questionTitle,"http://www.wecenter.com");
         mController.openShare(QuestionAnswerActivity.this, false);
-
     }
 
     public void gotoComment(View view){
@@ -198,6 +236,10 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
 
                 addTimeTextView.setVisibility(View.VISIBLE);
                 addTimeTextView.setText(Global.TimeStamp2Date(answerInfo.getAnswer().getAdd_time(), "yyyy-MM-dd"));
+
+                // isOwner ?
+                isOwner =  answerInfo.getAnswer().getUser_info().getUid() == User.getLoginUser(getApplicationContext()).getUid();
+
 
                 if (voteCount == 1) {
                     likeCheckBox.setChecked(true);

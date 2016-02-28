@@ -83,10 +83,11 @@ public class PersonalFollowingActivity extends SwipeBackBaseActivity {
             @Override
             public void parseJson(JSONObject response) {
                 PersonalFollowing personalFollowing = new Gson().fromJson(response.toString(), PersonalFollowing.class);
-                data.addAll(personalFollowing.getRows());
-                adapter.setData(data);
                 if (personalFollowing.getTotal_rows() == 0) {
                     loadMore = false;
+                }else {
+                    data.addAll(personalFollowing.getRows());
+                    adapter.setData(data);
                 }
                 refreshLayout.setRefreshing(false);
             }

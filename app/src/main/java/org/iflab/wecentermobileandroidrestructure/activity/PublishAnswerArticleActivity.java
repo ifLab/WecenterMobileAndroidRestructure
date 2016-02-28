@@ -9,11 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import org.iflab.wecentermobileandroidrestructure.common.PhotoOperate;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.ImageInfo;
+import org.iflab.wecentermobileandroidrestructure.model.question.QuestionDetailAnswers;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.iflab.wecentermobileandroidrestructure.tools.RecycleBitmapInLayout;
 import org.iflab.wecentermobileandroidrestructure.ui.AutoHeightGridView;
@@ -47,6 +51,8 @@ import java.util.Vector;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
 /**
  * Created by hcjcch on 15/5/23.
@@ -94,6 +100,10 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
 
     @Bind(R.id.sv_root)
     ScrollView rel_root;
+
+    @Bind(R.id.progress)
+    CircularProgressBar progressBar;
+
     private String url;
     private Intent intent;
     private int questionId;
@@ -210,13 +220,20 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
                 if (topicString.equals("") || topicString == null) {
                     Toast.makeText(PublishAnswerArticleActivity.this, "请输入话题", Toast.LENGTH_SHORT).show();
                 } else {
-                    TextView button = new TextView(PublishAnswerArticleActivity.this);
-                    button.setText(topicString);
+                    TextView txtTopic = new TextView(PublishAnswerArticleActivity.this);
+                    txtTopic.setText(topicString);
                     topics.add(topicString);
-                    button.setBackground(getResources().getDrawable(R.drawable.public_topic));
-                    button.setTextColor(Color.WHITE);
-                    button.setPadding(10, 10, 10, 10);
-                    topicFlowLayout.addView(button);
+                    txtTopic.setBackground(getResources().getDrawable(R.drawable.public_topic));
+                    txtTopic.setTextColor(Color.WHITE);
+                    txtTopic.setPadding(10, 10, 10, 10);
+                    txtTopic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            topicFlowLayout.removeView(v);
+                            topics.remove(((TextView)v).getText().toString());
+                        }
+                    });
+                    topicFlowLayout.addView(txtTopic);
                     topicEditText.setText("");
                 }
             }
@@ -318,10 +335,11 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
 //        params.put("attach_access_key", attach_access_key);
         params.put("qqfile", attachment);
 //        System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
-        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD +
-                "&attach_access_key="+attach_access_key +
-                "&id=" + publishId
-                , params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
+
+//        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD +
+//                "&attach_access_key="+attach_access_key +
+//                "&id=" + publishId
+//                , params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
     }
 
     private static class UploadNetWork extends NetWork{
@@ -349,7 +367,7 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
         }
     }
 
-    private void uploadWord() {
+    private void uploadWord(final MenuItem item) {
         RequestParams params = new RequestParams();
         if (publishType.equals(PUBLISH_ANSWER)) {
             String title = titleEditText.getText().toString();
@@ -422,6 +440,14 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
         }
         AsyncHttpWecnter.loadData(getApplicationContext(), url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
+            public void start(){
+                progressBar.setVisibility(View.VISIBLE);
+                CircularProgressDrawable drawable = (CircularProgressDrawable) progressBar
+                        .getIndeterminateDrawable();
+                drawable.start();
+                item.setEnabled(false);
+            }
+            @Override
             public void parseJson(JSONObject response) {
                 try {
                     String id;
@@ -433,13 +459,26 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
                         id = response.getString("question_id");
                     }
                     if (id != null) {
+                        progressBar.progressiveStop();
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(PublishAnswerArticleActivity.this, "成功", Toast.LENGTH_SHORT).show();
+                        setResult(QuestionDetailActivity.PUBLISH_FINISH);
                         PublishAnswerArticleActivity.this.finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void failure() {
+                progressBar.progressiveStop();
+                progressBar.setVisibility(View.GONE);
+                item.setEnabled(true);
+                toast("请求失败");
+            }
+
+
         });
     }
 
@@ -473,7 +512,7 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.publish_finish) {
-            uploadWord();
+            uploadWord(item);
             return true;
         }
 

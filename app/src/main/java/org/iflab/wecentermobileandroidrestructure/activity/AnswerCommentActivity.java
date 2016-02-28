@@ -193,11 +193,11 @@ public class AnswerCommentActivity extends BaseActivity {
             params.put("at_uid",atUid);
         }
         params.put("message", message);
-        Log.v("params", params.toString());
+
         AsyncHttpWecnter.loadData(getApplicationContext(), url, params, AsyncHttpWecnter.Request.Post, new NetWork() {
             @Override
             public void parseJson(JSONObject response) {
-                Log.v("addAnswer", response.toString());
+//                Log.v("addAnswer", response.toString());
                 commentEdt.setText("");
                 refreshData();
                 recyclerView.smoothScrollBy(0, recyclerView.getHeight());
@@ -248,7 +248,7 @@ public class AnswerCommentActivity extends BaseActivity {
             @Override
             public void finish() {
                 super.finish();
-                refreshLayout.setRefreshing(false);
+                refreshLayout.setRefreshing (false);
             }
         });
 

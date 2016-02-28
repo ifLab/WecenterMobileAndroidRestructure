@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 import org.iflab.wecentermobileandroidrestructure.R;
+import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.User;
@@ -55,19 +56,17 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     private TextView attentionCount;
     private TextView follower;
     private TextView followerCount;
-    private ImageView answerFavorite;
-    private TextView answerFavoriteCount;
-    private ImageView agree;
-    private TextView agreeCount;
-    private ImageView thanks;
-    private TextView thanksCount;
-    private ImageView hasFocus;
-    private TextView hasFocusCount;
+//    private ImageView answerFavorite;
+//    private TextView answerFavoriteCount;
+//    private ImageView agree;
+//    private TextView agreeCount;
+//    private ImageView thanks;
+//    private TextView thanksCount;
+//    private ImageView hasFocus;
+//    private TextView hasFocusCount;
     private int uid;
     private TextView useredit;
     private boolean isOwner;
-    private RelativeLayout rel_marz;
-    private RelativeLayout relContainer;
     private RelativeLayout in_ask_count, in_answer_count, in_article_count, in_topic_count, in_attention_count, in_follower_count;
 
     Person person;
@@ -79,13 +78,14 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         uid = intent.getIntExtra("uid", -1);
         isOwner = isMe(uid, User.getLoginUser(getApplicationContext()).getUid());
         findViews();
-        setViews();
+
         setToolBar();
         if (uid != -1) {
             loadData();
         } else {
             //TODO 用户错误
         }
+
 
     }
 
@@ -150,20 +150,18 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
 
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.in_answer_favorite);
-        answerFavorite = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
-        answerFavoriteCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_agree);
-        agree = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
-        agreeCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_thanks);
-        thanks = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
-        thanksCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
-        relativeLayout = (RelativeLayout) findViewById(R.id.in_focus);
-        hasFocus = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
-        hasFocusCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
+//        answerFavorite = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
+//        answerFavoriteCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
+//        relativeLayout = (RelativeLayout) findViewById(R.id.in_agree);
+//        agree = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
+//        agreeCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
+//        relativeLayout = (RelativeLayout) findViewById(R.id.in_thanks);
+//        thanks = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
+//        thanksCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
+//        relativeLayout = (RelativeLayout) findViewById(R.id.in_focus);
+//        hasFocus = (ImageView) relativeLayout.findViewById(R.id.img_answer_love);
+//        hasFocusCount = (TextView) relativeLayout.findViewById(R.id.txt_answer_love_count);
         useredit = (TextView) findViewById(R.id.txt_user_edit);
-        rel_marz = (RelativeLayout) findViewById(R.id.rel_marz);
-        relContainer = (RelativeLayout) findViewById(R.id.rel);
         userImage = (ImageView) findViewById(R.id.img_user);
         txt_motto = (TextView) findViewById(R.id.txt_motto);
         txt_user_name = (TextView) findViewById(R.id.txt_user_name);
@@ -178,7 +176,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
             }
         });
         if(isOwner){
-            useredit.setVisibility(View.GONE);
+            useredit.setText("修改信息");
             useredit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -187,27 +185,44 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                     startActivityForResult(intent, EDIT);
                 }
             });
+        }else {
+            useredit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RequestParams params = new RequestParams();
+                    params.put("uid",uid);
+                    AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.FOLLOW_PEOPLE, params, AsyncHttpWecnter.Request.Post, new NetWork() {
+                        @Override
+                        public void parseJson(JSONObject response) {
+                            try {
+                                if(response.getString("type").equals("remove")){
+                                    useredit.setText("关注");
+                                }else if(response.getString("type").equals("add")){
+                                    useredit.setText("已关注");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                }
+            });
         }
         ask.setText("提问");
-        askCount.setText("0");
         answer.setText("回答");
-        answerCount.setText("0");
         article.setText("文章");
-        articleCount.setText("0");
         topic.setText("话题");
-        topicCount.setText("0");
         attention.setText("关注中");
-        attentionCount.setText("0");
         follower.setText("追随者");
-        followerCount.setText("0");
-        answerFavorite.setImageDrawable(getResources().getDrawable(R.mipmap.love_icon));
-        answerFavoriteCount.setText("0");
-        agree.setImageDrawable(getResources().getDrawable(R.mipmap.like_icon));
-        agreeCount.setText("0");
-        thanks.setImageDrawable(getResources().getDrawable(R.mipmap.star_icon));
-        thanksCount.setText("0");
-        hasFocus.setImageDrawable(getResources().getDrawable(R.mipmap.tick_icon));
-        hasFocusCount.setText("0");
+//        answerFavorite.setImageDrawable(getResources().getDrawable(R.mipmap.love_icon));
+//        answerFavoriteCount.setText("0");
+//        agree.setImageDrawable(getResources().getDrawable(R.mipmap.like_icon));
+//        agreeCount.setText("0");
+//        thanks.setImageDrawable(getResources().getDrawable(R.mipmap.star_icon));
+//        thanksCount.setText("0");
+//        hasFocus.setImageDrawable(getResources().getDrawable(R.mipmap.tick_icon));
+//        hasFocusCount.setText("0");
     }
 
     @Override
@@ -225,41 +240,26 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
             
             @Override
             public void onStart() {
-                relContainer.setEnabled(false);
                 super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                String json = new String(responseBody);
-//                boolean jsonProgress = jsonPreproccess(json);
-//                if (jsonProgress) return;
-//                try {
-//                    JSONObject jsonObject = new JSONObject(new String(responseBody));
-//                    JSONObject rsm = jsonObject.getJSONObject("rsm");
-//                    user = new UserPersonal(rsm);
-//                    txt_motto.setText(user.getSignature());
-//                    txt_user_name.setText(user.getUser_name());
-//                    HawkControl.saveUserCount(user);
-//                    setData(user);
-//                    if (isOwner) {
-//                        User userSharePre = User.getLoginUser(PersonalCenterActivity.this);
-//                        userSharePre.setSignNature(user.getSignature());
-//                        User.save(PersonalCenterActivity.this,userSharePre);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
                 Gson gson = new Gson();
                 person = gson.fromJson(new String(responseBody), Person.class);
                 if(person.getRsm()!= null){
+                    if(isOwner){
+                        if(User.getLoginUser(getApplicationContext()).getSignNature().length() == 0){
+                            User.setOwnerSign(getApplicationContext(),person.getRsm().getSignature());
+                        }
+                    }
                     txt_motto.setText(person.getRsm().getSignature());
                     txt_user_name.setText(person.getRsm().getUser_name());
 
-                    answerFavoriteCount.setText(person.getRsm().getAnswer_favorite_count() + "");
-                    agreeCount.setText(person.getRsm().getAgree_count() + "");
-                    thanksCount.setText(person.getRsm().getThanks_count() + "");
-                    hasFocusCount.setText(person.getRsm().getHas_focus() + "");
+//                    answerFavoriteCount.setText(person.getRsm().getAnswer_favorite_count() + "");
+//                    agreeCount.setText(person.getRsm().getAgree_count() + "");
+//                    thanksCount.setText(person.getRsm().getThanks_count() + "");
                     askCount.setText(person.getRsm().getQuestion_count() + "");
                     answerCount.setText(person.getRsm().getAnswer_count() + "");
                     articleCount.setText(person.getRsm().getArticle_count() + "");
@@ -268,8 +268,12 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                     followerCount.setText(person.getRsm().getFans_count() + "");
                     ImageLoader.getInstance().displayImage(person.getRsm().getAvatar_file(), userImage, ImageOptions.optionsImagePersonalDetailAvatar);
 
-                }else{
-                    Log.e("personcenter",person.getErr().toString());
+                    if(person.getRsm().getHas_focus()== 1){
+                        useredit.setText("已关注");
+
+                    }else if(person.getRsm().getHas_focus()== 0){
+                        useredit.setText("关注");
+                    }
                 }
 
             }
@@ -281,9 +285,8 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onFinish() {
-                rel_marz.setVisibility(View.GONE);
-                relContainer.setEnabled(true);
                 swipeRefreshLayout.setRefreshing(false);
+                setViews();
                 super.onFinish();
             }
         });

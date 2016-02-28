@@ -2,6 +2,7 @@ package org.iflab.wecentermobileandroidrestructure.application;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.nostra13.universalimageloader.cache.disc.impl.ext.LruDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -12,6 +13,8 @@ import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import org.iflab.wecentermobileandroidrestructure.tools.DroidUncaughtExceptionHandler;
+import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.litepal.LitePalApplication;
 
 /**
@@ -30,6 +33,9 @@ public class WecenterApplication extends LitePalApplication {
         sHeightPix = getResources().getDisplayMetrics().heightPixels;
         initImageLoader(getApplicationContext());
 //        initRefWatcher();
+        Thread.setDefaultUncaughtExceptionHandler(new DroidUncaughtExceptionHandler(this));
+//        int[] a = {1};
+//        System.out.print(a[11]);
     }
 
     private void initRefWatcher() {

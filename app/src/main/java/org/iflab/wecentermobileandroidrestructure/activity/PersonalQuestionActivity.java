@@ -76,10 +76,11 @@ public class PersonalQuestionActivity extends SwipeBackBaseActivity {
             @Override
             public void parseJson(JSONObject response) {
                 PersonalQuestion personalQuestion = (new Gson()).fromJson(response.toString(), PersonalQuestion.class);
-                data.addAll(personalQuestion.getRows());
-                adapter.setData(data);
                 if (personalQuestion.getTotal_rows()== 0){
                     loadMore = false;
+                }else {
+                    data.addAll(personalQuestion.getRows());
+                    adapter.setData(data);
                 }
                 refreshLayout.setRefreshing(false);
             }

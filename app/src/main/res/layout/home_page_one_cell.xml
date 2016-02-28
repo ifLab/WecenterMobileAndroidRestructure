@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/home_page_margin_medium"
             android:layout_marginRight="@dimen/home_page_margin_medium"
-            android:src="@mipmap/user_place"
+            android:src="@drawable/ic_defaul_tavatar"
             app:border_color="#50000000"
             app:border_width="0.5dp" />
 

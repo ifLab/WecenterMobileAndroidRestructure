@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.iflab.wecentermobileandroidrestructure" >
+    package="org.iflab.wecentermobileandroidrestructure">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,100 +15,89 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.WencenterActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/homepage" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PublishAnswerArticleActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PhotoPickActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PersonalCenterActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/homepage" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PersonalCenterEditActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".activity.PublishPhotoDetailActivity" />
+            android:name=".activity.PublishPhotoDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.QuestionDetailActivity"
-            android:label="@string/title_activity_question_detail" >
-        </activity>
+            android:label="@string/title_activity_question_detail"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.ArticleActivity"
-            android:label="@string/title_activity_article" >
-        </activity>
+            android:label="@string/title_activity_article"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.TopicsActivity"
-            android:label="@string/title_activity_topics" >
-        </activity>
+            android:label="@string/title_activity_topics"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.QuestionAnswerActivity"
             android:label="@string/title_activity_question_answer"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".activity.AnswerCommentActivity"
-            android:label="@string/title_activity_answer_comment" >
-        </activity>
+            android:label="@string/title_activity_answer_comment"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PersonalQuestionActivity"
-            android:label="@string/title_activity_personal_question" >
-        </activity>
+            android:label="@string/title_activity_personal_question"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".activity.PersonalArticleActivity" >
-        </activity>
+            android:name=".activity.PersonalArticleActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PersonalAnswerActivity"
-            android:label="@string/title_activity_personal_answer" >
-        </activity>
+            android:label="@string/title_activity_personal_answer"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".activity.PersonalTopicActivity" >
-        </activity>
+            android:name=".activity.PersonalTopicActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".activity.PersonalFollowingActivity" >
-        </activity>
+            android:name=".activity.PersonalFollowingActivity"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="55d96f98e0f55a58c2004be1" />
 
         <activity
-            android:screenOrientation="portrait"
             android:name="com.umeng.socialize.view.ShareActivity"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.UMDialog"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
@@ -116,7 +105,7 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -129,8 +118,7 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -138,16 +126,17 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.PublishQuestionActivity"
-            android:label="@string/title_activity_publish_question" >
-        </activity>
+            android:label="@string/title_activity_publish_question"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.SearchActivity"
-            android:label="@string/title_activity_search" >
-
-        </activity>
+            android:label="@string/title_activity_search"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Login"></activity>
     </application>
 
 </manifest>

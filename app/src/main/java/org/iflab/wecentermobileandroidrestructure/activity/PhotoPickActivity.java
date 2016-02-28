@@ -66,7 +66,6 @@ public class PhotoPickActivity extends SwipeBackBaseActivity implements LoaderMa
     };
     public static DisplayImageOptions optionsImage = new DisplayImageOptions
             .Builder()
-            .showImageOnLoading(R.mipmap.test_ic_default_image)
             .showImageForEmptyUri(R.mipmap.test_image_not_exist)
             .showImageOnFail(R.mipmap.test_image_not_exist)
             .cacheInMemory(true)

@@ -79,7 +79,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/user_place" />
+                android:src="@drawable/ic_defaul_tavatar" />
 
             <TextView
                 android:id="@+id/txt_agree_count"

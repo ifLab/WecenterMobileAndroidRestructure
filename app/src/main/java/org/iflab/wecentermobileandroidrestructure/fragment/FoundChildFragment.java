@@ -110,6 +110,7 @@ public class FoundChildFragment extends BaseFragment {
     }
 
     private void setData() {
+        refreshLayout.setRefreshing(true);
         AsyncHttpWecnter.loadData(getActivity(), RelativeUrl.FOUND, generateParam(), AsyncHttpWecnter.Request.Get, new NetWork() {
 
             @Override

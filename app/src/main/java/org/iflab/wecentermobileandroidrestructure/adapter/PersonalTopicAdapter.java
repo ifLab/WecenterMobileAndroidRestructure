@@ -33,14 +33,10 @@ public class PersonalTopicAdapter extends RecyclerView.Adapter {
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
     private List<PersonalTopic.RowsEntity> datas;
-    private String userName;
-    String avatar;
 
-    public PersonalTopicAdapter(Context mContext, List<PersonalTopic.RowsEntity> datas, String userName,String avatar) {
+    public PersonalTopicAdapter(Context mContext, List<PersonalTopic.RowsEntity> datas) {
         this.mContext = mContext;
         this.datas = datas;
-        this.userName = userName;
-        this.avatar = avatar;
         this.mLayoutInflater = LayoutInflater.from(mContext);
     }
 

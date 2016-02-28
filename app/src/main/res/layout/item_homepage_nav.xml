@@ -12,15 +12,17 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/item_homepage_nav_image_left" />
+            android:layout_marginLeft="@dimen/item_homepage_nav_image_left"
+            android:layout_marginRight="20dp"/>
 
         <TextView
             android:id="@+id/text_nav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/image_nav"
+            android:gravity="center_vertical"
             android:text="主页"
-            android:layout_marginLeft="20dp"/>
+            />
     </RelativeLayout>
 </RelativeLayout>

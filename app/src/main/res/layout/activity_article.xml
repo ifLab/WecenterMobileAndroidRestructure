@@ -40,7 +40,7 @@
                     android:id="@+id/image_profile"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@mipmap/user_place"
+                    android:src="@drawable/ic_defaul_tavatar"
                     app:border_color="#50000000"
                     app:border_width="0.5dp" />
 
@@ -102,16 +102,22 @@
         android:id="@+id/linearLayout"
         android:background="@drawable/rectangle">
 
-        <ImageButton
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
-            android:src="@mipmap/share_button"
-            android:background="@null"
-            android:scaleType="center"
-            android:gravity="center"
-            android:id="@+id/btn_share"
-            android:onClick="gotoShare"/>
+            android:gravity="center">
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_share_button"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/btn_share"
+                android:onClick="gotoShare"/>
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="0dp"
@@ -156,18 +162,22 @@
         </FrameLayout>
 
 
-
-        <ImageButton
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
-            android:src="@mipmap/comment_button"
-            android:background="@null"
-            android:scaleType="center"
-            android:gravity="center"
-            android:id="@+id/btn_comment"
-            android:onClick="gotoComment"/>
-
+            >
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_comment_button"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/btn_comment"
+                android:onClick="gotoComment"/>
+        </FrameLayout>
 
     </LinearLayout>
 

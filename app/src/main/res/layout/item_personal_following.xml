@@ -14,7 +14,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="6dp"
         android:padding="10dp"
-        android:src="@mipmap/user_place" />
+        android:src="@drawable/ic_defaul_tavatar" />
 
     <RelativeLayout
         android:id="@+id/rel_right"

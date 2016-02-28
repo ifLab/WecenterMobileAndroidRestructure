@@ -102,10 +102,11 @@ public class PersonalArticleActivity extends SwipeBackBaseActivity{
             @Override
             public void parseJson(JSONObject response) {
                 PersonalArticle personalArticle = (new Gson()).fromJson(response.toString(), PersonalArticle.class);
-                data.addAll(personalArticle.getRows());
-                articleAdapter.setData(data);
                 if (personalArticle.getTotal_rows() == 0) {
                     loadMore = false;
+                }else {
+                    data.addAll(personalArticle.getRows());
+                    articleAdapter.setData(data);
                 }
                 refreshLayout.setRefreshing(false);
             }

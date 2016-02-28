@@ -71,7 +71,7 @@
             android:id="@+id/img_user"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:src="@mipmap/user_place"
+            android:src="@drawable/ic_defaul_tavatar"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp" />

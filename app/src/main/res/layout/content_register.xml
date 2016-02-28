@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.iflab.wecentermobileandroidrestructure.activity.RegisterActivity"
+    tools:showIn="@layout/activity_register"
+    android:orientation="vertical"
+    android:background="@mipmap/login_background_blur"
+    android:padding="30dp">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#60000000"/>
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/login_txt_color"
+        android:textColor="@color/login_txt_color"
+        android:drawableLeft="@drawable/ic_login_user"
+        android:drawablePadding="10dp"
+        android:hint="用户名"/>
+
+    <EditText
+        android:id="@+id/edit_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="numberPassword"
+        android:textColorHint="@color/login_txt_color"
+        android:textColor="@color/login_txt_color"
+        android:drawableLeft="@drawable/ic_login_password"
+        android:drawablePadding="10dp"
+        android:hint="密码"
+        />
+
+
+    <EditText
+        android:id="@+id/edit_confirm_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="numberPassword"
+        android:textColorHint="@color/login_txt_color"
+        android:textColor="@color/login_txt_color"
+        android:drawableLeft="@drawable/ic_login_password"
+        android:drawablePadding="10dp"
+        android:hint="确认密码"/>
+
+
+    <EditText
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/login_txt_color"
+        android:textColor="@color/login_txt_color"
+        android:drawableLeft="@drawable/ic_login_mail"
+        android:drawablePadding="10dp"
+        android:hint="邮箱"/>
+
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_buttton_selector"
+        android:text="注册"
+        android:onClick="onRegister"
+        android:layout_marginTop="20dp"
+        />
+
+
+
+</LinearLayout>

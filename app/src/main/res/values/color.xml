@@ -3,7 +3,7 @@
     <color name="background">#EDEDED</color>
     <color name="toolbar_color">#669BF4</color>
     <color name="login_button_focus">#50000000</color>
-    <color name="login_button_nofocus">#10000000</color>
+    <color name="login_button_nofocus">#b47b38</color>
     <color name="primary">#669BF4</color>
     <color name="primary_pressed">#229bf4</color>
     <color name="ripple">#999bf4</color>
@@ -16,4 +16,7 @@
     <color name="bg_color_grey">#eeeeee</color>
     <color name="background_tab_pressed">#fff</color>
     <color name="line">#50000000</color>
+
+    <color name="login_color">#FFD263</color>
+    <color name="login_txt_color">#50ffffff</color>
 </resources>

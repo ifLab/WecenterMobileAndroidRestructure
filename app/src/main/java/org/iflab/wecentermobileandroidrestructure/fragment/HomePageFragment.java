@@ -156,6 +156,13 @@ public class HomePageFragment extends BaseFragment {
 
     private void loadData() {
         AsyncHttpWecnter.get(RelativeUrl.HOME_PAGE, setParams(), new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                refreshLayout.setRefreshing(true);
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String res = new String(responseBody);

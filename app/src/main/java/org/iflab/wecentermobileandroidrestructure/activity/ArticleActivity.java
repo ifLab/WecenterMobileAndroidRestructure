@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -27,6 +28,7 @@ import org.iflab.wecentermobileandroidrestructure.application.WecenterApplicatio
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
+import org.iflab.wecentermobileandroidrestructure.model.User;
 import org.iflab.wecentermobileandroidrestructure.model.article.ArticleInfo;
 import org.iflab.wecentermobileandroidrestructure.model.personal.UserPersonal;
 import org.iflab.wecentermobileandroidrestructure.tools.DisplayUtil;
@@ -56,6 +58,7 @@ public class ArticleActivity extends ShareBaseActivity {
     ImageButton commentBtn;
     CheckBox likeCheckBox;
     CheckBox dislikeCheckBox;
+    boolean isOwner;
     int articleID;
     int voteValue;
     public static Intent intent;
@@ -110,7 +113,12 @@ public class ArticleActivity extends ShareBaseActivity {
             RequestParams params = new RequestParams();
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton,final boolean b) {
+            public void onCheckedChanged(final CompoundButton compoundButton,final boolean b) {
+                if(isOwner){
+                    compoundButton.setChecked(false);
+                    Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 dislikeCheckBox.setEnabled(!b);
 
                 params.put("item_id", articleID);
@@ -120,6 +128,16 @@ public class ArticleActivity extends ShareBaseActivity {
                 AsyncHttpWecnter.post(RelativeUrl.ARTICLE_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            JSONObject obj = new JSONObject(new String(responseBody));
+                            if(!obj.getString("err").equals("null")){
+                                Toast.makeText(getApplicationContext(),obj.getString("err"),Toast.LENGTH_SHORT).show();
+                                compoundButton.setChecked(false);
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         voteValue = b ? voteValue + 1 : voteValue - 1;
                         votesTextView.setText(voteValue + "");
                     }
@@ -137,7 +155,12 @@ public class ArticleActivity extends ShareBaseActivity {
             RequestParams params = new RequestParams();
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
+                if(isOwner){
+                    compoundButton.setChecked(false);
+                    Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 likeCheckBox.setEnabled(!b);
 
                 params.put("item_id", articleID);
@@ -147,6 +170,17 @@ public class ArticleActivity extends ShareBaseActivity {
                 AsyncHttpWecnter.post(RelativeUrl.ARTICLE_VOTE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                        try {
+                            JSONObject obj = new JSONObject(new String(responseBody));
+                            if(!obj.getString("err").equals("null")){
+                                Toast.makeText(getApplicationContext(),obj.getString("err"),Toast.LENGTH_SHORT).show();
+                                compoundButton.setChecked(false);
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         voteValue = b ? voteValue - 1 : voteValue + 1;
                         votesTextView.setText(voteValue + "");
                     }
@@ -211,7 +245,10 @@ public class ArticleActivity extends ShareBaseActivity {
                 ImageLoader.getInstance().displayImage(artleInfo.getUser_info().getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getTitle());
 
-//                setShareContent(artleInfo.getArticleTitle(),"http://iflab.org");
+                setShareContent(artleInfo.getTitle(),"http://www.wecenter.com");
+
+                // isOwner ?
+                isOwner =  artleInfo.getUser_info().getUid() == User.getLoginUser(getApplicationContext()).getUid();
 
                 if (artleInfo.getVotes() > -1) {
                     voteValue = artleInfo.getVotes();

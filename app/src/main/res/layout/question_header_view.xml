@@ -23,7 +23,7 @@
                 android:id="@+id/image_profile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@mipmap/user_place"
+                android:src="@drawable/ic_defaul_tavatar"
                 app:border_color="#50000000"
                 app:border_width="0.5dp" />
 
@@ -177,18 +177,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/line_layout_selector"
         android:clickable="true"
         android:gravity="center"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+ >
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_margin="10dp"
-            android:src="@mipmap/publishment_answer" />
+            android:src="@drawable/ic_publishment_answer" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -196,6 +196,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/imageView2"
             android:text="添加回答"
+            android:textColor="@color/text_color_black"
             android:textSize="16sp" />
 
     </RelativeLayout>

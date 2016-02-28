@@ -1,31 +1,23 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
-import android.graphics.Color;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
 import org.iflab.wecentermobileandroidrestructure.R;
-import org.iflab.wecentermobileandroidrestructure.adapter.PersonalAnswerAdapter;
 import org.iflab.wecentermobileandroidrestructure.adapter.TopicDetailAdapter;
 import org.iflab.wecentermobileandroidrestructure.common.NetWork;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.listener.EndlessRecyclerOnScrollListener;
-import org.iflab.wecentermobileandroidrestructure.model.personal.PersonalAnswer;
 import org.iflab.wecentermobileandroidrestructure.model.personal.TopicDetailAnswer;
 import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
 import org.json.JSONException;
@@ -34,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopicsActivity extends AppCompatActivity {
+public class TopicsActivity extends SwipeBackBaseActivity {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbar;
@@ -63,20 +55,20 @@ public class TopicsActivity extends AppCompatActivity {
     }
 
     private void setToolBars() {
+        //don't set toolbar for creating headerview
 //        toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 //        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-
 
     }
 
@@ -119,7 +111,7 @@ public class TopicsActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView)findViewById(R.id.list_topics);
         btnFoucs = (Button)findViewById(R.id.btn_foucs);
         txt_topic_title = (TextView)findViewById(R.id.txt_topic_title);
@@ -130,10 +122,11 @@ public class TopicsActivity extends AppCompatActivity {
             @Override
             public void parseJson(JSONObject response) {
                 TopicDetailAnswer personalAnswer = (new Gson()).fromJson(response.toString(), TopicDetailAnswer.class);
-                data.addAll(personalAnswer.getRows());
-                answerAdapter.setData(data);
                 if (personalAnswer.getTotal_rows() == 0) {
                     loadMore = false;
+                }else{
+                    data.addAll(personalAnswer.getRows());
+                    answerAdapter.setData(data);
                 }
             }
         });

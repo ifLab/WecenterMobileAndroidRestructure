@@ -99,10 +99,11 @@ public class PersonalAnswerActivity extends SwipeBackBaseActivity {
             @Override
             public void parseJson(JSONObject response) {
                 PersonalAnswer personalAnswer = (new Gson()).fromJson(response.toString(), PersonalAnswer.class);
-                data.addAll(personalAnswer.getRows());
-                answerAdapter.setData(data);
                 if (personalAnswer.getTotal_rows() == 0) {
                     loadMore = false;
+                }else {
+                    data.addAll(personalAnswer.getRows());
+                    answerAdapter.setData(data);
                 }
 
             }

@@ -2,6 +2,7 @@ package org.iflab.wecentermobileandroidrestructure.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -86,20 +87,6 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
     private void initViews() {
         etInput = (EditText) findViewById(R.id.search_et_input);
         ivDelete = (ImageView) findViewById(R.id.search_iv_delete);
-//        lvTips = (ListView) findViewById(R.id.search_lv_tips);
-//
-//        lvTips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                //set edit text
-//                String text = lvTips.getAdapter().getItem(i).toString();
-//                etInput.setText(text);
-//                etInput.setSelection(text.length());
-//                //hint list view gone and result list view show
-//                lvTips.setVisibility(View.GONE);
-//                notifyStartSearching(text);
-//            }
-//        });
 
         ivDelete.setOnClickListener(this);
 

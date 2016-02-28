@@ -1,6 +1,7 @@
 package org.iflab.wecentermobileandroidrestructure.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import org.iflab.wecentermobileandroidrestructure.activity.ArticleActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.PersonalCenterActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.QuestionDetailActivity;
 import org.iflab.wecentermobileandroidrestructure.activity.SearchActivity;
+import org.iflab.wecentermobileandroidrestructure.activity.TopicsActivity;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
 import org.iflab.wecentermobileandroidrestructure.model.Search.SearchArticles;
 import org.iflab.wecentermobileandroidrestructure.model.Search.SearchBase;
@@ -105,14 +107,16 @@ public class SearchAdapter extends RecyclerView.Adapter{
                 }
             });
         }else if(searchBase instanceof SearchTopics) {
-            SearchTopics searchTopics = (SearchTopics)searchBase;
+            final SearchTopics searchTopics = (SearchTopics)searchBase;
             ((TopicsCellHolder)holder).txtTopicView.setText(searchTopics.getName());
-//            ((TopicsCellHolder)holder).rlTopics.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
+            ((TopicsCellHolder)holder).rlTopics.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, TopicsActivity.class);
+                    intent.putExtra("topic_id",searchTopics.getSearch_id());
+                    mContext.startActivity(intent);
+                }
+            });
         }else if(searchBase instanceof SearchUsers){
             final SearchUsers searchUsers = (SearchUsers)searchBase;
             ((UsersCellHolder)holder).txtUserName.setText(searchUsers.getName());

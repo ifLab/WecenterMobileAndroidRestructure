@@ -41,7 +41,7 @@ import java.util.List;
 
 public class QuestionDetailActivity extends SwipeBackBaseActivity implements View.OnClickListener {
 
-
+    public static int PUBLISH_FINISH = 11;
     private Toolbar toolbar;
     ListView listView;
     View headerView;
@@ -114,12 +114,17 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
     }
 
     private void setViews() {
-        refreshLayout.setEnabled(false);
         listView.addHeaderView(headerView);
         foucsBtn.setOnClickListener(this);
         topicFlowLayout.setOnClickListener(this);
         addAnswerRel.setOnClickListener(this);
         topRel.setOnClickListener(this);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+            }
+        });
     }
 
     private void setToolBars() {
@@ -148,7 +153,7 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
                 intent.putExtra(PublishAnswerArticleActivity.PUBLISH_TYPE_INTENT, PublishAnswerArticleActivity.PUBLISH_ANSWER);
                 intent.putExtra(PublishAnswerArticleActivity.QUESTION_ID_INTENT, question_id);
                 intent.putExtra(PublishAnswerArticleActivity.ARG_REVEAL_START_LOCATION, startingLocation);
-                startActivity(intent);
+                startActivityForResult(intent,PUBLISH_FINISH);
                 overridePendingTransition(0, 0);
                 break;
             case R.id.btn_foucs:
@@ -176,6 +181,13 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PUBLISH_FINISH){
+            loadData();
+        }else
+            super.onActivityResult(requestCode, resultCode, data);
+    }
 
     private void foucsQuestion() {
         AsyncHttpWecnter.loadData(QuestionDetailActivity.this, RelativeUrl.QUESTION_FOUCS, setFoucsParams(), AsyncHttpWecnter.Request.Post, new NetWork() {
@@ -233,6 +245,11 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
                     answerAdapter = new AnswerAdapter(QuestionDetailActivity.this, answersList, questionInfo.getQuestion_content());
                     listView.setAdapter(answerAdapter);
 
+                    if(refreshLayout.isRefreshing()){
+                        refreshLayout.setRefreshing(false);
+                        return;
+                    }
+
                     //QuestionTopics
                     questionsList = gson.fromJson(response.getString("question_topics"),
                             new TypeToken<ArrayList<QuestionTopics>>() {
@@ -253,10 +270,14 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
                 foucsNum = questionInfo.getFocus_count();
                 focusTextView.setText(foucsNum + "");
                 if (questionsList != null) {
+//                    topicFlowLayout.removeAllViews();
                     for (QuestionTopics q : questionsList) {
                         addFlowTopics(q.getTopic_title());
                     }
 
+                }
+                if(questionsList.size() == 0){
+                    topicFlowLayout.setVisibility(View.GONE);
                 }
                 uid = questionInfo.getUser_info().getUid();
                 userNameTextView.setText(questionInfo.getUser_info().getUser_name());
@@ -293,6 +314,7 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
     private RequestParams setParams() {
         RequestParams params = new RequestParams();
         params.put("id", question_id);
+        params.put("sort_key","add_time");
         return params;
     }
 

@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.iflab.wecentermobileandroidrestructure.R;
 import org.iflab.wecentermobileandroidrestructure.fragment.FoundFrgment;
 import org.iflab.wecentermobileandroidrestructure.fragment.HomePageFragment;
+import org.iflab.wecentermobileandroidrestructure.fragment.HotTopicsFragment;
 import org.iflab.wecentermobileandroidrestructure.fragment.SearchFragment;
 import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.iflab.wecentermobileandroidrestructure.http.RelativeUrl;
@@ -42,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WencenterActivity extends BaseActivity {
 
-    private final String[] navStrings = {"主页", "发现", "搜索"};
+    private final String[] navStrings = {"个人中心","主页", "发现", "搜索","热门话题","注销"};
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
@@ -75,7 +77,7 @@ public class WencenterActivity extends BaseActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         list_nav.setAdapter(new NavAdapter());
-        navigationDrawerItemSelected(0);
+        navigationDrawerItemSelected(1);
         list_nav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -112,6 +114,7 @@ public class WencenterActivity extends BaseActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            PersonalCenterActivity.openPersonalCenter(WencenterActivity.this,User.getLoginUser(getApplicationContext()).getUid());
             return true;
         }
 
@@ -144,20 +147,34 @@ public class WencenterActivity extends BaseActivity {
                 Fragment fragment;
                 switch (id) {
                     case 0:
-                        toolbar.setVisibility(View.VISIBLE);
+                        PersonalCenterActivity.openPersonalCenter(WencenterActivity.this,User.getLoginUser(getApplicationContext()).getUid());
+                        break;
+                    case 1:
+//                        toolbar.setVisibility(View.VISIBLE);
                         fragment = HomePageFragment.newInstances();
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
-                    case 1:
-                        toolbar.setVisibility(View.VISIBLE);
+                    case 2:
+//                        toolbar.setVisibility(View.VISIBLE);
                         fragment = FoundFrgment.newInstances();
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
-                    case 2:
-                        toolbar.setVisibility(View.GONE);
+                    case 3:
+//                        toolbar.setVisibility(View.GONE);
                         fragment = SearchFragment.newInstance();
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
+                    case 4:
+                        fragment = HotTopicsFragment.newInstance();
+                        fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
+                        break;
+                    case 5:
+                        User.clear(getApplicationContext());
+                        AsyncHttpWecnter.clear(getApplicationContext());
+
+                        Intent intent = new Intent(WencenterActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                 }
             }
         }, 300);
@@ -187,16 +204,31 @@ public class WencenterActivity extends BaseActivity {
             TextView textView = (TextView) convertView.findViewById(R.id.text_nav);
             switch (position) {
                 case 0:
-                    imageView.setImageResource(R.mipmap.test_ic_dashboard);
+                    imageView.setImageResource(R.drawable.ic_sidebar_user);
                     textView.setText(navStrings[position]);
                     break;
                 case 1:
-                    imageView.setImageResource(R.mipmap.test_ic_event);
+                    imageView.setImageResource(R.drawable.ic_sidebar_home);
                     textView.setText(navStrings[position]);
                     break;
                 case 2:
-                    imageView.setImageResource(R.mipmap.test_ic_search);
+                    imageView.setImageResource(R.drawable.ic_sidebar_explore);
                     textView.setText(navStrings[position]);
+                    break;
+                case 3:
+                    imageView.setImageResource(R.drawable.ic_sidebar_search);
+                    textView.setText(navStrings[position]);
+                    break;
+                case 4:
+                    imageView.setImageResource(R.drawable.ic_sidebar_topic);
+                    textView.setText(navStrings[position]);
+                    break;
+                case 5:
+                    imageView.setVisibility(View.GONE);
+                    textView.setGravity(Gravity.CENTER);
+                    textView.setText(navStrings[position]);
+                    textView.setTextColor(getResources().getColor(R.color.white));
+                    textView.setBackgroundColor(getResources().getColor(R.color.cpb_red));
                     break;
             }
             return convertView;

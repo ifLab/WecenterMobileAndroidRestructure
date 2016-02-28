@@ -13,6 +13,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by hcjcch on 15/6/8.
@@ -197,6 +199,18 @@ public class Global {
             e.printStackTrace();
         }
         return time;
+    }
+
+    /**
+     * 检测邮箱地址是否合法
+     * @param email
+     * @return true合法 false不合法
+     */
+    public static boolean isEmail(String email){
+        if (null==email || "".equals(email)) return false;
+        Pattern p =  Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");//复杂匹配
+        Matcher m = p.matcher(email);
+        return m.matches();
     }
 
 

@@ -13,7 +13,6 @@ import org.iflab.wecentermobileandroidrestructure.R;
 public class ImageOptions {
     public static DisplayImageOptions optionsImage = new DisplayImageOptions
             .Builder()
-            .showImageOnLoading(R.mipmap.test_ic_default_image)
             .showImageForEmptyUri(R.mipmap.test_image_not_exist)
             .showImageOnFail(R.mipmap.test_image_not_exist)
             .cacheInMemory(true)
@@ -24,7 +23,6 @@ public class ImageOptions {
             .build();
     public static DisplayImageOptions optionsImagePersonalDetailAvatar = new DisplayImageOptions
             .Builder()
-            .showImageOnLoading(R.mipmap.test_ic_default_image)
             .showImageForEmptyUri(R.mipmap.test_image_not_exist)
             .showImageOnFail(R.mipmap.test_image_not_exist)
             .cacheInMemory(false)

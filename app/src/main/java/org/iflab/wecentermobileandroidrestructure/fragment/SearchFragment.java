@@ -156,7 +156,6 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
                     }
                     JSONArray array = rsmObj.getJSONArray("rows");
                     if(array.length() == 0){
-                        Toast.makeText(getActivity(), "没有相关内容", Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
                         return;
                     }
