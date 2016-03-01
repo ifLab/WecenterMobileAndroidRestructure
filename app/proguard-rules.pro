@@ -15,6 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class org.iflab.wecentermobileandroidrestructure.model.** { *; }
+
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewBinder { *; }
@@ -26,3 +29,69 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+-dontwarn com.squareup.**
+-keep class com.squareup.** { *; }
+
+-dontwarn com.octo.**
+-keep class com.octo.** { *; }
+
+-dontwarn com.dd.**
+-keep class com.dd.** { *; }
+
+-dontwarn com.facebook.shimmer.**
+-keep class com.facebook.shimmer.** { *; }
+
+-dontwarn com.marshalchen.ultimaterecycelrview.**
+-keep class com.marshalchen.ultimaterecycelrview.** { *; }
+
+-dontwarn com.melnykov.fab.**
+-keep class com.melnykov.fab.** { *; }
+
+-dontwarn com.me.**
+-keep class com.me.** { *; }
+
+-dontwarn com.loopj.**
+-keep class com.loopj.** { *; }
+
+-dontwarn com.google.**
+-keep class com.google.** { *; }
+
+-dontwarn de.**
+-keep class de.** { *; }
+
+-dontwarn javax.**
+-keep class javax.** { *; }
+
+-dontwarn org.**
+-keep class org.** { *; }
+
+-dontwarn net.**
+-keep class net.** { *; }
+
+-dontwarn u.aly.**
+-keep class u.aly.** { *; }
+
+-dontwarn uk.**
+-keep class uk.** { *; }
+
+-dontwarn in.**
+-keep class in.** { *; }
+
+-dontwarn fr.**
+-keep class fr.** { *; }
+
+-dontwarn uk.**
+-keep class uk.** { *; }
+
+-keep class com.tencent.mm.sdk.** {
+   *;
+}
+
+-keep class com.sina.** { *; }
+
+-keepattributes SourceFile,LineNumberTable
+
+-keep class android.** { *; }
+-keep class com.google.gson.** { *; }
+-keepattributes Signature
+

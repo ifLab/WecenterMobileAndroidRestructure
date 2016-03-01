@@ -22,9 +22,9 @@ import org.iflab.wecentermobileandroidrestructure.listener.ShareRegister;
 public class ShareBaseActivity extends SwipeBackBaseActivity implements ShareRegister {
 
     UMSocialService mController;
-    String shareUrl = "www.wecenter.com";
+    String shareUrl = "www.fanfan.cn";
     String title;
-    String header = "来自wecenter的分享 : ";
+    String header = "来自fanfan的分享 : ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

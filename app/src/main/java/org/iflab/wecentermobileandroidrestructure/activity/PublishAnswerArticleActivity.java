@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 
 import com.loopj.android.http.RequestParams;
+import com.tencent.mm.sdk.modelmsg.WXTextObject;
 
 import org.apmem.tools.layouts.FlowLayout;
 import org.iflab.wecentermobileandroidrestructure.R;
@@ -336,10 +337,10 @@ public class PublishAnswerArticleActivity extends SwipeBackBaseActivity implemen
         params.put("qqfile", attachment);
 //        System.out.println(publishId + "   " + attach_access_key + "   " + attachment);
 
-//        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD +
-//                "&attach_access_key="+attach_access_key +
-//                "&id=" + publishId
-//                , params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
+        AsyncHttpWecnter.loadData(getApplicationContext(), RelativeUrl.ATTACHMENT_UPLOAD +
+                "&attach_access_key="+attach_access_key +
+                "&id=" + publishId
+                , params, AsyncHttpWecnter.Request.Post, new UploadNetWork(attachIds, hashtable, attachment));
     }
 
     private static class UploadNetWork extends NetWork{

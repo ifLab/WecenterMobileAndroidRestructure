@@ -190,7 +190,7 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
     }
 
     public void gotoShare(View view){
-        setShareContent(questionTitle,"http://www.wecenter.com");
+        setShareContent(questionTitle,"http://www.fanfan.cn");
         mController.openShare(QuestionAnswerActivity.this, false);
     }
 

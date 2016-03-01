@@ -245,7 +245,7 @@ public class ArticleActivity extends ShareBaseActivity {
                 ImageLoader.getInstance().displayImage(artleInfo.getUser_info().getAvatar_file(), circleImageView, ImageOptions.optionsImage);
                 toolbar.setTitle(artleInfo.getTitle());
 
-                setShareContent(artleInfo.getTitle(),"http://www.wecenter.com");
+                setShareContent(artleInfo.getTitle(),"http://www.fanfan.cn");
 
                 // isOwner ?
                 isOwner =  artleInfo.getUser_info().getUid() == User.getLoginUser(getApplicationContext()).getUid();
