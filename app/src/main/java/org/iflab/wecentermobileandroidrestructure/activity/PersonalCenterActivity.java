@@ -227,7 +227,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_wencenter, menu);
+//        getMenuInflater().inflate(R.menu.menu_wencenter, menu);
         return true;
     }
 

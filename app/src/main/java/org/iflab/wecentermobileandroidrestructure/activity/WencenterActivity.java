@@ -204,19 +204,19 @@ public class WencenterActivity extends BaseActivity {
             TextView textView = (TextView) convertView.findViewById(R.id.text_nav);
             switch (position) {
                 case 0:
-                    imageView.setImageResource(R.drawable.ic_sidebar_user);
+                    imageView.setImageResource(R.mipmap.user);
                     textView.setText(navStrings[position]);
                     break;
                 case 1:
-                    imageView.setImageResource(R.drawable.ic_sidebar_home);
+                    imageView.setImageResource(R.mipmap.home);
                     textView.setText(navStrings[position]);
                     break;
                 case 2:
-                    imageView.setImageResource(R.drawable.ic_sidebar_explore);
+                    imageView.setImageResource(R.mipmap.explore);
                     textView.setText(navStrings[position]);
                     break;
                 case 3:
-                    imageView.setImageResource(R.drawable.ic_sidebar_search);
+                    imageView.setImageResource(R.mipmap.search);
                     textView.setText(navStrings[position]);
                     break;
                 case 4:

@@ -30,7 +30,7 @@
         android:layout_margin="16dp"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/ic_publishment_article_question"
+        android:src="@mipmap/write"
         fab:fab_colorNormal="@color/primary"
         fab:fab_colorPressed="@color/primary_pressed"
         fab:fab_colorRipple="@color/ripple" />
