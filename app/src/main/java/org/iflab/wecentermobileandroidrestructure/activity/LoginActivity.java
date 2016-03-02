@@ -40,6 +40,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+
 /**
  * Created by hcjcch on 15/5/15.
  */
@@ -51,7 +53,7 @@ public class LoginActivity extends BaseActivity {
     private EditText userName;
     private EditText passWord;
     private Button btnRegister;
-
+    private CircularProgressBar progressBar;
     Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class LoginActivity extends BaseActivity {
         userName = (EditText) findViewById(R.id.edt_user_name);
         passWord = (EditText) findViewById(R.id.edt_passwd);
         btnRegister = (Button)findViewById(R.id.btn_register);
+        progressBar = (CircularProgressBar)findViewById(R.id.progress);
     }
 
 
@@ -118,23 +121,30 @@ public class LoginActivity extends BaseActivity {
         params.put("user_name", usernameString);
         params.put("password", passWordString);
 
-        PersistentCookieStore cookieStore = new PersistentCookieStore(getApplicationContext());
+        final PersistentCookieStore cookieStore = new PersistentCookieStore(getApplicationContext());
         AsyncHttpWecnter.setCookieStore(cookieStore);
 
         AsyncHttpWecnter.post(RelativeUrl.USER_LOGIN, params, new AsyncHttpResponseHandler() {
             @Override
+            public void onStart() {
+                super.onStart();
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String json = new String(responseBody);
                 boolean jsonProgress = jsonPreproccess(json);
-                if (jsonProgress) return;
+                if (jsonProgress) {
+                    cookieStore.clear();
+                    return;
+                }
                 try {
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
                     User user = new User(rsm);
                     User.save(getApplicationContext(), user);
                     startActivity(new Intent(LoginActivity.this, WencenterActivity.class));
-//                    startActivity(new Intent(LoginActivity.this, QuestionDetailActivity.class));
-
 
                     finish();
                 } catch (JSONException e) {
@@ -145,7 +155,18 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                cookieStore.clear();
+                if(responseBody == null){
+                    Toast.makeText(getApplicationContext(), "请检查网络", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
