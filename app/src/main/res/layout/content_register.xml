@@ -9,22 +9,17 @@
     tools:context="org.iflab.wecentermobileandroidrestructure.activity.RegisterActivity"
     tools:showIn="@layout/activity_register"
     android:orientation="vertical"
-    android:background="@mipmap/login_background_blur"
+    android:background="@drawable/register_bg"
     android:padding="30dp">
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#60000000"/>
 
     <EditText
         android:id="@+id/edit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/login_txt_color"
-        android:textColor="@color/login_txt_color"
         android:drawableLeft="@drawable/ic_login_user"
         android:drawablePadding="10dp"
+        android:textColor="@color/login_color"
+        android:textColorHint="@color/login_color"
         android:hint="用户名"/>
 
     <EditText
@@ -33,10 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:inputType="textPassword"
-        android:textColorHint="@color/login_txt_color"
-        android:textColor="@color/login_txt_color"
         android:drawableLeft="@drawable/ic_login_password"
         android:drawablePadding="10dp"
+        android:textColor="@color/login_color"
+        android:textColorHint="@color/login_color"
         android:hint="密码"
         />
 
@@ -47,10 +42,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:inputType="textPassword"
-        android:textColorHint="@color/login_txt_color"
-        android:textColor="@color/login_txt_color"
         android:drawableLeft="@drawable/ic_login_password"
         android:drawablePadding="10dp"
+        android:textColor="@color/login_color"
+        android:textColorHint="@color/login_color"
         android:hint="确认密码"/>
 
 
@@ -59,10 +54,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColorHint="@color/login_txt_color"
-        android:textColor="@color/login_txt_color"
         android:drawableLeft="@drawable/ic_login_mail"
         android:drawablePadding="10dp"
+        android:textColor="@color/login_color"
+        android:textColorHint="@color/login_color"
         android:hint="邮箱"/>
 
 

@@ -2,22 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/login_background_blur"
+    android:background="@drawable/login_bg"
     >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#60000000">
+        >
         <EditText
             android:id="@+id/edt_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:hint="用户名"
-            android:textColorHint="@color/login_txt_color"
-            android:textColor="@color/login_txt_color"
             android:drawableLeft="@drawable/ic_login_user"
             android:drawablePadding="10dp"
+            android:textColor="@color/login_color"
+            android:textColorHint="@color/login_color"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -32,13 +39,14 @@
             android:hint="密码"
             android:drawableLeft="@drawable/ic_login_password"
             android:drawablePadding="10dp"
+            android:textColor="@color/login_color"
+            android:textColorHint="@color/login_color"
             android:layout_alignTop="@+id/edt_user_name"
             android:layout_alignLeft="@+id/edt_user_name"
             android:layout_alignStart="@+id/edt_user_name"
             android:layout_alignRight="@+id/edt_user_name"
             android:layout_alignEnd="@+id/edt_user_name"
             android:inputType="textPassword"
-            android:textColor="@color/login_txt_color"
             android:id="@+id/edt_passwd"
             />
 
@@ -72,19 +80,12 @@
 
     </RelativeLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center"
-            android:textSize="70sp"
-            android:textColor="@color/login_button_nofocus"
-            android:text="FanFan"/>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo"/>
 
     <fr.castorflex.android.circularprogressbar.CircularProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

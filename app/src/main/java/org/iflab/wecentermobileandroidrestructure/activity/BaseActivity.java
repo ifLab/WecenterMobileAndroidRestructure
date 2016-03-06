@@ -2,7 +2,9 @@ package org.iflab.wecentermobileandroidrestructure.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -63,6 +65,20 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
 //        RefWatcher refWatcher = WecenterApplication.getRefWatcher(getApplication());
 //        refWatcher.watch(this);
+    }
+
+    public void setUpToolBar(Toolbar toolBar){
+        if(toolBar != null) {
+            setSupportActionBar(toolBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +49,11 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class LoginActivity extends BaseActivity {
 
     public static int REGISTERCODE = 9;
-    private ShimmerFrameLayout container;
     private Button btnLogin;
     private EditText userName;
     private EditText passWord;
     private Button btnRegister;
+    private Toolbar toolbar;
     private CircularProgressBar progressBar;
     Bitmap bitmap;
     @Override
@@ -73,7 +74,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     protected void findViews() {
-        container = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         btnLogin = (Button) findViewById(R.id.btn_login);
         userName = (EditText) findViewById(R.id.edt_user_name);
         passWord = (EditText) findViewById(R.id.edt_passwd);
@@ -83,7 +83,8 @@ public class LoginActivity extends BaseActivity {
 
 
     protected void setViews() {
-        container.startShimmerAnimation();
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setUpToolBar(toolbar);
     }
 
     protected void setListeners() {

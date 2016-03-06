@@ -9,6 +9,7 @@
     <color name="ripple">#999bf4</color>
 
     <color name="transparent">#00ffffff</color>
+    <color name="full_transparent">#00000000</color>
     <color name="white">#ffffff</color>
 
     <color name="text_color_grey">#666666</color>

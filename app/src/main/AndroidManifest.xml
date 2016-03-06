@@ -20,7 +20,7 @@
             android:name=".activity.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Login">
+            android:theme="@style/LoginAndRegister">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -136,7 +136,8 @@
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/Login"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginAndRegister"></activity>
     </application>
 
 </manifest>

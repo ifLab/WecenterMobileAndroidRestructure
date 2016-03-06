@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -53,9 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Bind(R.id.btn_register)
     Button btn_register;
 
-    @Bind(R.id.container_register)
-    LinearLayout container;
-    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         setView();
-        setSupportActionBar(toolbar);
+        setUpToolBar(toolbar);
 
     }
 
