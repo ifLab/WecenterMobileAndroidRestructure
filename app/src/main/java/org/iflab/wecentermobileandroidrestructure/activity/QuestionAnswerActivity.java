@@ -99,6 +99,10 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
             RequestParams params = new RequestParams();
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
+                if(!checkIsLogin(QuestionAnswerActivity.this)){
+                    compoundButton.setChecked(false);
+                    return;
+                }
                 dislikeCheckBox.setEnabled(!b);
 
                 if(!params.has("answer_id")) {
@@ -143,6 +147,10 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
 
             @Override
             public void onCheckedChanged( final CompoundButton compoundButton, final boolean b) {
+                if(!checkIsLogin(QuestionAnswerActivity.this)){
+                    compoundButton.setChecked(false);
+                    return;
+                }
                 if(isOwner){
                     compoundButton.setChecked(false);
                     Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
@@ -195,6 +203,9 @@ public class QuestionAnswerActivity extends ShareBaseActivity implements View.On
     }
 
     public void gotoComment(View view){
+        if(!checkIsLogin(QuestionAnswerActivity.this)){
+            return;
+        }
         Intent intent = new Intent(QuestionAnswerActivity.this,AnswerCommentActivity.class);
         intent.putExtra("answer_id", answerID);
         int[] startingLocation = new int[2];

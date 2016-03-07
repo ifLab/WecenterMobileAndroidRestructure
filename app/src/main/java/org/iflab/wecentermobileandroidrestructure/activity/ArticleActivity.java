@@ -114,6 +114,10 @@ public class ArticleActivity extends ShareBaseActivity {
 
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton,final boolean b) {
+                if(!checkIsLogin(ArticleActivity.this)){
+                    compoundButton.setChecked(false);
+                    return;
+                }
                 if(isOwner){
                     compoundButton.setChecked(false);
                     Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
@@ -156,6 +160,10 @@ public class ArticleActivity extends ShareBaseActivity {
 
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
+                if(!checkIsLogin(ArticleActivity.this)){
+                    compoundButton.setChecked(false);
+                    return;
+                }
                 if(isOwner){
                     compoundButton.setChecked(false);
                     Toast.makeText(getApplicationContext(),"不能对自己发表的文章进行投票",Toast.LENGTH_SHORT).show();
@@ -207,6 +215,9 @@ public class ArticleActivity extends ShareBaseActivity {
     }
 
     public void gotoComment(View view) {
+        if(!checkIsLogin(ArticleActivity.this)){
+            return;
+        }
         Intent intent = new Intent(ArticleActivity.this,AnswerCommentActivity.class);
         intent.putExtra("article_id", articleID);
         startActivity(intent);

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.loopj.android.http.PersistentCookieStore;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.iflab.wecentermobileandroidrestructure.R;
@@ -32,11 +33,12 @@ public class AnswerAdapter extends BaseAdapter {
     List<QuestionDetailAnswers> answerInfoList = new ArrayList<>();
     Context context;
     String questionContent;
-
+    PersistentCookieStore myCookieStore;
     public  AnswerAdapter(Context context,List<QuestionDetailAnswers> answerInfoList,String questionContent){
         this.answerInfoList = answerInfoList;
         this.context = context;
         this.questionContent = questionContent;
+        myCookieStore = new PersistentCookieStore(context.getApplicationContext());
     }
 
     @Override
@@ -88,6 +90,9 @@ public class AnswerAdapter extends BaseAdapter {
         holder.answerRel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(myCookieStore.getCookies().size() == 0){
+                    return;
+                }
                 Intent intent = new Intent(context, QuestionAnswerActivity.class);
                 intent.putExtra("answer_id",answerInfo.getAnswer_id());
                 intent.putExtra("question_title",questionContent);
@@ -98,7 +103,7 @@ public class AnswerAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder{
+    static class ViewHolder{
         TextView userNameTextView;
         TextView contentTextView;
         ImageView profileImageView;

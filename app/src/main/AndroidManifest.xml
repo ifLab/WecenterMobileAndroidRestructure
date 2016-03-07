@@ -21,16 +21,18 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/LoginAndRegister">
+        </activity>
+        <activity
+            android:name=".activity.WencenterActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:theme="@style/homepage" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.WencenterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/homepage" />
         <activity
             android:name=".activity.PublishAnswerArticleActivity"
             android:screenOrientation="portrait"

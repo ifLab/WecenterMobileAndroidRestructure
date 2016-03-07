@@ -250,7 +250,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                 person = gson.fromJson(new String(responseBody), Person.class);
                 if(person.getRsm()!= null){
                     if(isOwner){
-                        if(User.getLoginUser(getApplicationContext()).getSignNature().length() == 0){
+                        if(User.getLoginUser(getApplicationContext()).getSignNature() == null){
                             User.setOwnerSign(getApplicationContext(),person.getRsm().getSignature());
                         }
                     }

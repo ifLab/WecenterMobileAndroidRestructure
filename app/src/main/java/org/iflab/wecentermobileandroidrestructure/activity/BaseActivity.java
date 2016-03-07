@@ -1,5 +1,7 @@
 package org.iflab.wecentermobileandroidrestructure.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.loopj.android.http.PersistentCookieStore;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.iflab.wecentermobileandroidrestructure.application.WecenterApplication;
+import org.iflab.wecentermobileandroidrestructure.http.AsyncHttpWecnter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,9 +22,11 @@ import org.json.JSONObject;
  * Created by hcjcch on 15/5/15.
  */
 public class BaseActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     /**
@@ -79,6 +85,20 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public boolean checkIsLogin(Context context){
+        PersistentCookieStore myCookieStore = new PersistentCookieStore(getApplicationContext());
+        if (myCookieStore.getCookies().size() == 0) {
+            startActivity(new Intent(context, LoginActivity.class));
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkLoginStatus(){
+        PersistentCookieStore myCookieStore  = new PersistentCookieStore(getApplicationContext());
+        return myCookieStore.getCookies().size() > 0;
     }
 
     @Override

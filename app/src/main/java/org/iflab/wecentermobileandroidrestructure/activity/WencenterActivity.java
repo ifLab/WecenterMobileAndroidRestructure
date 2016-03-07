@@ -44,8 +44,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WencenterActivity extends BaseActivity {
 
-    private final String[] navStrings = {"个人中心","主页", "发现", "搜索","热门话题","注销"};
-
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ListView list_nav;
@@ -63,7 +61,6 @@ public class WencenterActivity extends BaseActivity {
 
         findViews();
         setToolbar();
-        getUserData();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.hello_world, R.string.hello_world) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -76,8 +73,9 @@ public class WencenterActivity extends BaseActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        list_nav.setAdapter(new NavAdapter());
-        navigationDrawerItemSelected(1);
+
+        setCurrentStatus();
+        navigationDrawerItemSelected(2);
         list_nav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,6 +112,9 @@ public class WencenterActivity extends BaseActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            if(!checkIsLogin(WencenterActivity.this)){
+                return true;
+            }
             PersonalCenterActivity.openPersonalCenter(WencenterActivity.this,User.getLoginUser(getApplicationContext()).getUid());
             return true;
         }
@@ -147,10 +148,15 @@ public class WencenterActivity extends BaseActivity {
                 Fragment fragment;
                 switch (id) {
                     case 0:
+                        if(!checkIsLogin(WencenterActivity.this)){
+                            return;
+                        }
                         PersonalCenterActivity.openPersonalCenter(WencenterActivity.this,User.getLoginUser(getApplicationContext()).getUid());
                         break;
                     case 1:
-//                        toolbar.setVisibility(View.VISIBLE);
+                        if(!checkIsLogin(WencenterActivity.this)){
+                            return;
+                        }
                         fragment = HomePageFragment.newInstances();
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
@@ -169,6 +175,9 @@ public class WencenterActivity extends BaseActivity {
                         fragmentManager.beginTransaction().replace(R.id.coo_homepage_content, fragment).commit();
                         break;
                     case 5:
+                        if(!checkIsLogin(WencenterActivity.this)){
+                            return;
+                        }
                         User.clear(getApplicationContext());
                         AsyncHttpWecnter.clear(getApplicationContext());
 
@@ -181,6 +190,10 @@ public class WencenterActivity extends BaseActivity {
     }
 
     class NavAdapter extends BaseAdapter {
+        String []navStrings;
+        public NavAdapter(String[] navStrings){
+            this.navStrings = navStrings;
+        }
 
         @Override
         public int getCount() {
@@ -248,17 +261,16 @@ public class WencenterActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
-
+        setCurrentStatus();
     }
 
     private void getUserData() {
         User user = User.getLoginUser(this);
         if (user != null) {
             ImageLoader.getInstance().displayImage(user.getAvatarFile(), profile_image, ImageOptions.optionsImagePersonalDetailAvatar);
-//            Log.v("avatar",RelativeUrl.AVATAR + user.getAvatarFile());
             user_name.setText(user.getUserName());
             if (!TextUtils.isEmpty(user.getSignNature())) {
                 user_signature.setText(user.getSignNature());
@@ -285,5 +297,15 @@ public class WencenterActivity extends BaseActivity {
         super.onDestroy();
         ImageLoader.getInstance().clearMemoryCache();
     }
+
+    private void setCurrentStatus(){
+        if(checkLoginStatus()){
+            getUserData();
+            list_nav.setAdapter(new NavAdapter(new String[]{"个人中心","主页", "发现", "搜索","热门话题","注销"}));
+        }else{
+            list_nav.setAdapter(new NavAdapter(new String[]{"个人中心","主页", "发现", "搜索","热门话题","登录"}));
+        }
+    }
+
 
 }

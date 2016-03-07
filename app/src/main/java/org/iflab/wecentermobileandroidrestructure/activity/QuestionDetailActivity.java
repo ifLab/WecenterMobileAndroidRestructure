@@ -143,6 +143,9 @@ public class QuestionDetailActivity extends SwipeBackBaseActivity implements Vie
 
     @Override
     public void onClick(View view) {
+        if(!checkIsLogin(QuestionDetailActivity.this)){
+            return;
+        }
         Intent intent;
         switch (view.getId()) {
             case R.id.rel_add_answer:

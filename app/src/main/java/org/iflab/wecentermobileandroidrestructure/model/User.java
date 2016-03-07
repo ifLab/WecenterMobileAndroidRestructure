@@ -96,4 +96,11 @@ public class User {
         editor.apply();
     }
 
+    public static void setOwnerAvatar(Context context,String avatar){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginUser", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("avatarFile", avatar);
+        editor.apply();
+    }
+
 }

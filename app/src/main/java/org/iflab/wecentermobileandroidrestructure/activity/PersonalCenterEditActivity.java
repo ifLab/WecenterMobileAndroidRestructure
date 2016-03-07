@@ -259,8 +259,9 @@ public class PersonalCenterEditActivity extends SwipeBackBaseActivity {
                     JSONObject rsm = jsonObject.getJSONObject("rsm");
                     String priview = rsm.getString("preview");
                     if (priview != null) {
-                        //TODO 上传成功
+                        User.setOwnerAvatar(getApplicationContext(),priview);
                         Toast.makeText(getApplicationContext(), "上传成功", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(PersonalCenterEditActivity.this,WencenterActivity.class));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
