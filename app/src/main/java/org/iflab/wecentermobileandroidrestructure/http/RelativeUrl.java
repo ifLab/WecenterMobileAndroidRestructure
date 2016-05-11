@@ -7,8 +7,7 @@ import org.iflab.wecentermobileandroidrestructure.tools.MD5Transform;
  */
 public class RelativeUrl {
 //    public static String AVATAR = "http://we.bistu.edu.cn/uploads/avatar/";//头像文件夹
-    public static String AVATAR = "http://we.edustack.org/uploads/avatar/" + MD5Transform.getSign("account");
-    public static String USER_LOGIN = "/api/account/login_process/" + MD5Transform.getSign("account"); //登录
+    public static String USER_LOGIN = "?/api/account/login_process/" + MD5Transform.getSign("account"); //登录
     public static String HOME_PAGE = "/api/home/" + MD5Transform.getSign("home"); //首页
     public static String USER_INFO = "/api/account/get_userinfo/";//用户信息
     public static String USER_IMG_EDIT = "/api/account/avatar_upload/" + MD5Transform.getSign("account");//用户头像修改
@@ -28,7 +27,7 @@ public class RelativeUrl {
     public static String TOPICS = "/api/topic/topics/" + MD5Transform.getSign("topic");
     public static String FOLLOWER = "api/people/follows/";//个人粉丝
     public static String ARTICLE_INFO = "/api/article/" ; //文章
-    public static String QUESTION_INFO = "/api/question/" + MD5Transform.getSign("question");//问题
+    public static String QUESTION_INFO = "?/api/question/" + MD5Transform.getSign("question");//问题
     public static String QUESTION_FOUCS = "/question/ajax/focus/" + MD5Transform.getSign("ajax");//关注问题
     public static String QUESTION_ANSWER_INFO = "/api/question/answer/";
     public static String ANSWER_VOTE = "/question/ajax/answer_vote/" + MD5Transform.getSign("ajax");

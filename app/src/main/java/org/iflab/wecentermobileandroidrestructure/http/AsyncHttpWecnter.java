@@ -30,10 +30,8 @@ import org.json.JSONObject;
 
 public class AsyncHttpWecnter {
     public static final String TAG = "AsyncHttpWecnter";
-    public static final String BASE_URL = "http://wecenter.dev.hihwei.com/";
-//public static final String BASE_URL = "http://www.jingfangjie.cn/";
+    public static final String BASE_URL = "http://wetest.edustack.org/";
     public static final String SIGN = "12884789df747d7affbcd6a7cadd9359";
-//    public static final String BASE_URL = "http://we.edustack.org/";
     public static AsyncHttpClient client = new AsyncHttpClient();
 
     /**
